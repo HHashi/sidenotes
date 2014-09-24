@@ -10,3 +10,4 @@ A simple Chrome Extension that allows you to take notes in the browser with spee
 - Start right where you left off
 - Choose the format in which you want to save to Dropbox
 - Ability to use markdown or WYSIWYG
+- Notes frame does not cover website content
