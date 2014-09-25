@@ -35,8 +35,14 @@ $(document).ready(function() {
 
       // Create tabled called notes in default datastore
       var notesTable = datastore.getTable('notes');
-      console.log('Table: ' + notesTable._tid);
-      console.log(notesTable);
+      console.log(notesTable._tid + ' table', notesTable);
+
+      // Create first note in notes table
+      var firstNote = notesTable.insert({
+        body: 'hello notesy',
+        created: new Date()
+      });
+      console.log('created note', firstNote);
 
     });
   };
