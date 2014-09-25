@@ -44,6 +44,11 @@ $(document).ready(function() {
       });
       console.log('created note', firstNote);
 
+      // Retrieve array of all notes
+      var results = notesTable.query();
+      console.log('all notes', results)
+      console.log('first note', results[0])
+
     });
   };
 });
