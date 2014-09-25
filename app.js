@@ -33,6 +33,11 @@ $(document).ready(function() {
         alert('Error opening default datastore: ' + error);
       };
 
+      // Create tabled called notes in default datastore
+      var notesTable = datastore.getTable('notes');
+      console.log('Table: ' + notesTable._tid);
+      console.log(notesTable);
+
     });
   };
 });
