@@ -49,6 +49,11 @@ $(document).ready(function() {
       console.log('all notes', results)
       console.log('first note', results[0])
 
+      // Add event listener for changed records (local and remote)
+      datastore.recordsChanged.addListener(function (event) {
+          console.log('records changed: ', event.affectedRecordsForTable('notes'));
+      });
+
     });
   };
 });
