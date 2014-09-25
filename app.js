@@ -63,6 +63,8 @@ $(document).ready(function() {
       datastore.recordsChanged.addListener(function (event) {
         var changedRecords = event.affectedRecordsForTable('notes')
         console.log('records changed: ', changedRecords);
+        for(i = 0; i < changedRecords.length; i++) {
+          $('#noteslist').prepend('<li>' + changedRecords[i].get('body') + '</li>');
         };
       });
 
