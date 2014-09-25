@@ -37,17 +37,23 @@ $(document).ready(function() {
       var notesTable = datastore.getTable('notes');
       console.log(notesTable._tid + ' table', notesTable);
 
-      // Create first note in notes table
-      var firstNote = notesTable.insert({
-        body: 'hello notesy',
-        created: new Date()
-      });
-      console.log('created note', firstNote);
-
       // Retrieve array of all notes
       var results = notesTable.query();
       console.log('all notes', results)
       console.log('first note', results[0])
+
+      // Create note from form input
+      $('#createnote').on('submit', function(e){
+        e.preventDefault();
+        console.log('note body: ', $(this).serialize());
+        var noteBody = $(this).serialize();
+        var note = notesTable.insert({
+          body: noteBody,
+          created: new Date()
+        });
+        console.log('created note', note);
+        console.log('new first note', results[0])
+      });
 
       // Add event listener for changed records (local and remote)
       datastore.recordsChanged.addListener(function (event) {
