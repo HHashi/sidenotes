@@ -1,12 +1,18 @@
 // Create DropBox Client for App
 var client = new Dropbox.Client({key: 'APP_KEY'});
 
+var prependNotes = function(notesArray) {
+  for(i = 0; i < notesArray.length; i++) {
+    $('#noteslist').prepend('<li>' + notesArray[i].get('body') + '</li>');
+  };
+};
+
 $(document).ready(function() {
 
   // Authenticate App in the background
   client.authenticate({interactive: false}, function (error) {
     if (error) {
-        alert('Authentication error: ' + error);
+      alert('Authentication error: ' + error);
     }
   });
 
@@ -43,9 +49,7 @@ $(document).ready(function() {
       console.log('first note', results[0]);
 
       // Append notes to list
-      for(i = 0; i < results.length; i++) {
-        $('#noteslist').prepend('<li>' + results[i].get('body') + '</li>');
-      };
+      prependNotes(results);
 
       // Create note from form input
       $('#createnote').on('submit', function(e){
@@ -63,9 +67,7 @@ $(document).ready(function() {
       datastore.recordsChanged.addListener(function (event) {
         var changedRecords = event.affectedRecordsForTable('notes')
         console.log('records changed: ', changedRecords);
-        for(i = 0; i < changedRecords.length; i++) {
-          $('#noteslist').prepend('<li>' + changedRecords[i].get('body') + '</li>');
-        };
+        prependNotes(changedRecords);
       });
 
     });
