@@ -39,25 +39,31 @@ $(document).ready(function() {
 
       // Retrieve array of all notes
       var results = notesTable.query();
-      console.log('all notes', results)
-      console.log('first note', results[0])
+      console.log('all notes', results);
+      console.log('first note', results[0]);
+
+      // Append notes to list
+      for(i = 0; i < results.length; i++) {
+        $('#noteslist').prepend('<li>' + results[i].get('body') + '</li>');
+      };
 
       // Create note from form input
       $('#createnote').on('submit', function(e){
         e.preventDefault();
-        console.log('note body: ', $(this).serialize());
-        var noteBody = $(this).serialize();
+        var noteBody = $('#createnote textarea').val();
         var note = notesTable.insert({
           body: noteBody,
           created: new Date()
         });
         console.log('created note', note);
-        console.log('new first note', results[0])
+        $('#createnote').trigger('reset');
       });
 
       // Add event listener for changed records (local and remote)
       datastore.recordsChanged.addListener(function (event) {
-          console.log('records changed: ', event.affectedRecordsForTable('notes'));
+        var changedRecords = event.affectedRecordsForTable('notes')
+        console.log('records changed: ', changedRecords);
+        };
       });
 
     });
