@@ -25,5 +25,14 @@ $(document).ready(function() {
 
     console.log('Auth success, User: ' + client.dropboxUid());
 
+    // Create default datastore for user
+    var datastoreManager = client.getDatastoreManager();
+    datastoreManager.openDefaultDatastore(function (error, datastore) {
+
+      if (error) {
+        alert('Error opening default datastore: ' + error);
+      };
+
+    });
   };
 });
