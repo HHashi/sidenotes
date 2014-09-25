@@ -15,7 +15,7 @@
   "background": {
     "scripts": [
       "dropbox.js",
-      "dropbox_oauth.js",
+      "background.js",
       "chrome_oauth_receiver.js"
     ]
   },
@@ -25,9 +25,6 @@
     "https://www.dropbox.com/",
     "https://api.dropbox.com/",
     "https://api-content.dropbox.com/",
-    "http://cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js",
-    "https://www.dropbox.com/static/api/dropbox-datastores-1.2-latest.js",
-    "http://*/*",
-    "https://*/*"
+    "storage"
   ]
 }
