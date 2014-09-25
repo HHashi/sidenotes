@@ -1,5 +1,5 @@
 window.onload = function(){
-  var client = new Dropbox.Client({ key: client_key });
+  var client = new Dropbox.Client({ key: '0fz3bzmtgy70o7q' });
 
   client.authDriver(new Dropbox.AuthDriver.ChromeExtension({
     receiverPath: "chrome_oauth_receiver.html"
@@ -12,4 +12,4 @@ window.onload = function(){
       console.log('success');
 
   });
-}
+};
