@@ -1,0 +1,29 @@
+{
+  "name": "Snap Notes",
+  "description": "Seamless Note Taking Interface",
+  "version": "0.1",
+  "manifest_version": 2,
+  "icons": {"128": "icon.png"},
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_title": "SnapNotes",
+    "default_popup": "html/dropbox_oauth.html"
+  },
+  "web_accessible_resources": [
+    "html/chrome_oauth_receiver.html"
+  ],
+  "background": {
+    "scripts": [
+      "js/dropbox.js",
+      "js/chrome_oauth_receiver.js"
+    ]
+  },
+  "permissions": [
+    "unlimitedStorage",
+    "tabs",
+    "https://www.dropbox.com/",
+    "https://api.dropbox.com/",
+    "https://api-content.dropbox.com/",
+    "storage"
+  ]
+}
