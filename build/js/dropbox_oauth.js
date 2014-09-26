@@ -1,14 +1,13 @@
 // Create DropBox Client for App
-var client = new Dropbox.Client({key: 'lk7fwa8due76prs'});
+var client = new Dropbox.Client({key: 'e4fbthwtr2v9ksp'});
 
 var prependNotes = function(notesArray) {
   for(i = 0; i < notesArray.length; i++) {
     $('#noteslist').prepend('<li>' + notesArray[i].get('body') + '</li>');
-  };
+  }
 };
 
 $(document).ready(function() {
-
   // User authenticates his Dropbox
   $('#dpauth').on('click', function(){
     client.authDriver(new Dropbox.AuthDriver.ChromeExtension({
@@ -68,11 +67,11 @@ $(document).ready(function() {
 
       // Add event listener for changed records (local and remote)
       datastore.recordsChanged.addListener(function (event) {
-        var changedRecords = event.affectedRecordsForTable('notes')
+        var changedRecords = event.affectedRecordsForTable('notes');
         console.log('records changed: ', changedRecords);
         prependNotes(changedRecords);
       });
 
     });
-  };
+  }
 });
