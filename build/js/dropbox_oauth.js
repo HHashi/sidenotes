@@ -9,8 +9,7 @@ var prependNotes = function(notesArray) {
 
 $(document).ready(function() {
   // User authenticates his Dropbox
-  $('#dpauth').on('click', function(){
-    client.authDriver(new Dropbox.AuthDriver.ChromeExtension({
+  client.authDriver(new Dropbox.AuthDriver.ChromeExtension({
         receiverPath: "html/chrome_oauth_receiver.html"
         })
     );
@@ -21,7 +20,6 @@ $(document).ready(function() {
         }
         console.log(client.credentials());
     });
-  });
 
   // Clears user auth token
   $('#dplogout').on('click', function(){
