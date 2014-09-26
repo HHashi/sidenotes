@@ -1,4 +1,4 @@
-var client = new Dropbox.Client({ key: '0fz3bzmtgy70o7q' });
+var client = new Dropbox.Client({ key: 'lk7fwa8due76prs' });
 
 client.authDriver(new Dropbox.AuthDriver.ChromeExtension({
   receiverPath: "html/chrome_oauth_receiver.html"

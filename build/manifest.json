@@ -15,6 +15,7 @@
   "background": {
     "scripts": [
       "js/dropbox.js",
+      "js/dropbox-datastore.js",
       "js/chrome_oauth_receiver.js"
     ]
   },
