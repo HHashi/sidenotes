@@ -14,20 +14,19 @@ $(document).ready(function() {
         })
     );
 
-    client.authenticate(function(error, client) {
-        if (error) {
-          return console.log(error);
-        }
-        console.log(client.credentials());
-    });
-
+  client.authenticate(function(error, client){
+    if (error){
+      console.log("NOOOO");
+    }
+    activateStorage(client);
+  });
   // Clears user auth token
   $('#dplogout').on('click', function(){
     client.signOut();
   });
-
+  console.log(client.isAuthenticated());
   // Check is user is authenticated
-  if (client.isAuthenticated()) {
+ function activateStorage(client) {
 
     console.log('Auth success, User: ' + client.dropboxUid());
 
