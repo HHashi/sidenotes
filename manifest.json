@@ -7,19 +7,14 @@
   "icons": {"128": "icon.png"},
   "browser_action": {
     "default_icon": "icon.png",
-    "default_title": "SnapNotes",
-    "default_popup": "html/dropbox_oauth.html"
+    "default_title": "SideNotes",
+    "default_popup": "html/popup.html"
   },
   "web_accessible_resources": [
-    "html/chrome_oauth_receiver.html"
+    "chrome_oauth_receiver.html"
   ],
   "background": {
-    "scripts": [
-      "vendor/js/dropbox.js",
-      "vendor/js/dropbox-datastore.js",
-      "vendor/js/jquery.js",
-      "js/chrome_oauth_receiver.js"
-    ]
+    "page": "html/background.html"
   },
   "permissions": [
     "unlimitedStorage",
