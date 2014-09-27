@@ -7,68 +7,108 @@ var prependNotes = function(notesArray) {
   }
 };
 
+var lastNote = function(array) {
+  return array[array.length - 1]
+};
+
+var fillTextarea = function(table) {
+  var allNotes = table.query();
+  if (allNotes.length > 0) {
+    $('#textarea').text(lastNote(allNotes).get('body'));
+  }
+};
+
+var showLastNote = function(table) {
+  var allNotes = table.query();
+  if (allNotes.length > 0) {
+    $('#lastnoteinfo span').text(lastNote(allNotes).get('body'));
+    $('#lastnotecount span').text(allNotes.length);
+  }
+};
+
+
 $(document).ready(function() {
+
   // User authenticates his Dropbox
   client.authDriver(new Dropbox.AuthDriver.ChromeExtension({
-        receiverPath: "html/chrome_oauth_receiver.html"
-        })
-    );
+    receiverPath: "html/chrome_oauth_receiver.html"
+    })
+  );
 
   client.authenticate(function(error, client){
-    if (error){
-      console.log("NOOOO");
+    if (error) {
+      console.log("NOOOOOOOOOO: " + error);
     }
     activateStorage(client);
   });
+
   // Clears user auth token
   $('#dplogout').on('click', function(){
     client.signOut();
+    $('#notearea').hide();
+    $('#dplogout').hide();
+    $('#dpauth').show();
   });
-  console.log(client.isAuthenticated());
-  // Check is user is authenticated
- function activateStorage(client) {
 
-    console.log('Auth success, User: ' + client.dropboxUid());
+  function activateStorage(client) {
+
+    // Check if user is authenticated
+    if (client.isAuthenticated()) {
+      $('#notearea').show();
+      $('#dpauth').hide();
+      console.log('Auth success, User: ' + client.dropboxUid());
+    };
 
     // Create default datastore for user
     var datastoreManager = client.getDatastoreManager();
     datastoreManager.openDefaultDatastore(function (error, datastore) {
 
       if (error) {
-        alert('Error opening default datastore: ' + error);
+        console.log('Error opening default datastore: ' + error);
       };
 
       // Create tabled called notes in default datastore
-      var notesTable = datastore.getTable('notes');
+      var notesTable = datastore.getTable('stuff');
       console.log(notesTable._tid + ' table', notesTable);
+      $('#noteheader span').text(notesTable._tid);
 
       // Retrieve array of all notes
       var results = notesTable.query();
       console.log('all notes', results);
-      console.log('first note', results[0]);
+      console.log('last note', lastNote(results));
+
+      // Fill textarea with last note
+      // $('#createnote textarea').val(lastNote(results).get('body'));
+      $('#textarea').attr('contenteditable','true');
+      $('#textarea').focus();
+      fillTextarea(notesTable);
 
       // Append notes to list
-      prependNotes(results);
+      // prependNotes(results);
+      showLastNote(notesTable);
 
       // Create note from form input
-      $('#createnote').on('submit', function(e){
+      $('#submitnote').on('click', function(e){
         e.preventDefault();
-        var noteBody = $('#createnote textarea').val();
+        var noteBody = $('#textarea').text();
         var note = notesTable.insert({
           body: noteBody,
           created: new Date()
         });
         console.log('created note', note);
-        $('#createnote').trigger('reset');
+        // $('#createnote').trigger('reset');
       });
 
       // Add event listener for changed records (local and remote)
       datastore.recordsChanged.addListener(function (event) {
-        var changedRecords = event.affectedRecordsForTable('notes');
+        var changedRecords = event.affectedRecordsForTable(notesTable._tid);
         console.log('records changed: ', changedRecords);
-        prependNotes(changedRecords);
+        // prependNotes(changedRecords);
+        $('#textarea').empty();
+        showLastNote(notesTable);
+        fillTextarea(notesTable);
       });
 
     });
-  }
+  };
 });

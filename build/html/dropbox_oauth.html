@@ -11,18 +11,25 @@
 
 </head>
 
-<body>
+<body style="width: 300px; height: 500px;">
+
   <h1>Snapnotes</h1>
 
   <button id="dpauth">Auth Dropbox</button>
   <button id="dplogout">Sign out Dropbox</button>
 
-  <form id="createnote" accept-charset="utf-8">
-    <textarea name="body"></textarea>
-    <button type="submit">Create note</button>
-  </form>
+  <div id="notearea" style="display: none;">
 
-  <ul id="noteslist">
-  </ul>
+    <h4 id="noteheader" style="font-weight: 400;">Note title: <span style="font-weight: 800;"></span></h4>
+
+    <div id="textarea" style="width:290px; height:100%; padding:5px; margin:10px 0; font-size16px; line-height:1.5; font-family:times; color:#555; outline:0;"></div>
+
+    <button id="submitnote">Save</button>
+
+    <h4 id="lastnoteinfo" style="font-weight: 400;">Last note: <span style="font-weight: 800;"></span></h4>
+    <h4 id="lastnotecount" style="font-weight: 400;">Note count: <span style="font-weight: 800;"></span></h4>
+
+  </div>
+
 </body>
 </html>
