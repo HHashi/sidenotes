@@ -11,15 +11,19 @@ $(document).ready(function(){
     }
   });
 
-  $('#dropbox-signin').click(function(e) {
-    e.preventDefault();
+  $('#dropbox-signin').click(function() {
     appController.authenticate();
   });
 
-  $('#dropbox-signout').click(function(e) {
-    e.preventDefault();
+  $('#dropbox-signout').click(function() {
     appController.signOut();
+    $('#loggedinfo').hide();
   });
+
+  if (backgroundPage.client.isAuthenticated) {
+    $('#loggedinfo').show();
+  };
+
 });
 
 
