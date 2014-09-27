@@ -1,7 +1,8 @@
 {
+  "key": "neeknnnjmpbdicafijkbnlmmlllfkhfh",
   "name": "Snap Notes",
   "description": "Seamless Note Taking Interface",
-  "version": "0.1",
+  "version": "0.2",
   "manifest_version": 2,
   "icons": {"128": "icon.png"},
   "browser_action": {
@@ -14,8 +15,9 @@
   ],
   "background": {
     "scripts": [
-      "js/dropbox.js",
-      "js/dropbox-datastore.js",
+      "vendor/js/dropbox.js",
+      "vendor/js/dropbox-datastore.js",
+      "vendor/js/jquery.js",
       "js/chrome_oauth_receiver.js"
     ]
   },
