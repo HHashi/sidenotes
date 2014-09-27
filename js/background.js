@@ -4,7 +4,7 @@ var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
 
 client.onAuthStepChange.addListener(function(event){
   if(client.isAuthenticated()){
-    activateNotes();
+    //activateNotes(); // This is not being used
   }
 });
 
