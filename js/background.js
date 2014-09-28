@@ -33,7 +33,7 @@ appController = {
       var newElement = document.createElement('iframe');
       newElement.setAttribute("id", "sidenote_sidebar");
       newElement.setAttribute("style", "background: #fff; z-index: 999999999999999; position: fixed; top: 0px; right: 0px; bottom: 0px; width: 300px; height: 100%; border-left:1px solid #eee; box-shadow:0 -1px 7px 0px #aaa; overflow-x: hidden;");
-      newElement.setAttribute("src", "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/sidepanel.html");
+      newElement.setAttribute("src", "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/html/sidepanel.html");
       newElement.setAttribute("allowtransparency", "false");
       newElement.setAttribute("scrolling", "yes");
       document.body.appendChild(newElement);
