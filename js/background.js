@@ -42,15 +42,21 @@ appController = {
     document.body.appendChild(newElement);
   },
   toggleSidePanel: function(){
-     if (panelDisplayed === false) {
+    var sidebarPresent = chrome.tabs.executeScript({ code: "document.querySelector('#sidenote_sidebar')"})
+    if(sidebarPresent) {
+      panelDisplayed = true;
+    }
+    else {
+      panelDisplayed = false;
+    }
+
+    if (panelDisplayed === false) {
       chrome.tabs.executeScript({ code: this.formatScript(this.shrinkWindowWidth) });
       chrome.tabs.executeScript({ code: this.formatScript(this.addSidebar, "\n") });
-      panelDisplayed = true;
     }
     else {
       chrome.tabs.executeScript({ code: this.formatScript(this.windowRestore) });
       chrome.tabs.executeScript({ code: this.formatScript(this.toggleClose, "\n") });
-      panelDisplayed = false;
     }
   },
   formatScript: function(script, format){
