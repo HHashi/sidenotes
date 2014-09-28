@@ -1,10 +1,11 @@
-var DROPBOX_APP_KEY = 'lk7fwa8due76prs';
+var DROPBOX_APP_KEY = 'e4fbthwtr2v9ksp';
+
 // Create DropBox Client for App
 var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
 
 client.onAuthStepChange.addListener(function(event){
   if(client.isAuthenticated()){
-    activateNotes();
+    //activateNotes(); // This is not being used
   }
 });
 
@@ -19,5 +20,5 @@ appController = {
     client.signOut(null, function(){
       client.reset();
     });
-  },
+  }
 };

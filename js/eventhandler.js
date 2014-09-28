@@ -1,4 +1,5 @@
 $(document).ready(function(){
+
   var backgroundPage, appController;
 
   backgroundPage = chrome.extension.getBackgroundPage();
@@ -11,19 +12,74 @@ $(document).ready(function(){
     }
   });
 
-  $('#dropboxLogin').click(function(e) {
-    e.preventDefault();
+  $('#dropbox-signin').click(function() {
     appController.authenticate();
   });
 
-  //TODO: Refactor Into Function Above
-  $('#dropboxSignup').click(function(e) {
-    e.preventDefault();
-    appController.authenticate();
-  });
-
-  $('#dropboxLogout').click(function(e) {
-    e.preventDefault();
+  $('#dropbox-signout').click(function() {
     appController.signOut();
+    $('#loggedinfo').hide();
+    $('#loggedin').hide();
+    $('#dropbox-signin').show();
   });
+
+  if (appController.isAuthenticated) {
+    $('#loggedinfo').show();
+    $('#loggedin').show();
+    $('#dropbox-signin').hide();
+  };
+
+
+// TODO REFACTOR BELOW
+// ===============================================================
+
+  var getLastNote = function(array) {
+    return array[array.length - 1]
+  };
+
+  var updateNoteInfo = function(table) {
+    var allRecords = table.query();
+    if (allRecords.length > 0) {
+      $('#textarea').text(getLastNote(allRecords).get('body'));
+      $('#lastnoteinfo span').text(getLastNote(allRecords).get('body'));
+      $('#recordscount span').text(allRecords.length);
+    }
+  };
+
+  // Open default datastore for current user
+  datastoreManager = backgroundPage.client.getDatastoreManager();
+  datastoreManager.openDefaultDatastore(function (error, datastore) {
+
+    if (error) {
+      console.log('Error opening default datastore: ' + error);
+    };
+
+    // Open table in datastore
+    var currentTable = datastore.getTable('stuff');
+
+    // Make textarea div editable and focus
+    $('#textarea').attr('contenteditable','true');
+    $('#textarea').focus();
+
+    // Fill content
+    $('#noteheader span').text(currentTable._tid);
+    updateNoteInfo(currentTable);
+
+    // Create note from textarea content
+    $('#save-note').on('click', function(e){
+      e.preventDefault();
+      currentTable.insert({
+        body: $('#textarea').text(),
+        created: new Date()
+      });
+    });
+
+    // Add event listener for changed records (local and remote)
+    datastore.recordsChanged.addListener(function (event) {
+      var changedRecords = event.affectedRecordsForTable(currentTable._tid);
+      $('#textarea').empty();
+      updateNoteInfo(currentTable);
+    });
+  });
+
 });
