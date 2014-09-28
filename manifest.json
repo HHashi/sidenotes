@@ -12,7 +12,7 @@
   },
   "web_accessible_resources": [
     "chrome_oauth_receiver.html",
-    "sidepanel.html"
+    "html/sidepanel.html"
   ],
   "background": {
     "page": "html/background.html"
@@ -21,9 +21,7 @@
     "unlimitedStorage",
     "tabs",
     "activeTab",
-    "https://www.dropbox.com/",
-    "https://api.dropbox.com/",
-    "https://api-content.dropbox.com/",
-    "storage"
+    "storage",
+    "<all_urls>"
   ]
 }
