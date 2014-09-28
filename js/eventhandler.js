@@ -23,18 +23,21 @@ $(document).ready(function(){
     $('#dropbox-signin').show();
   });
 
-  if (appController.isAuthenticated) {
+  if (appController.isAuthenticated()) {
     $('#loggedinfo').show();
     $('#loggedin').show();
+    window.close();
     $('#dropbox-signin').hide();
-  };
+    appController.toggleSidePanel();
+  }
+
 
 
 // TODO REFACTOR BELOW
 // ===============================================================
 
-  var getLastNote = function(array) {
-    return array[array.length - 1]
+  var getLastNote = function(allNotes) {
+    return allNotes[allNotes.length - 1];
   };
 
   var updateNoteInfo = function(table) {
@@ -52,7 +55,7 @@ $(document).ready(function(){
 
     if (error) {
       console.log('Error opening default datastore: ' + error);
-    };
+    }
 
     // Open table in datastore
     var currentTable = datastore.getTable('stuff');
