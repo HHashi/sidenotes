@@ -1,9 +1,7 @@
 $(document).ready(function(){
 
-  var backgroundPage, appController;
-
-  backgroundPage = chrome.extension.getBackgroundPage();
-  appController = backgroundPage.appController;
+  var backgroundPage = chrome.extension.getBackgroundPage();
+  var appController = backgroundPage.appController;
 
   backgroundPage.client.authenticate({interactive:false}, function (error) {
     if (error) {
@@ -32,7 +30,6 @@ $(document).ready(function(){
   }
 
 
-
 // TODO REFACTOR BELOW
 // ===============================================================
 
@@ -51,6 +48,7 @@ $(document).ready(function(){
 
   // Open default datastore for current user
   datastoreManager = backgroundPage.client.getDatastoreManager();
+  datastoreManager.close();
   datastoreManager.openDefaultDatastore(function (error, datastore) {
 
     if (error) {
