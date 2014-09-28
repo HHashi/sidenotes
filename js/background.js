@@ -22,45 +22,40 @@ appController = {
       client.reset();
     });
   },
-  shrinkWindowWidth: function(){
-    document.body.style.width = (document.body.clientWidth - 300) + "px";
-  },
-  windowRestore: function(){
-    document.body.style.width = (document.body.clientWidth + 300) + "px";
-  },
-  toggleClose: function(){
-    var sidebar = document.querySelector('#sidenote_sidebar');
-    document.body.removeChild(sidebar);
-  },
-  addSidebar: function(){
-    var newElement = document.createElement('iframe');
-    newElement.setAttribute("id", "sidenote_sidebar");
-    newElement.setAttribute("style", "background: white; z-index: 999999999999999; position: fixed; width: 300px; height: 100%; border:none; top: 0px; right: 0px; bottom: 0px");
-    newElement.setAttribute("src", "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/sidepanel.html");
-    newElement.setAttribute("allowtransparency", "false");
-    newElement.setAttribute("scrolling", "yes");
-    document.body.appendChild(newElement);
-  },
-  toggleSidePanel: function(){
-    var sidebarPresent = chrome.tabs.executeScript({ code: "document.querySelector('#sidenote_sidebar')"})
-    if(sidebarPresent) {
-      panelDisplayed = true;
-    }
-    else {
-      panelDisplayed = false;
-    }
+  toggleSidePanelScript: function(){
 
-    if (panelDisplayed === false) {
-      chrome.tabs.executeScript({ code: this.formatScript(this.shrinkWindowWidth) });
-      chrome.tabs.executeScript({ code: this.formatScript(this.addSidebar, "\n") });
+    var closeSidePanel = function(){
+      var sidebar = document.querySelector('#sidenote_sidebar');
+      document.body.removeChild(sidebar);
+    };
+
+    var openSidePanel = function(){
+      var iframeStyle = "background: white; z-index: 999999999999999; position: fixed; width: 300px; height: 100%; border:none; top: 0px; right: 0px; bottom: 0px";
+      var iframeSource = "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/sidepanel.html";
+
+      var iframeElement = '<iframe id="sidenote_sidebar" '
+                          + iframeStyle
+                          + 'src="'
+                          + iframeSrc
+                          + '" allowtransparency="false" scrolling="yes"';
+
+      document.body.appendChild(newElement);
+    };
+
+    if (document.querySelector('#sidenote_sidebar')) {
+      document.body.style.width = (document.body.clientWidth + 300) + "px";
+      closeSidePanel();
     }
     else {
-      chrome.tabs.executeScript({ code: this.formatScript(this.windowRestore) });
-      chrome.tabs.executeScript({ code: this.formatScript(this.toggleClose, "\n") });
+      document.body.style.width = (document.body.clientWidth - 300) + "px";
+      openSidePanel();
     }
   },
   formatScript: function(script, format){
     return script.toString().split("\n").slice(1, -1).join(format);
+  },
+  toggleSidePanel: function() {
+    chrome.tabs.executeScript({code: this.formatScript(this.toggleSidePanelScript, "\n")});
   }
 
 };
