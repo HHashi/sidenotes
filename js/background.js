@@ -33,13 +33,9 @@ appController = {
       var iframeStyle = "background: white; z-index: 999999999999999; position: fixed; width: 300px; height: 100%; border:none; top: 0px; right: 0px; bottom: 0px";
       var iframeSource = "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/sidepanel.html";
 
-      var iframeElement = '<iframe id="sidenote_sidebar" '
-                          + iframeStyle
-                          + 'src="'
-                          + iframeSrc
-                          + '" allowtransparency="false" scrolling="yes"';
+      var iframeElement = '<iframe id="sidenote_sidebar" '+ iframeStyle +'src="'+ iframeSource +'" allowtransparency="false" scrolling="yes"></iframe>';
 
-      document.body.appendChild(newElement);
+      document.body.appendChild(iframeElement);
     };
 
     if (document.querySelector('#sidenote_sidebar')) {
