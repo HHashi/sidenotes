@@ -11,7 +11,8 @@
     "default_popup": "html/popup.html"
   },
   "web_accessible_resources": [
-    "chrome_oauth_receiver.html"
+    "chrome_oauth_receiver.html",
+    "sidepanel.html"
   ],
   "background": {
     "page": "html/background.html"
@@ -19,6 +20,7 @@
   "permissions": [
     "unlimitedStorage",
     "tabs",
+    "activeTab",
     "https://www.dropbox.com/",
     "https://api.dropbox.com/",
     "https://api-content.dropbox.com/",
