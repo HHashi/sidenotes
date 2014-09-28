@@ -30,15 +30,12 @@ appController = {
     };
 
     var openSidePanel = function(){
-      var iframeStyle = "background: white; z-index: 999999999999999; position: fixed; width: 300px; height: 100%; border:none; top: 0px; right: 0px; bottom: 0px";
-      var iframeSource = "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/sidepanel.html";
-
-      var iframeElement = '<iframe id="sidenote_sidebar" '
-                          + iframeStyle
-                          + 'src="'
-                          + iframeSrc
-                          + '" allowtransparency="false" scrolling="yes"';
-
+      var newElement = document.createElement('iframe');
+      newElement.setAttribute("id", "sidenote_sidebar");
+      newElement.setAttribute("style", "background: white; z-index: 999999999999999; position: fixed; width: 300px; height: 100%; border:none; top: 0px; right: 0px; bottom: 0px");
+      newElement.setAttribute("src", "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/sidepanel.html");
+      newElement.setAttribute("allowtransparency", "false");
+      newElement.setAttribute("scrolling", "yes");
       document.body.appendChild(newElement);
     };
 
