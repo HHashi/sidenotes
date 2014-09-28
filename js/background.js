@@ -22,53 +22,40 @@ appController = {
       client.reset();
     });
   },
-  toggleScript: function(){
+  toggleSidePanelScript: function(){
 
-    var shrinkWindowWidth = function(){
-      document.body.style.width = (document.body.clientWidth - 300) + "px";
-    };
-
-    var windowRestore = function(){
-        document.body.style.width = (document.body.clientWidth + 300) + "px";
-    };
-
-    var toggleClose = function(){
+    var closeSidePanel = function(){
       var sidebar = document.querySelector('#sidenote_sidebar');
       document.body.removeChild(sidebar);
     };
 
-    var addSidebar = function(){
-      var newElement = document.createElement('iframe');
-      newElement.setAttribute("id", "sidenote_sidebar");
-      newElement.setAttribute("style", "background: white; z-index: 999999999999999; position: fixed; width: 300px; height: 100%; border:none; top: 0px; right: 0px; bottom: 0px");
-      newElement.setAttribute("src", "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/sidepanel.html");
-      newElement.setAttribute("allowtransparency", "false");
-      newElement.setAttribute("scrolling", "yes");
+    var openSidePanel = function(){
+      var iframeStyle = "background: white; z-index: 999999999999999; position: fixed; width: 300px; height: 100%; border:none; top: 0px; right: 0px; bottom: 0px";
+      var iframeSource = "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/sidepanel.html";
+
+      var iframeElement = '<iframe id="sidenote_sidebar" '
+                          + iframeStyle
+                          + 'src="'
+                          + iframeSrc
+                          + '" allowtransparency="false" scrolling="yes"';
+
       document.body.appendChild(newElement);
     };
 
-    var sidebarPresent = document.querySelector('#sidenote_sidebar');
-    if(sidebarPresent) {
-      panelDisplayed = true;
+    if (document.querySelector('#sidenote_sidebar')) {
+      document.body.style.width = (document.body.clientWidth + 300) + "px";
+      closeSidePanel();
     }
     else {
-      panelDisplayed = false;
-    }
-
-    if (panelDisplayed === false) {
-      shrinkWindowWidth();
-      addSidebar();
-    }
-    else {
-      windowRestore();
-      toggleClose();
+      document.body.style.width = (document.body.clientWidth - 300) + "px";
+      openSidePanel();
     }
   },
   formatScript: function(script, format){
     return script.toString().split("\n").slice(1, -1).join(format);
   },
   toggleSidePanel: function() {
-    chrome.tabs.executeScript({code: this.formatScript(this.toggleScript, "\n")});
+    chrome.tabs.executeScript({code: this.formatScript(this.toggleSidePanelScript, "\n")});
   }
 
 };
