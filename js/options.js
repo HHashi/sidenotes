@@ -17,7 +17,7 @@ document.addEventListener( "DOMContentLoaded", function(){
   var backgroundPage = chrome.extension.getBackgroundPage();
   var currentTable = backgroundPage.currentTable;
   var allRecords = currentTable.query();
-  var formattedRecords = formatNotes(allRecords, 'date', 'url', 'body');;
+  var formattedRecords = formatNotes(allRecords, 'date', 'url', 'body');
 
   var fuse = new Fuse(formattedRecords, { keys: ["url", "body"] });
   displayResults(formattedRecords);
