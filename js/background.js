@@ -79,5 +79,18 @@ function onLogin(){
       console.log('Error opening default datastore: ' + error);
     }
 
+    // Open table in datastore
+    var currentTable = datastore.getTable('sideNotes');
+
+    // chrome.storage.local.set({'bgbody': 'backgroundbody'}, function(result) { console.log('set', result); });
+    // chrome.storage.local.get('ibody', function(result) { console.log('get', result) });
+    // chrome.storage.local.get(null, function(result) { console.log('get', result) });
+
+    chrome.storage.onChanged.addListener(function(changes, namespace) {
+      var iNote = chrome.storage.local.get('iNote', function(result) {
+        return iNote = result['iNote'];
+      });
+
+    });
   });
 };
