@@ -6,7 +6,7 @@ var panelDisplayed;
 
 client.onAuthStepChange.addListener(function(event){
   if(client.isAuthenticated()){
-    //activateNotes(); // This is not being used
+    // localStorage.setItem('client', JSON.stringify(client.credentials()));
   }
 });
 

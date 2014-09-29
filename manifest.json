@@ -23,5 +23,6 @@
     "activeTab",
     "storage",
     "<all_urls>"
-  ]
+  ],
+  "options_page": "html/index.html"
 }
