@@ -24,7 +24,7 @@ $(document).ready(function(){
 
     function setIframeData() {
       var chromeStorage = {};
-      chromeStorage['iNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) }
+      chromeStorage['iNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) };
       chrome.storage.local.set(chromeStorage, function() {});
     };
     setIframeData();
