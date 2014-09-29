@@ -9,8 +9,8 @@ $(document).ready(function(){
       chrome.storage.local.get(null, function(result){
         console.log('BGNOTE STORAGE: ',result['bgNote']);
         $('#textarea').text(result['bgNote']['body']);
-      })
-    };
+      });
+    }
   });
 
   // Activate textarea
@@ -24,7 +24,7 @@ $(document).ready(function(){
 
     function setIframeData() {
       var chromeStorage = {};
-      chromeStorage['iNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) }
+      chromeStorage['iNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) };
       chrome.storage.local.set(chromeStorage, function() {});
     };
     setIframeData();

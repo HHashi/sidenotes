@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+document.addEventListener( "DOMContentLoaded", function(){
+
   var backgroundPage = chrome.extension.getBackgroundPage();
   var appController = backgroundPage.appController;
 
@@ -10,22 +12,12 @@ $(document).ready(function(){
     }
   });
 
-  $('#dropbox-signin').click(function() {
+  document.querySelector('#dropbox-signin').addEventListener('click', function() {
     appController.authenticate();
   });
 
-  $('#dropbox-signout').click(function() {
-    appController.signOut();
-    $('#loggedinfo').hide();
-    $('#loggedin').hide();
-    $('#dropbox-signin').show();
-  });
-
   if (appController.isAuthenticated()) {
-    $('#loggedinfo').show();
-    $('#loggedin').show();
     window.close();
-    $('#dropbox-signin').hide();
     appController.toggleSidePanel();
   }
 
