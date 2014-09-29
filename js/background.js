@@ -1,5 +1,7 @@
 var DROPBOX_APP_KEY = 'e4fbthwtr2v9ksp';
 
+var currentTable;
+
 var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
 
 client.onAuthStepChange.addListener(function(event) {
