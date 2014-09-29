@@ -1,14 +1,12 @@
 var currentLocation = window.location.hash.slice(1).split('#')[0];
-var bgNote;
+var backgroundNote;
 
 $(document).ready(function(){
 
   chrome.storage.onChanged.addListener(function(changes, namespace) {
-    if(changes['bgNote']) {
-      console.log('BG CHANGES - NEW: ', changes['bgNote']['newValue']);
+    if(changes['backgroundNote']) {
       chrome.storage.local.get(null, function(result){
-        console.log('BGNOTE STORAGE: ',result['bgNote']);
-        $('#textarea').text(result['bgNote']['body']);
+        $('#textarea').text(result['backgroundNote']['body']);
       });
     }
   });
@@ -24,7 +22,7 @@ $(document).ready(function(){
 
     function setIframeData() {
       var chromeStorage = {};
-      chromeStorage['iNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) };
+      chromeStorage['iframeNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) };
       chrome.storage.local.set(chromeStorage, function() {});
     };
     setIframeData();
