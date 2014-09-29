@@ -7,6 +7,16 @@ body {
   width: 100%;
 }
 
+h1 {
+  bottom: 0;
+  color: #ddd;
+  font-family: 'Source Code Pro', monospace, sans-serif;
+  font-size: 20px;
+  position: absolute;
+  text-align: center;
+  width: 260px;
+}
+
 #loggedin {
   width: 260px;
 }
