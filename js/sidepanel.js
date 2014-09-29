@@ -73,7 +73,7 @@ $(document).ready(function(){
     clearTimeout(timeoutId);
     timeoutId = setTimeout(function() {
       setIframeData();
-    }, 1000);
+    }, 5000);
     cursorPosition = $('#textarea').text().length;
   });
 });
