@@ -20,8 +20,8 @@
   "commands": {
     "toggle-sidebar": {
       "suggested_key": {
-        "default": "Alt+N",
-        "mac": "Alt+N"
+        "default": "Ctrl+N",
+        "mac": "MacCtrl+N"
       },
     "description": "Toggle Sidebar"
     }
