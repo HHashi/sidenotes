@@ -1,11 +1,22 @@
 var DROPBOX_APP_KEY = 'e4fbthwtr2v9ksp';
 
-// Create DropBox Client for App
+var currentTable;
+
 var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
 
 client.onAuthStepChange.addListener(function(event) {
   if (client.isAuthenticated()) {
-    onLogin();
+    chrome.commands.onCommand.addListener(function(command) {
+      appController.toggleSidePanel();
+    });
+    initDatastore();
+  }
+});
+
+client.authenticate({interactive:false}, function (error) {
+  if (error) {
+    alert('Authentication error: ' + error);
+    client.reset();
   }
 });
 
@@ -53,31 +64,22 @@ appController = {
   },
   toggleSidePanel: function() {
     chrome.tabs.executeScript({code: this.formatScript(this.toggleSidePanelScript, "\n")});
-  },
-  openPastNote: function(noteUrl){
-    chrome.tabs.create({url: noteUrl}, function(tab){
-      appController.toggleSidePanel();
-    });
   }
 };
 
-// Open default datastore for current user
-function onLogin(){
+function initDatastore(){
   client.getDatastoreManager().openDefaultDatastore(function (error, datastore) {
-
-    console.log('DATASTORE WORKING: ', datastore)
 
     if (error) {
       console.log('Error opening default datastore: ' + error);
     }
 
     // Open table in datastore
-    var currentTable = datastore.getTable('sideNotes');
+    currentTable = datastore.getTable('sideNotes');
 
     // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
       if(changes['iNote']) {
-        console.log('IFRAME CHANGES - NEW: ', changes['iNote']['newValue']);
         chrome.storage.local.get(null, function(result){ console.log('INOTE STORAGE: ',result['iNote']); })
         currentTable.insert({
           url: changes['iNote']['newValue']['url'],
@@ -90,28 +92,11 @@ function onLogin(){
     // Add event listener for changed records (local and remote)
     datastore.recordsChanged.addListener(function(event) {
       var changedRecords = event.affectedRecordsForTable(currentTable._tid);
-      console.log('CHANGE FROM DB: ',changedRecords[0]);
       var dbRecord = changedRecords[0];
-      function setBgData() {
-        var chromeStorage = {};
-        chromeStorage['bgNote'] = { 'url': dbRecord.get('url'), 'body': dbRecord.get('body'), 'date': dbRecord.get('date') }
-        chrome.storage.local.set(chromeStorage, function() {});
-      };
-      setBgData();
+      var chromeStorage = {};
+
+      chromeStorage['bgNote'] = { 'url': dbRecord.get('url'), 'body': dbRecord.get('body'), 'date': dbRecord.get('date') }
+      chrome.storage.local.set(chromeStorage, function() {});
     });
   });
 };
-
-$(document).ready(function(){
-  client.authenticate({interactive:false}, function (error) {
-    if (error) {
-      alert('Authentication error: ' + error);
-      client.reset();
-    }
-    chrome.commands.onCommand.addListener(function(command) {
-        if (appController.isAuthenticated()){
-          appController.toggleSidePanel();
-        }
-    });
-  });
-});
