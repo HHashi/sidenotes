@@ -12,4 +12,8 @@ $(document).ready(function(){
     }
   });
 
+  // Activate textarea
+  $('#textarea').attr('contenteditable','true');
+  $('#textarea').focus();
+
 });
