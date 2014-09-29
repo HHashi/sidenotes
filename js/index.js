@@ -30,9 +30,11 @@ $(document).ready(function(){
     });
 
     $('#note-search').on('keyup', function(){
-      if ($('#note-search').val() === ""){
-        displayResults(formattedRecords);
-      }
+      if ($('#note-search').val() === ""){ displayResults(formattedRecords); }
+    });
+
+    document.getElementById('note-search').addEventListener('search', function(){
+      if ($('#note-search').val() === ""){ displayResults(formattedRecords); }
     });
 
     function displayResults(list){
