@@ -91,6 +91,14 @@ function onLogin(){
         return iNote = result['iNote'];
       });
 
+      // Create note from textarea content
+      currentTable.insert({
+        url: iNote['url'],
+        body: iNote['body'],
+        date: iNote['date']
+      });
+
     });
+
   });
 };
