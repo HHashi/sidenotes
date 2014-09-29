@@ -38,7 +38,7 @@ $(document).ready(function(){
     function displayResults(list){
       $('#search-results').empty();
       for(var i=0;i<list.length;i++){
-        var eachNote = '<li>'+list[i].url+'<br>'+list[i].body+'</li>';
+        var eachNote = '<li><a href='+list[i].url+'></a>'+ list[i].url +'<br>'+list[i].body+'</li>';
         $('#search-results').append(eachNote);
       }
     }
