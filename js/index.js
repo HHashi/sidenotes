@@ -1,11 +1,13 @@
 $(document).ready(function(){
-  $(document).on('click', '.note-urls', function(e){
 
+  $(document).on('click', '.note-urls', function(e){
     e.preventDefault();
-    appController.openPastNote($(this).attr('href'));
+    chrome.tabs.create({url: $(this).attr('href')}, function(tab){
+      backgroundPage.appController.toggleSidePanel();
+    });
   });
+
   var backgroundPage = chrome.extension.getBackgroundPage();
-  var appController = backgroundPage.appController;
   var datastoreManager = backgroundPage.client.getDatastoreManager();
   datastoreManager.close();
   datastoreManager.openDefaultDatastore(function (error, datastore) {
