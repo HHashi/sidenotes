@@ -1,11 +1,15 @@
 var currentLocation = window.location.hash.slice(1).split('#')[0];
+var bgNote;
 
 $(document).ready(function(){
 
   chrome.storage.onChanged.addListener(function(changes, namespace) {
     if(changes['bgNote']) {
       console.log('BG CHANGES - NEW: ', changes['bgNote']['newValue']);
-      chrome.storage.local.get(null, function(result){ console.log('BGNOTE STORAGE: ',result['bgNote']); })
+      chrome.storage.local.get(null, function(result){
+        console.log('BGNOTE STORAGE: ',result['bgNote']);
+        $('#textarea').text(result['bgNote']['body']);
+      })
     };
   });
 
