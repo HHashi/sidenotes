@@ -60,11 +60,18 @@ appController = {
     });
   }
 };
+
 $(document).ready(function(){
-   client.authenticate({interactive:false}, function (error) {
+  client.authenticate({interactive:false}, function (error) {
     if (error) {
       alert('Authentication error: ' + error);
       client.reset();
     }
+    chrome.commands.onCommand.addListener(function(command) {
+          appController.toggleSidePanel();
+    });
   });
 });
+
+
+
