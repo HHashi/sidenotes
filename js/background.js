@@ -9,7 +9,7 @@ client.onAuthStepChange.addListener(function(event) {
     chrome.commands.onCommand.addListener(function(command) {
       appController.toggleSidePanel();
     });
-    onLogin();
+    initDatastore();
   }
 });
 
@@ -67,23 +67,19 @@ appController = {
   }
 };
 
-// Open default datastore for current user
-function onLogin(){
+function initDatastore(){
   client.getDatastoreManager().openDefaultDatastore(function (error, datastore) {
-
-    console.log('DATASTORE WORKING: ', datastore)
 
     if (error) {
       console.log('Error opening default datastore: ' + error);
     }
 
     // Open table in datastore
-    var currentTable = datastore.getTable('sideNotes');
+    currentTable = datastore.getTable('sideNotes');
 
     // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
       if(changes['iNote']) {
-        console.log('IFRAME CHANGES - NEW: ', changes['iNote']['newValue']);
         chrome.storage.local.get(null, function(result){ console.log('INOTE STORAGE: ',result['iNote']); })
         currentTable.insert({
           url: changes['iNote']['newValue']['url'],
