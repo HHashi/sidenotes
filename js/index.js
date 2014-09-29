@@ -1,67 +1,73 @@
-$(document).ready(function(){
+document.addEventListener( "DOMContentLoaded", function(){
 
-  $(document).on('click', '.note-urls', function(e){
-    e.preventDefault();
-    chrome.tabs.create({url: $(this).attr('href')}, function(tab){
-      backgroundPage.appController.toggleSidePanel();
-    });
+  document.querySelector("#note-search").addEventListener('keyup', function(){
+    var searchParams = document.querySelector("#note-search").value;
+    var results = fuse.search(searchParams);
+    if (searchParams === ""){
+      displayResults(formattedRecords);
+    } else {
+      displayResults(results);
+    }
+  });
+
+  document.querySelector('#note-search').addEventListener('search', function(){
+    if (document.querySelector("#note-search").value === ""){ displayResults(formattedRecords); }
   });
 
   var backgroundPage = chrome.extension.getBackgroundPage();
-  var datastoreManager = backgroundPage.client.getDatastoreManager();
-  datastoreManager.close();
-  datastoreManager.openDefaultDatastore(function (error, datastore) {
+  var currentTable = backgroundPage.currentTable;
+  var allRecords = currentTable.query();
+  var formattedRecords = formatNotes(allRecords, 'date', 'url', 'body');;
 
-    var currentTable = datastore.getTable('sideNotes');
-    var allRecords = currentTable.query();
-    var formattedRecords = [];
+  var fuse = new Fuse(formattedRecords, { keys: ["url", "body"] });
+  displayResults(formattedRecords);
 
-    //Formats records for Search
-    for(var i=0;i<allRecords.length;i++){
-      var eachNote = {};
-      eachNote['date'] = JSON.parse(allRecords[i].get('date'));
-      eachNote['url'] = allRecords[i].get('url');
-      eachNote['body'] = allRecords[i].get('body');
-      formattedRecords[i] = eachNote;
+  var noteLinks = document.querySelectorAll(".note-urls");
+  addActionToNoteLink(noteLinks);
+
+  function addActionToNoteLink(noteLinks){
+    for(var i=0;i<noteLinks.length;i++){
+      noteLinks[i].addEventListener('click', function(e) {
+        e.preventDefault();
+        chrome.tabs.create({url: this.getAttribute('href')}, function(tab){
+          backgroundPage.appController.toggleSidePanel();
+        });
+      });
     }
-    formattedRecords.reverse();
-
-    var fuse = new Fuse(formattedRecords, { keys: ["url", "body"] });
-
-    displayResults(formattedRecords);
-
-    $('#note-search').on('keyup', function(){
-       var results = fuse.search($('#note-search').val());
-      if (results === []){
-        displayResults(formattedRecords);
-      } else {
-        displayResults(results);
-      }
-    });
-
-    $('#note-search').on('keyup', function(){
-      if ($('#note-search').val() === ""){ displayResults(formattedRecords); }
-    });
-
-    document.getElementById('note-search').addEventListener('search', function(){
-      if ($('#note-search').val() === ""){ displayResults(formattedRecords); }
-    });
-
-    function displayResults(list){
-      $('#search-results').empty();
-      for(var i=0;i<list.length;i++){
-        var eachNote = '<li>'
-        + list[i].date
-        + '<br><a class="note-urls" href='
-        +list[i].url
-        +' >'
-        + list[i].url
-        +'</a><br>'
-        +list[i].body
-        +'</li>';
-        $('#search-results').append(eachNote);
-      }
-    }
-  });
-
+  }
 });
+
+function displayResults(list){
+  var notes = "";
+  var noteSearchList = document.querySelector('#search-results');
+  noteSearchList.innerHTML = "";
+
+  for(var i=0;i<list.length;i++){
+    notes += renderNote(list[i]);
+  }
+  noteSearchList.innerHTML = notes;
+}
+
+function renderNote(note){
+  return '<li>'
+    + note.date.toDateString()
+    + '<br><a class="note-urls" href='
+    + note.url
+    +' >'
+    + note.url
+    +'</a><br>'
+    + note.body
+    +'</li>';
+}
+
+function formatNotes(records, date, attr1, attr2 ){
+  var notes = [];
+  for(var i=0;i<records.length;i++){
+    var eachNote = {};
+    eachNote[date] = new Date(JSON.parse(records[i].get(date)));
+    eachNote[attr1] = records[i].get(attr1);
+    eachNote[attr2] = records[i].get(attr2);
+    notes[i] = eachNote;
+  }
+  return  notes.reverse();
+}
