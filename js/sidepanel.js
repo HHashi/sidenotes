@@ -1,28 +1,66 @@
 var currentLocation = window.location.hash.slice(1).split('#')[0];
 var bgNote;
+var cursorPosition;
 
 $(document).ready(function(){
 
   chrome.storage.onChanged.addListener(function(changes, namespace) {
     if(changes['bgNote']) {
-      console.log('BG CHANGES - NEW: ', changes['bgNote']['newValue']);
       chrome.storage.local.get(null, function(result){
-        console.log('BGNOTE STORAGE: ',result['bgNote']);
         $('#textarea').text(result['bgNote']['body']);
       })
+      Caret.set($('#textarea'), cursorPosition);
     };
   });
 
-  // Activate textarea
-  $('#textarea').attr('contenteditable','true');
+
+  // Functions for setting the caret/cursor position
+
+  Caret = {
+      set : function(input, pos) {
+          this.setSelectionRange(input, pos, pos);
+      },
+      get : function(el) {
+          if (el.selectionStart) {
+              return el.selectionStart;
+          } else if (document.selection) {
+              el.focus();
+
+              var r = document.selection.createRange();
+              if (r == null) {
+                  return 0;
+              }
+
+              var re = el.createTextRange(),
+              rc = re.duplicate();
+              re.moveToBookmark(r.getBookmark());
+              rc.setEndPoint('EndToStart', re);
+
+              return rc.text.length;
+          }
+          return 0;
+      },
+      setSelectionRange : function(input, selectionStart, selectionEnd) {
+          if (input.setSelectionRange) {
+              input.focus();
+              input.setSelectionRange(selectionStart, selectionEnd);
+          }
+          else if (input.createTextRange) {
+              var range = input.createTextRange();
+              range.collapse(true);
+              range.moveEnd('character', selectionEnd);
+              range.moveStart('character', selectionStart);
+              range.select();
+          }
+      }
+  }
+
   $('#textarea').focus();
 
   // Create note from textarea content
 
-
   function setIframeData() {
     var noteBody = $('#textarea').text();
-    console.log('Saving to local.')
     var chromeStorage = {};
     chromeStorage['iNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) }
     chrome.storage.local.set(chromeStorage, function() {});
@@ -31,13 +69,13 @@ $(document).ready(function(){
   // Autosave
   var timeoutId;
   $('#textarea').on('input propertychange change', function(){
-    console.log('Textarea Change');
 
     clearTimeout(timeoutId);
     timeoutId = setTimeout(function() {
       setIframeData();
-    }, 3000);
+    }, 1000);
+
+    cursorPosition = $('#textarea').text().length;
 
   });
-
 });
