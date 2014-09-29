@@ -77,23 +77,21 @@ function onLogin(){
 
     // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
-      currentTable.insert({
-        url: changes['iNote']['newValue']['url'],
-        body: changes['iNote']['newValue']['body'],
-        date: changes['iNote']['newValue']['date']
-      });
+      if(changes['iNote']) {
+        console.log('IFRAME CHANGES - NEW: ', changes['iNote']['newValue']);
+        chrome.storage.local.get(null, function(result){ console.log('INOTE STORAGE: ',result['iNote']); })
+        currentTable.insert({
+          url: changes['iNote']['newValue']['url'],
+          body: changes['iNote']['newValue']['body'],
+          date: changes['iNote']['newValue']['date']
+        });
+      };
     });
 
     // Add event listener for changed records (local and remote)
     datastore.recordsChanged.addListener(function(event) {
       var changedRecords = event.affectedRecordsForTable(currentTable._tid);
-      console.log(changedRecords);
-      // function setIframeData() {
-      //   var chromeStorage = {};
-      //   chromeStorage['iNote'] = { 'url': currentLocation, 'body': noteBody, 'date': new Date() }
-      //   chrome.storage.local.set(chromeStorage, function() {});
-      // };
-      // setIframeData();
+      console.log('CHANGE FROM DB: ',changedRecords[0]);
     });
   });
 };
