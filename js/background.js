@@ -68,7 +68,9 @@ $(document).ready(function(){
       client.reset();
     }
     chrome.commands.onCommand.addListener(function(command) {
+        if (appController.isAuthenticated()){
           appController.toggleSidePanel();
+        }
     });
   });
 });
