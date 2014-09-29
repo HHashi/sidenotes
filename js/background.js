@@ -10,18 +10,6 @@ client.onAuthStepChange.addListener(function(event) {
   }
 });
 
-// chrome.storage.onChanged.addListener(function(changes, namespace) {
-//   for (key in changes) {
-//     var storageChange = changes[key];
-//     console.log('CHANGED STORAGE: key "%s" in namespace "%s" changed. ' +
-//                 'Old: "%s", New: "%s".',
-//                 key,
-//                 namespace,
-//                 storageChange.oldValue,
-//                 storageChange.newValue);
-//   }
-// });
-
 appController = {
   isAuthenticated: function(){
     return client.isAuthenticated();
@@ -82,22 +70,13 @@ function onLogin(){
     // Open table in datastore
     var currentTable = datastore.getTable('sideNotes');
 
-    // chrome.storage.local.set({'bgbody': 'backgroundbody'}, function(result) { console.log('set', result); });
-    // chrome.storage.local.get('ibody', function(result) { console.log('get', result) });
-    // chrome.storage.local.get(null, function(result) { console.log('get', result) });
-
+    // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
-      var iNote = chrome.storage.local.get('iNote', function(result) {
-        return iNote = result['iNote'];
-      });
-
-      // Create note from textarea content
       currentTable.insert({
-        url: iNote['url'],
-        body: iNote['body'],
-        date: iNote['date']
+        url: changes['iNote']['newValue']['url'],
+        body: changes['iNote']['newValue']['body'],
+        date: changes['iNote']['newValue']['date']
       });
-
     });
 
     // Add event listener for changed records (local and remote)
