@@ -4,17 +4,23 @@ var DROPBOX_APP_KEY = 'e4fbthwtr2v9ksp';
 var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
 var panelDisplayed;
 
-chrome.storage.onChanged.addListener(function(changes, namespace) {
-  for (key in changes) {
-    var storageChange = changes[key];
-    console.log('CHANGED STORAGE: key "%s" in namespace "%s" changed. ' +
-                'Old: "%s", New: "%s".',
-                key,
-                namespace,
-                storageChange.oldValue,
-                storageChange.newValue);
+client.onAuthStepChange.addListener(function(event) {
+  if (client.isAuthenticated()) {
+    onLogin();
   }
 });
+
+// chrome.storage.onChanged.addListener(function(changes, namespace) {
+//   for (key in changes) {
+//     var storageChange = changes[key];
+//     console.log('CHANGED STORAGE: key "%s" in namespace "%s" changed. ' +
+//                 'Old: "%s", New: "%s".',
+//                 key,
+//                 namespace,
+//                 storageChange.oldValue,
+//                 storageChange.newValue);
+//   }
+// });
 
 appController = {
   isAuthenticated: function(){
@@ -61,4 +67,17 @@ appController = {
   toggleSidePanel: function() {
     chrome.tabs.executeScript({code: this.formatScript(this.toggleSidePanelScript, "\n")});
   }
+};
+
+// Open default datastore for current user
+function onLogin(){
+  client.getDatastoreManager().openDefaultDatastore(function (error, datastore) {
+
+    console.log('DATASTORE WORKING: ', datastore)
+
+    if (error) {
+      console.log('Error opening default datastore: ' + error);
+    }
+
+  });
 };
