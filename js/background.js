@@ -79,12 +79,12 @@ function initDatastore(){
 
     // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
-      if(changes['iNote']) {
-        chrome.storage.local.get(null, function(result){ console.log('INOTE STORAGE: ',result['iNote']); })
+      if(changes['iframeNote']) {
+        chrome.storage.local.get(null, function(result){ })
         currentTable.insert({
-          url: changes['iNote']['newValue']['url'],
-          body: changes['iNote']['newValue']['body'],
-          date: changes['iNote']['newValue']['date']
+          url: changes['iframeNote']['newValue']['url'],
+          body: changes['iframeNote']['newValue']['body'],
+          date: changes['iframeNote']['newValue']['date']
         });
       };
     });
@@ -95,7 +95,7 @@ function initDatastore(){
       var dbRecord = changedRecords[0];
       var chromeStorage = {};
 
-      chromeStorage['bgNote'] = { 'url': dbRecord.get('url'), 'body': dbRecord.get('body'), 'date': dbRecord.get('date') }
+      chromeStorage['backgroundNote'] = { 'url': dbRecord.get('url'), 'body': dbRecord.get('body'), 'date': dbRecord.get('date') }
       chrome.storage.local.set(chromeStorage, function() {});
     });
   });
