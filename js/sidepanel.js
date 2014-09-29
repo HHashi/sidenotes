@@ -18,16 +18,25 @@ $(document).ready(function(){
   $('#textarea').focus();
 
   // Create note from textarea content
-  $('#save-note').on('click', function(){
 
+
+  function setIframeData() {
     var noteBody = $('#textarea').text();
+    console.log('Saving to local.')
+    var chromeStorage = {};
+    chromeStorage['iNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) }
+    chrome.storage.local.set(chromeStorage, function() {});
+  };
 
-    function setIframeData() {
-      var chromeStorage = {};
-      chromeStorage['iNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) }
-      chrome.storage.local.set(chromeStorage, function() {});
-    };
-    setIframeData();
+  // Autosave
+  var timeoutId;
+  $('#textarea').on('input propertychange change', function(){
+    console.log('Textarea Change');
+
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(function() {
+      setIframeData();
+    }, 3000);
 
   });
 
