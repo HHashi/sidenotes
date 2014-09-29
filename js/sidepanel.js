@@ -3,15 +3,10 @@ var currentLocation = window.location.hash.slice(1).split('#')[0];
 $(document).ready(function(){
 
   chrome.storage.onChanged.addListener(function(changes, namespace) {
-    for (key in changes) {
-      var storageChange = changes[key];
-      console.log('CHANGED STORAGE: key "%s" in namespace "%s" changed. ' +
-                  'Old: "%s", New: "%s".',
-                  key,
-                  namespace,
-                  storageChange.oldValue,
-                  storageChange.newValue);
-    }
+    if(changes['bgNote']) {
+      console.log('BG CHANGES - NEW: ', changes['bgNote']['newValue']);
+      chrome.storage.local.get(null, function(result){ console.log('BGNOTE STORAGE: ',result['bgNote']); })
+    };
   });
 
   // Activate textarea
