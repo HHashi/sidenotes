@@ -1,5 +1,4 @@
-$(document).ready(function(){
-
+document.addEventListener( "DOMContentLoaded", function(){
   var backgroundPage = chrome.extension.getBackgroundPage();
   var appController = backgroundPage.appController;
 
@@ -10,7 +9,8 @@ $(document).ready(function(){
     }
   });
 
-  $('#dropbox-signin').click(function() {
+
+  document.querySelector('#dropbox-signin').addEventListener('click', function() {
     appController.authenticate();
   });
 

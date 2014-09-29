@@ -9,8 +9,8 @@ $(document).ready(function(){
       chrome.storage.local.get(null, function(result){
         console.log('BGNOTE STORAGE: ',result['bgNote']);
         $('#textarea').text(result['bgNote']['body']);
-      })
-    };
+      });
+    }
   });
 
   // Activate textarea
