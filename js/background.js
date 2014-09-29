@@ -92,6 +92,13 @@ function onLogin(){
     datastore.recordsChanged.addListener(function(event) {
       var changedRecords = event.affectedRecordsForTable(currentTable._tid);
       console.log('CHANGE FROM DB: ',changedRecords[0]);
+      var dbRecord = changedRecords[0];
+      function setBgData() {
+        var chromeStorage = {};
+        chromeStorage['bgNote'] = { 'url': dbRecord.get('url'), 'body': dbRecord.get('body'), 'date': dbRecord.get('date') }
+        chrome.storage.local.set(chromeStorage, function() {});
+      };
+      setBgData();
     });
   });
 };
