@@ -25,6 +25,13 @@ h1 {
   width: 260px;
 }
 
+.icon-svg {
+  width: 16px;
+  display: inline;
+  vertical-align: middle;
+  fill: #ddd;
+}
+
 #loggedin {
   width: 260px;
 }
