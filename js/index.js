@@ -1,15 +1,14 @@
 $(document).ready(function(){
   var backgroundPage = chrome.extension.getBackgroundPage();
-  // Open default datastore for current user
   var datastoreManager = backgroundPage.client.getDatastoreManager();
   datastoreManager.close();
   datastoreManager.openDefaultDatastore(function (error, datastore) {
-    // Open table in datastore
+
     var currentTable = datastore.getTable('stuff');
-    //Gets all records
     var allRecords = currentTable.query();
     var formattedRecords = [];
 
+    //Formats records for Search
     for(var i=0;i<allRecords.length;i++){
       var eachNote = {};
       eachNote['url'] = allRecords[i].get('url');
@@ -43,7 +42,5 @@ $(document).ready(function(){
         $('#search-results').append(eachNote);
       }
     }
-
   });
-
 });
