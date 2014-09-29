@@ -1,37 +1,30 @@
-<!-- todo: this page context needs the current url -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
   <meta charset="utf-8">
 
   <script src="/js/jquery.js" type="text/javascript"></script>
-  <script src="/js/sidepanel.js" type="text/javascript"></script>
 
-  <style>
-    body { width: 300px; }
-    #loggedin { border: 1px solid #000; width:280px; padding:10px 10px; }
-    h4 { font-weight: 400; }
-    h4 span { font-weight: 800; }
-    #textarea { margin:10px 0; font-size: 16px; line-height:1.5; font-family:times; color:#555; outline:0; }
-  </style>
+  <link rel="stylesheet" href="/css/sidepanel.css">
+  <script src="/js/sidepanel.js" type="text/javascript"></script>
 
 </head>
 <body>
 
   <div id="loggedin">
 
-    <button id="dropbox-signout">Sign out</button>
+    <button id="save-note">Save</button>
 
-    <h4 id="noteheader">Note title: <span></span></h4>
-    <h4 id="lastnoteinfo">Last note: <span></span></h4>
-    <h4 id="recordscount">Note count: <span></span></h4>
+    <ul>
+      <li>Search</li>
+      <li>Settings</li>
+    </ul>
 
     <textarea id="textarea"></textarea>
 
-    <button id="save-note">Save</button>
-
   </div>
+
+  <h1>sidenotes</h1>
 
 </body>
 </html>

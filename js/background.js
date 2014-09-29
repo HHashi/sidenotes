@@ -94,7 +94,7 @@ function onLogin(){
       var dbRecord = changedRecords[0];
       function setBgData() {
         var chromeStorage = {};
-        chromeStorage['bgNote'] = { 'url': dbRecord.get('url'), 'body': dbRecord.get('body'), 'date': dbRecord.get('date') }
+        chromeStorage['backgroundNote'] = { 'url': dbRecord.get('url'), 'body': dbRecord.get('body'), 'date': dbRecord.get('date') }
         chrome.storage.local.set(chromeStorage, function() {});
       };
       setBgData();

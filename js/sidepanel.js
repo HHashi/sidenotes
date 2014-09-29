@@ -1,13 +1,13 @@
 var currentLocation = window.location.hash.slice(1).split('#')[0];
-var bgNote;
+var backgroundNote;
 var cursorPosition;
 
 $(document).ready(function(){
 
   chrome.storage.onChanged.addListener(function(changes, namespace) {
-    if(changes['bgNote']) {
+    if(changes['backgroundNote']) {
       chrome.storage.local.get(null, function(result){
-        $('#textarea').text(result['bgNote']['body']);
+        $('#textarea').text(result['backgroundNote']['body']);
       })
       Caret.set($('#textarea'), cursorPosition);
     };
@@ -62,20 +62,18 @@ $(document).ready(function(){
   function setIframeData() {
     var noteBody = $('#textarea').text();
     var chromeStorage = {};
-    chromeStorage['iNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) }
+    chromeStorage['iframeNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) }
     chrome.storage.local.set(chromeStorage, function() {});
   };
+
 
   // Autosave
   var timeoutId;
   $('#textarea').on('input propertychange change', function(){
-
     clearTimeout(timeoutId);
     timeoutId = setTimeout(function() {
       setIframeData();
     }, 1000);
-
     cursorPosition = $('#textarea').text().length;
-
   });
 });

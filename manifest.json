@@ -2,7 +2,7 @@
   "key": "neeknnnjmpbdicafijkbnlmmlllfkhfh",
   "name": "SideNotes",
   "description": "Seamless Note Taking Interface",
-  "version": "0.3",
+  "version": "0.5",
   "manifest_version": 2,
   "icons": {"128": "icon.png"},
   "browser_action": {
@@ -32,7 +32,7 @@
     "activeTab",
     "storage",
     "<all_urls>",
-    "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/html/index.html"
+    "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/html/options.html"
   ],
-  "options_page": "html/index.html"
+  "options_page": "html/options.html"
 }
