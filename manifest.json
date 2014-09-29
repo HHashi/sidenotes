@@ -17,6 +17,15 @@
   "background": {
     "page": "html/background.html"
   },
+  "commands": {
+    "toggle-sidebar": {
+      "suggested_key": {
+        "default": "Alt+N",
+        "mac": "Alt+N"
+      },
+    "description": "Toggle Sidebar"
+    }
+  },
   "permissions": [
     "unlimitedStorage",
     "tabs",
