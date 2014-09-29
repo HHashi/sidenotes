@@ -4,12 +4,6 @@ var DROPBOX_APP_KEY = 'e4fbthwtr2v9ksp';
 var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
 var panelDisplayed;
 
-client.onAuthStepChange.addListener(function(event){
-  if(client.isAuthenticated()){
-    //activateNotes(); // This is not being used
-  }
-});
-
 appController = {
   isAuthenticated: function(){
     return client.isAuthenticated();
@@ -30,10 +24,11 @@ appController = {
     };
 
     var openSidePanel = function(){
+      var currentLocation = window.location.toString();
       var newElement = document.createElement('iframe');
       newElement.setAttribute("id", "sidenote_sidebar");
       newElement.setAttribute("style", "background: #fff; z-index: 999999999999999; position: fixed; top: 0px; right: 0px; bottom: 0px; width: 300px; height: 100%; border-left:1px solid #eee; box-shadow:0 -1px 7px 0px #aaa; overflow-x: hidden;");
-      newElement.setAttribute("src", "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/html/sidepanel.html");
+      newElement.setAttribute("src", "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/html/sidepanel.html#" + currentLocation);
       newElement.setAttribute("allowtransparency", "false");
       newElement.setAttribute("scrolling", "yes");
       document.body.appendChild(newElement);
