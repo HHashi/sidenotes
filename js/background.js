@@ -2,7 +2,6 @@ var DROPBOX_APP_KEY = 'e4fbthwtr2v9ksp';
 
 // Create DropBox Client for App
 var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
-var panelDisplayed;
 
 client.onAuthStepChange.addListener(function(event) {
   if (client.isAuthenticated()) {
@@ -99,10 +98,13 @@ function onLogin(){
 };
 
 $(document).ready(function(){
-   client.authenticate({interactive:false}, function (error) {
+  client.authenticate({interactive:false}, function (error) {
     if (error) {
       alert('Authentication error: ' + error);
       client.reset();
     }
+    chrome.commands.onCommand.addListener(function(command) {
+          appController.toggleSidePanel();
+    });
   });
 });
