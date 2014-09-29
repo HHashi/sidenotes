@@ -54,6 +54,11 @@ appController = {
   },
   toggleSidePanel: function() {
     chrome.tabs.executeScript({code: this.formatScript(this.toggleSidePanelScript, "\n")});
+  },
+  openPastNote: function(noteUrl){
+    chrome.tabs.create({url: noteUrl}, function(tab){
+      appController.toggleSidePanel();
+    });
   }
 };
 
@@ -92,3 +97,12 @@ function onLogin(){
     });
   });
 };
+
+$(document).ready(function(){
+   client.authenticate({interactive:false}, function (error) {
+    if (error) {
+      alert('Authentication error: ' + error);
+      client.reset();
+    }
+  });
+});
