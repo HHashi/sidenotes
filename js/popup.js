@@ -1,4 +1,7 @@
+$(document).ready(function(){
+
 document.addEventListener( "DOMContentLoaded", function(){
+
   var backgroundPage = chrome.extension.getBackgroundPage();
   var appController = backgroundPage.appController;
 
@@ -9,7 +12,6 @@ document.addEventListener( "DOMContentLoaded", function(){
     }
   });
 
-
   document.querySelector('#dropbox-signin').addEventListener('click', function() {
     appController.authenticate();
   });
@@ -18,4 +20,5 @@ document.addEventListener( "DOMContentLoaded", function(){
     window.close();
     appController.toggleSidePanel();
   }
+
 });
