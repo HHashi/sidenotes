@@ -6,7 +6,7 @@ var panelDisplayed;
 
 client.onAuthStepChange.addListener(function(event){
   if(client.isAuthenticated()){
-    //activateNotes(); // This is not being used
+    // localStorage.setItem('client', JSON.stringify(client.credentials()));
   }
 });
 
@@ -53,5 +53,18 @@ appController = {
   },
   toggleSidePanel: function() {
     chrome.tabs.executeScript({code: this.formatScript(this.toggleSidePanelScript, "\n")});
+  },
+  openPastNote: function(noteUrl){
+    chrome.tabs.create({url: noteUrl}, function(tab){
+      appController.toggleSidePanel();
+    });
   }
 };
+$(document).ready(function(){
+   client.authenticate({interactive:false}, function (error) {
+    if (error) {
+      alert('Authentication error: ' + error);
+      client.reset();
+    }
+  });
+});
