@@ -6,24 +6,23 @@
 
   <script src="/js/jquery.js" type="text/javascript"></script>
 
+  <link rel="stylesheet" href="/css/sidepanel.css">
   <script src="/js/sidepanel.js" type="text/javascript"></script>
-
-  <style>
-    body { width: 300px; }
-    #loggedin { border: 1px solid #000; width:280px; padding:10px 10px; }
-    h4 { font-weight: 400; }
-    h4 span { font-weight: 800; }
-    #textarea { margin:10px 0; font-size: 16px; line-height:1.5; font-family:times; color:#555; outline:0; }
-  </style>
 
 </head>
 <body>
 
   <div id="loggedin">
 
-    <div id="textarea"></div>
-
     <button id="save-note">Save</button>
+
+    <ul id="sidebar-menu">
+      <li>Search</li>
+      <li>Export</li>
+      <li>Settings</li>
+    </ul>
+
+    <div id="textarea"></div>
 
   </div>
 
