@@ -5,16 +5,19 @@ $(document).ready(function(){
   datastoreManager.openDefaultDatastore(function (error, datastore) {
 
     var currentTable = datastore.getTable('stuff');
+
     var allRecords = currentTable.query();
     var formattedRecords = [];
 
     //Formats records for Search
     for(var i=0;i<allRecords.length;i++){
       var eachNote = {};
+      eachNote['date'] = allRecords[i].get('date');
       eachNote['url'] = allRecords[i].get('url');
       eachNote['body'] = allRecords[i].get('body');
       formattedRecords[i] = eachNote;
     }
+    formattedRecords.reverse();
 
     var fuse = new Fuse(formattedRecords, { keys: ["url", "body"] });
 
@@ -40,7 +43,7 @@ $(document).ready(function(){
     function displayResults(list){
       $('#search-results').empty();
       for(var i=0;i<list.length;i++){
-        var eachNote = '<li><a href='+list[i].url+'></a>'+ list[i].url +'<br>'+list[i].body+'</li>';
+        var eachNote = '<li>'+list[i].date.toDateString()+'<br><a href='+list[i].url+'>'+ list[i].url +'</a><br>'+list[i].body+'</li>';
         $('#search-results').append(eachNote);
       }
     }
