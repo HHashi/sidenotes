@@ -11,14 +11,13 @@ $(document).ready(function(){
   datastoreManager.openDefaultDatastore(function (error, datastore) {
 
     var currentTable = datastore.getTable('stuff');
-
     var allRecords = currentTable.query();
     var formattedRecords = [];
 
     //Formats records for Search
     for(var i=0;i<allRecords.length;i++){
       var eachNote = {};
-      eachNote['date'] = allRecords[i].get('date');
+      eachNote['date'] = JSON.parse(allRecords[i].get('date'));
       eachNote['url'] = allRecords[i].get('url');
       eachNote['body'] = allRecords[i].get('body');
       formattedRecords[i] = eachNote;
