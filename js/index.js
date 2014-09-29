@@ -49,9 +49,10 @@ $(document).ready(function(){
     function displayResults(list){
       $('#search-results').empty();
       for(var i=0;i<list.length;i++){
-        var eachNote = '<li>'+list[i].date.toDateString()+'<br><a href='+list[i].url+'>'+ list[i].url +'</a><br>'+list[i].body+'</li>';
+        var eachNote = '<li>'+list[i].date.toDateString()+'<br><a class="note-urls" href='+list[i].url+'>'+ list[i].url +'</a><br>'+list[i].body+'</li>';
         $('#search-results').append(eachNote);
       }
     }
   });
+
 });
