@@ -60,4 +60,11 @@ appController = {
     });
   }
 };
-
+$(document).ready(function(){
+   client.authenticate({interactive:false}, function (error) {
+    if (error) {
+      alert('Authentication error: ' + error);
+      client.reset();
+    }
+  });
+});
