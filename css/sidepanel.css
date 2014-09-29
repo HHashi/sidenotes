@@ -21,7 +21,7 @@ h1 {
   width: 260px;
 }
 
-#sidebar-menu {
+ul {
   float: right;
   list-style-type: none;
   margin: 0 0 40px 0;
@@ -29,7 +29,7 @@ h1 {
   text-align: right;
 }
 
-#sidebar-menu li {
+ul li {
   color: #aaa;
   display: inline-block;
   font-size: 8px;
@@ -38,7 +38,7 @@ h1 {
   text-transform: uppercase;
 }
 
-#textarea {
+article {
   clear: both;
   color: #333;
   font-family: 'Source Code Pro', monospace, sans-serif;
@@ -51,7 +51,7 @@ h1 {
   overflow-y: scroll;
 }
 
-#save-note {
+button {
   background: #333;
   border-radius: 3px;
   border: 0;
@@ -64,6 +64,6 @@ h1 {
   text-transform: uppercase;
 }
 
-#save-note:hover {
+button:hover {
   cursor: pointer;
 }
