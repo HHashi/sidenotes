@@ -1,12 +1,9 @@
 var DROPBOX_APP_KEY = 'e4fbthwtr2v9ksp';
 
-// Create DropBox Client for App
 var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
-var panelDisplayed;
 
 client.onAuthStepChange.addListener(function(event){
   if(client.isAuthenticated()){
-    // localStorage.setItem('client', JSON.stringify(client.credentials()));
   }
 });
 
@@ -53,27 +50,17 @@ appController = {
   },
   toggleSidePanel: function() {
     chrome.tabs.executeScript({code: this.formatScript(this.toggleSidePanelScript, "\n")});
-  },
-  openPastNote: function(noteUrl){
-    chrome.tabs.create({url: noteUrl}, function(tab){
-      appController.toggleSidePanel();
-    });
   }
 };
 
-$(document).ready(function(){
-  client.authenticate({interactive:false}, function (error) {
-    if (error) {
-      alert('Authentication error: ' + error);
-      client.reset();
-    }
+client.authenticate({interactive:false}, function (error) {
+  if (error) {
+    alert('Authentication error: ' + error);
+    client.reset();
+  }
+  else {
     chrome.commands.onCommand.addListener(function(command) {
-        if (appController.isAuthenticated()){
-          appController.toggleSidePanel();
-        }
+      appController.toggleSidePanel();
     });
-  });
+  }
 });
-
-
-
