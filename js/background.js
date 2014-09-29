@@ -100,5 +100,16 @@ function onLogin(){
 
     });
 
+    // Add event listener for changed records (local and remote)
+    datastore.recordsChanged.addListener(function(event) {
+      var changedRecords = event.affectedRecordsForTable(currentTable._tid);
+      console.log(changedRecords);
+      // function setIframeData() {
+      //   var chromeStorage = {};
+      //   chromeStorage['iNote'] = { 'url': currentLocation, 'body': noteBody, 'date': new Date() }
+      //   chrome.storage.local.set(chromeStorage, function() {});
+      // };
+      // setIframeData();
+    });
   });
 };
