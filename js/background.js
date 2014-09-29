@@ -2,8 +2,19 @@ var DROPBOX_APP_KEY = 'e4fbthwtr2v9ksp';
 
 var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
 
-client.onAuthStepChange.addListener(function(event){
-  if(client.isAuthenticated()){
+client.onAuthStepChange.addListener(function(event) {
+  if (client.isAuthenticated()) {
+    chrome.commands.onCommand.addListener(function(command) {
+      appController.toggleSidePanel();
+    });
+    onLogin();
+  }
+});
+
+client.authenticate({interactive:false}, function (error) {
+  if (error) {
+    alert('Authentication error: ' + error);
+    client.reset();
   }
 });
 
@@ -27,10 +38,11 @@ appController = {
     };
 
     var openSidePanel = function(){
+      var currentLocation = window.location.toString();
       var newElement = document.createElement('iframe');
       newElement.setAttribute("id", "sidenote_sidebar");
       newElement.setAttribute("style", "background: #fff; z-index: 999999999999999; position: fixed; top: 0px; right: 0px; bottom: 0px; width: 300px; height: 100%; border-left:1px solid #eee; box-shadow:0 -1px 7px 0px #aaa; overflow-x: hidden;");
-      newElement.setAttribute("src", "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/html/sidepanel.html");
+      newElement.setAttribute("src", "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/html/sidepanel.html#" + currentLocation);
       newElement.setAttribute("allowtransparency", "false");
       newElement.setAttribute("scrolling", "yes");
       document.body.appendChild(newElement);
@@ -53,14 +65,43 @@ appController = {
   }
 };
 
-client.authenticate({interactive:false}, function (error) {
-  if (error) {
-    alert('Authentication error: ' + error);
-    client.reset();
-  }
-  else {
-    chrome.commands.onCommand.addListener(function(command) {
-      appController.toggleSidePanel();
+// Open default datastore for current user
+function onLogin(){
+  client.getDatastoreManager().openDefaultDatastore(function (error, datastore) {
+
+    console.log('DATASTORE WORKING: ', datastore)
+
+    if (error) {
+      console.log('Error opening default datastore: ' + error);
+    }
+
+    // Open table in datastore
+    var currentTable = datastore.getTable('sideNotes');
+
+    // Listen for changes from iframe and push to datastore
+    chrome.storage.onChanged.addListener(function(changes, namespace) {
+      if(changes['iNote']) {
+        console.log('IFRAME CHANGES - NEW: ', changes['iNote']['newValue']);
+        chrome.storage.local.get(null, function(result){ console.log('INOTE STORAGE: ',result['iNote']); })
+        currentTable.insert({
+          url: changes['iNote']['newValue']['url'],
+          body: changes['iNote']['newValue']['body'],
+          date: changes['iNote']['newValue']['date']
+        });
+      };
     });
-  }
-});
+
+    // Add event listener for changed records (local and remote)
+    datastore.recordsChanged.addListener(function(event) {
+      var changedRecords = event.affectedRecordsForTable(currentTable._tid);
+      console.log('CHANGE FROM DB: ',changedRecords[0]);
+      var dbRecord = changedRecords[0];
+      function setBgData() {
+        var chromeStorage = {};
+        chromeStorage['bgNote'] = { 'url': dbRecord.get('url'), 'body': dbRecord.get('body'), 'date': dbRecord.get('date') }
+        chrome.storage.local.set(chromeStorage, function() {});
+      };
+      setBgData();
+    });
+  });
+};
