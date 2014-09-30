@@ -33,17 +33,16 @@ appController = {
     });
   },
   toggleSidePanelScript: function(){
-
     var closeSidePanel = function(){
       var sidebar = document.querySelector("#sidenotes_sidebar");
       document.body.removeChild(sidebar);
     };
 
     var openSidePanel = function(){
-      var currentLocation = window.location.toString();
+      var currentUrl = window.location.toString();
       var newElement = document.createElement("iframe");
       newElement.setAttribute("id", "sidenotes_sidebar");
-      newElement.setAttribute("src", "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/html/sidepanel.html#" + currentLocation);
+      newElement.setAttribute("src", "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/html/sidepanel.html#" + currentUrl);
       newElement.setAttribute("style", "z-index: 999999999999999; position: fixed; top: 0px; right: 0px; bottom: 0px; width: 300px; height: 100%; border:0; border-left: 1px solid #eee; box-shadow: 0px -1px 7px 0px #aaa; overflow-x: hidden;");
       newElement.setAttribute("allowtransparency", "false");
       newElement.setAttribute("scrolling", "no");
@@ -89,13 +88,13 @@ function initDatastore(){
     }
 
     // Open table in datastore
-    currentTable = datastore.getTable('sideNotes');
+    currentTable = datastore.getTable('Sidenotes');
 
     // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
-      if(changes['iframeNote']){
-        var existingRecord = currentTable.query({url: changes['iframeNote']['newValue']['url']});
-        updateOrAddRecord(changes['iframeNote'], existingRecord[0]);
+      if(changes['sidepanelNote']){
+        var existingRecord = currentTable.query({url: changes['sidepanelNote']['newValue']['url']});
+        updateOrAddRecord(changes['sidepanelNote'], existingRecord[0]);
       }
     });
 
@@ -113,15 +112,17 @@ function initDatastore(){
       }
     };
 
-    // Add event listener for changed records (local and remote)
-    datastore.recordsChanged.addListener(function(event) {
-      var changedRecords = event.affectedRecordsForTable(currentTable._tid);
-      var dbRecord = changedRecords[0];
+    function setBackgroundNoteToChromeStorage(record) {
       var chromeStorage = {};
 
-      chromeStorage['backgroundNote'] = { 'url': dbRecord.get('url'), 'body': dbRecord.get('body'), 'date': dbRecord.get('date') }
+      chromeStorage['backgroundNote'] = { 'url': record.get('url'), 'body': record.get('body'), 'date': record.get('date') }
       chrome.storage.local.set(chromeStorage, function() {});
+    };
+
+    // Add listener for changed records on datastore
+    datastore.recordsChanged.addListener(function(event) {
+      var changedRecords = event.affectedRecordsForTable(currentTable._tid);
+      setBackgroundNoteToChromeStorage(changedRecords[0]);
     });
   });
 };
-

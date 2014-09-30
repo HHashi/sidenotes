@@ -2,3 +2,4 @@
 //https://www.dropbox.com/developers/datastore/docs/js#Dropbox.AuthDriver.ChromeExtension
 
 Dropbox.AuthDriver.ChromeExtension.oauthReceiver();
+window.open('html/tutorial.html'); // Opens Tutorial Page
