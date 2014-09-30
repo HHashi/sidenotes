@@ -74,7 +74,10 @@ document.addEventListener( "DOMContentLoaded", function(){
     clearTimeout(timeoutId);
     timeoutId = setTimeout(function() {
       setIframeData();
-    }, 5000);
-    cursorPosition = $('#textarea').val().length;
+    }, 2000);
+    cursorPosition = textarea.value.length;
+  });
+  document.querySelector('#options-link').addEventListener('click', function(){
+
   });
 });
