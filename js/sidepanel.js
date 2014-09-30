@@ -2,15 +2,16 @@ var currentLocation = window.location.hash.slice(1).split('#')[0];
 var backgroundNote;
 var cursorPosition;
 
-$(document).ready(function(){
+document.addEventListener( "DOMContentLoaded", function(){
+  var textarea = document.querySelector('#textarea');
 
   chrome.storage.onChanged.addListener(function(changes, namespace) {
     if(changes['backgroundNote']) {
       chrome.storage.local.get(null, function(result){
-        $('#textarea').val(result['backgroundNote']['body']);
-      })
-      Caret.set($('#textarea'), cursorPosition);
-    };
+        textarea.value = result['backgroundNote']['body'];
+      });
+      Caret.set(textarea, cursorPosition);
+    }
   });
 
 
