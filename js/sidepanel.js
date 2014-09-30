@@ -56,12 +56,12 @@ document.addEventListener( "DOMContentLoaded", function(){
       }
   }
 
-  $('#textarea').focus();
+  textarea.focus();
 
   // Create note from textarea content
 
   function setIframeData() {
-    var noteBody = $('#textarea').val();
+    var noteBody = textarea.value;
     var chromeStorage = {};
     chromeStorage['iframeNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) }
     chrome.storage.local.set(chromeStorage, function() {});
@@ -70,7 +70,8 @@ document.addEventListener( "DOMContentLoaded", function(){
 
   // Autosave
   var timeoutId;
-  $('#textarea').on('input propertychange change', function(){
+
+  textarea.addEventListener('keyup', function(){
     clearTimeout(timeoutId);
     timeoutId = setTimeout(function() {
       setIframeData();
