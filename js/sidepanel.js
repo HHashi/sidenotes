@@ -4,11 +4,13 @@ var currentLocation = window.location.hash.slice(1).split('#')[0];
 
 document.addEventListener( "DOMContentLoaded", function(){
   var textarea = document.querySelector('#textarea');
+  var sync-indicator = document.querySelector('#sync-indicator');
 
   chrome.storage.onChanged.addListener(function(changes, namespace) {
     if(changes['backgroundNote']) {
       chrome.storage.local.get(null, function(result){
-        textarea.value = result['backgroundNote']['body'];
+        // textarea.value = result['backgroundNote']['body'];
+
       });
       Caret.set(textarea, cursorPosition);
     }
