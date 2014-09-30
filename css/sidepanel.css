@@ -23,6 +23,9 @@ h1 {
   position: fixed;
   text-align: center;
   width: 260px;
+  padding: .5em .1em;
+  margin-bottom: 0;
+  background-color: #F8F8F8;
 }
 
 .icon-svg {
@@ -38,7 +41,7 @@ h1 {
 nav {
   height: 15px;
   margin-top: 5px;
-  margin-bottom: 40px;
+  margin-bottom: 24px;
   width: 100%;
 }
 
@@ -62,7 +65,7 @@ nav a {
 }
 
 textarea {
-  /*background: #F8F8F8;*/
+  background: #F8F8F8;
   border: 0;
   box-shadow: 0;
   clear: both;
@@ -74,4 +77,5 @@ textarea {
   outline: 0;
   resize: none;
   width: 260px;
+  height: 57em;
 }
