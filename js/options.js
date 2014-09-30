@@ -64,7 +64,7 @@ function formatNotes(records, date, attr1, attr2 ){
   var notes = [];
   for(var i=0;i<records.length;i++){
     var eachNote = {};
-    eachNote[date] = new Date(JSON.parse(records[i].get(date)));
+    eachNote[date] = new Date(records[i].get(date));
     eachNote[attr1] = records[i].get(attr1);
     eachNote[attr2] = records[i].get(attr2);
     notes[i] = eachNote;
