@@ -17,7 +17,7 @@ body {
 
 h1 {
   bottom: 0;
-  color: #ddd;
+  color: #ccc;
   font-family: 'Source Code Pro', monospace, sans-serif;
   font-size: 20px;
   position: fixed;
@@ -35,58 +35,43 @@ h1 {
   width: 260px;
 }
 
-ul {
-  float: right;
-  list-style-type: none;
-  margin: 0 0 40px 0;
-  padding: 0;
-  text-align: right;
+nav {
+  height: 15px;
+  margin-top: 5px;
+  margin-bottom: 40px;
+  width: 100%;
 }
 
-ul li {
+#indicator {
+  background: #2ECC71;
+  border-radius: 5px;
+  display: block;
+  float: left;
+  height: 8px;
+  width: 8px;
+}
+
+nav a {
   color: #aaa;
-  display: inline-block;
-  font-size: 8px;
+  display: block;
+  float: right;
+  font-size: 10px;
   font-weight: 600;
-  margin-left: 5px;
+  text-decoration: none;
   text-transform: uppercase;
 }
 
-article {
+textarea {
+  /*background: #F8F8F8;*/
+  border: 0;
+  box-shadow: 0;
   clear: both;
   color: #333;
+  display: inline-block;
   font-family: 'Source Code Pro', monospace, sans-serif;
   font-size: 15px;
-  line-height: 1.5;
-  margin: 20px 0;
+  line-height: 21px;
   outline: 0;
-  height: 100%;
-  overflow-x: hidden;
-  overflow-y: scroll;
-}
-
-button {
-  background: #333;
-  border-radius: 3px;
-  border: 0;
-  box-shadow: 0;
-  color: #fff;
-  float: left;
-  font-size: 10px;
-  font-weight: 800;
-  padding: 5px 10px;
-  text-transform: uppercase;
-}
-
-button:hover {
-  cursor: pointer;
-}
-textarea{
-  display: absolute;
-  border: 0;
-  box-shadow: 0;
-  outline: none;
   resize: none;
-  /*background: #F8F8F8;*/
-  display: inline-block;
+  width: 260px;
 }

@@ -88,7 +88,7 @@ function initDatastore(){
       var newNoteData = {
           url: newNote['newValue']['url'],
           body: newNote['newValue']['body'],
-          date: newNote['newValue']['date']
+          date: new Date(JSON.parse(newNote['newValue']['date']))
       };
       if(pastNote) {
         pastNote.update(newNoteData);
