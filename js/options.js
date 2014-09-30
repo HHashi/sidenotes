@@ -52,8 +52,8 @@ function renderNote(note){
     + '<span class="note-date">' + note.date.toDateString()
     + '</span>'
     + '<a class="note-url" href=' + note.url
-    + ' target="_blank" >'
-    + note.url
+    + ' target="_blank" title="' + note.url + '">'
+    + '<i class="icon-link-ext"></i>'
     + '</a>'
     + '<p class="note-body">' + JSON.parse(note.body) + '</p>'
     + '</li>';
