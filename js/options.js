@@ -49,7 +49,7 @@ function displayResults(list){
 
 function renderNote(note){
   return '<li>'
-    + '<span class="note-date">' + note.date.toDateString()
+    + '<span class="note-date">' + note.date.toLocaleString()
     + '</span>'
     + '<a class="note-url" href=' + note.url
     + ' target="_blank" title="' + note.url + '">'
