@@ -21,7 +21,7 @@ document.addEventListener( "DOMContentLoaded", function(){
   var fuse = new Fuse(formattedRecords, { keys: ["url", "body"] });
   displayResults(formattedRecords);
 
-  var noteLinks = document.querySelectorAll(".note-urls");
+  var noteLinks = document.querySelectorAll(".note-url");
   addActionToNoteLink(noteLinks);
 
   function addActionToNoteLink(noteLinks){
@@ -49,14 +49,14 @@ function displayResults(list){
 
 function renderNote(note){
   return '<li>'
-    + note.date.toDateString()
-    + '<br><a class="note-urls" href='
+    + '<span class="note-date">' + note.date.toDateString()
+    + '</span>'
+    + '<a class="note-url" href=' + note.url
+    + ' target="_blank" >'
     + note.url
-    +' >'
-    + note.url
-    +'</a><br>'
-    + note.body
-    +'</li>';
+    + '</a>'
+    + '<p class="note-body">' + JSON.parse(note.body) + '</p>'
+    + '</li>';
 }
 
 function formatNotes(records, date, attr1, attr2 ){
