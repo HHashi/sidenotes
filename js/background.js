@@ -35,13 +35,13 @@ appController = {
   toggleSidePanelScript: function(){
 
     var closeSidePanel = function(){
-      var sidebar = document.querySelector('#sidenotes_sidebar');
+      var sidebar = document.querySelector("#sidenotes_sidebar");
       document.body.removeChild(sidebar);
     };
 
     var openSidePanel = function(){
       var currentLocation = window.location.toString();
-      var newElement = document.createElement('iframe');
+      var newElement = document.createElement("iframe");
       newElement.setAttribute("id", "sidenotes_sidebar");
       newElement.setAttribute("src", "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/html/sidepanel.html#" + currentLocation);
       newElement.setAttribute("style", "z-index: 999999999999999; position: fixed; top: 0px; right: 0px; bottom: 0px; width: 300px; height: 100%; border:0; border-left: 1px solid #eee; box-shadow: 0px -1px 7px 0px #aaa; overflow-x: hidden;");
@@ -50,7 +50,7 @@ appController = {
       document.body.appendChild(newElement);
     };
 
-    if (document.querySelector('#sidenotes_sidebar')) {
+    if (document.querySelector("#sidenotes_sidebar")) {
       document.body.style.width = (document.body.clientWidth + 300) + "px";
       closeSidePanel();
     }

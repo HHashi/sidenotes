@@ -1,5 +1,6 @@
+var backgroundNote, cursorPosition;
+
 var currentLocation = window.location.hash.slice(1).split('#')[0];
-var backgroundNote,cursorPosition;
 
 document.addEventListener( "DOMContentLoaded", function(){
   var textarea = document.querySelector('#textarea');
