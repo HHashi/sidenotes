@@ -35,13 +35,13 @@ appController = {
   toggleSidePanelScript: function(){
 
     var closeSidePanel = function(){
-      var sidebar = document.querySelector('#sidenotes_sidebar');
+      var sidebar = document.querySelector("#sidenotes_sidebar");
       document.body.removeChild(sidebar);
     };
 
     var openSidePanel = function(){
       var currentLocation = window.location.toString();
-      var newElement = document.createElement('iframe');
+      var newElement = document.createElement("iframe");
       newElement.setAttribute("id", "sidenotes_sidebar");
       newElement.setAttribute("src", "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/html/sidepanel.html#" + currentLocation);
       newElement.setAttribute("style", "z-index: 999999999999999; position: fixed; top: 0px; right: 0px; bottom: 0px; width: 300px; height: 100%; border:0; border-left: 1px solid #eee; box-shadow: 0px -1px 7px 0px #aaa; overflow-x: hidden;");
@@ -50,7 +50,7 @@ appController = {
       document.body.appendChild(newElement);
     };
 
-    if (document.querySelector('#sidenotes_sidebar')) {
+    if (document.querySelector("#sidenotes_sidebar")) {
       document.body.style.width = (document.body.clientWidth + 300) + "px";
       closeSidePanel();
     }
@@ -64,6 +64,21 @@ appController = {
   },
   toggleSidePanel: function() {
     chrome.tabs.executeScript({code: this.formatScript(this.toggleSidePanelScript, "\n")});
+  },
+  updateOrAddRecord: function(newNote, pastNote){
+    var newNoteData = this.makeRecord(newNote['newValue']);
+    if(pastNote) {
+      pastNote.update(newNoteData);
+    } else {
+      currentTable.insert(newNoteData);
+    }
+  },
+  makeRecord: function (noteData){
+    return {
+        url: noteData['url'],
+        body: noteData['body'],
+        date: new Date(JSON.parse(noteData['date']))
+    };
   }
 };
 
@@ -109,3 +124,4 @@ function initDatastore(){
     });
   });
 };
+

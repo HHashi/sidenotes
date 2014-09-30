@@ -1,16 +1,17 @@
-var currentLocation = window.location.hash.slice(1).split('#')[0];
-var backgroundNote;
-var cursorPosition;
+var backgroundNote, cursorPosition;
 
-$(document).ready(function(){
+var currentLocation = window.location.hash.slice(1).split('#')[0];
+
+document.addEventListener( "DOMContentLoaded", function(){
+  var textarea = document.querySelector('#textarea');
 
   chrome.storage.onChanged.addListener(function(changes, namespace) {
     if(changes['backgroundNote']) {
       chrome.storage.local.get(null, function(result){
-        $('#textarea').val(result['backgroundNote']['body']);
-      })
-      Caret.set($('#textarea'), cursorPosition);
-    };
+        textarea.value = result['backgroundNote']['body'];
+      });
+      Caret.set(textarea, cursorPosition);
+    }
   });
 
 
@@ -53,27 +54,31 @@ $(document).ready(function(){
               range.select();
           }
       }
-  }
+  };
 
-  $('#textarea').focus();
+  textarea.focus();
 
   // Create note from textarea content
 
   function setIframeData() {
-    var noteBody = $('#textarea').val();
+    var noteBody = textarea.value;
     var chromeStorage = {};
-    chromeStorage['iframeNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) }
-    chrome.storage.local.set(chromeStorage, function() {});
+    if (noteBody){
+      chromeStorage['iframeNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) };
+
+      chrome.storage.local.set(chromeStorage, function() {});
+    }
   };
 
 
   // Autosave
   var timeoutId;
-  $('#textarea').on('input propertychange change', function(){
+
+  textarea.addEventListener('keyup', function(){
     clearTimeout(timeoutId);
     timeoutId = setTimeout(function() {
       setIframeData();
-    }, 5000);
-    cursorPosition = $('#textarea').val().length;
+    }, 2000);
+    cursorPosition = textarea.value.length;
   });
 });

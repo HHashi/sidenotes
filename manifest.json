@@ -12,7 +12,8 @@
   },
   "web_accessible_resources": [
     "chrome_oauth_receiver.html",
-    "html/sidepanel.html"
+    "html/sidepanel.html",
+    "html/options.html"
   ],
   "background": {
     "page": "html/background.html"
