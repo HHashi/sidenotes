@@ -7,7 +7,7 @@ $(document).ready(function(){
   chrome.storage.onChanged.addListener(function(changes, namespace) {
     if(changes['backgroundNote']) {
       chrome.storage.local.get(null, function(result){
-        $('#textarea').text(result['backgroundNote']['body']);
+        $('#textarea').val(result['backgroundNote']['body']);
       })
       Caret.set($('#textarea'), cursorPosition);
     };
@@ -60,7 +60,7 @@ $(document).ready(function(){
   // Create note from textarea content
 
   function setIframeData() {
-    var noteBody = $('#textarea').text();
+    var noteBody = $('#textarea').val();
     var chromeStorage = {};
     chromeStorage['iframeNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) }
     chrome.storage.local.set(chromeStorage, function() {});
@@ -74,6 +74,6 @@ $(document).ready(function(){
     timeoutId = setTimeout(function() {
       setIframeData();
     }, 5000);
-    cursorPosition = $('#textarea').text().length;
+    cursorPosition = $('#textarea').val().length;
   });
 });
