@@ -89,7 +89,7 @@ function initDatastore(){
     }
 
     // Open table in datastore
-    currentTable = datastore.getTable('sideNotes');
+    currentTable = datastore.getTable('Sidenotes');
 
     // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
