@@ -47,7 +47,6 @@ appController = {
       newElement.setAttribute("allowtransparency", "false");
       newElement.setAttribute("scrolling", "no");
       document.body.appendChild(newElement);
-
     };
 
     if (document.querySelector("#sidenotes_sidebar")) {
@@ -123,8 +122,7 @@ function initDatastore(){
     // Add listener for changed records on datastore
     datastore.recordsChanged.addListener(function(event) {
       var changedRecords = event.affectedRecordsForTable(currentTable._tid);
-      var dbRecord = changedRecords[0];
-      setBackgroundNoteToChromeStorage(dbRecord);
+      setBackgroundNoteToChromeStorage(changedRecords[0]);
     });
   });
 };
