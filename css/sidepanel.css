@@ -7,7 +7,11 @@
   font-family: 'Source Code Pro';
   src: url(fonts/SourceCodePro-Regular.otf);
 }
-
+html {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
 body {
   background: #F8F8F8;
   font-family: 'Open Sans', sans-serif;
@@ -17,15 +21,16 @@ body {
 
 h1 {
   bottom: 0;
-  color: #ccc;
+  color: #000;
   font-family: 'Source Code Pro', monospace, sans-serif;
   font-size: 20px;
   position: fixed;
   text-align: center;
   width: 260px;
-  padding: .5em .1em;
-  margin-bottom: 0;
+  padding: .25em .2em;
+  margin-bottom: .7em;
   background-color: #F8F8F8;
+  opacity: 0.2;
 }
 
 .icon-svg {
@@ -39,10 +44,14 @@ h1 {
 }
 
 nav {
-  height: 15px;
-  margin-top: 5px;
+  height: 20px;
   margin-bottom: 24px;
-  width: 100%;
+  width: 87%;
+  position: fixed;
+  background-color: #F8F8F8;
+  padding: .5em .1em;
+  padding-top: 1em;
+  top: 0;
 }
 
 #indicator {
@@ -56,12 +65,13 @@ nav {
 
 nav a {
   color: #aaa;
-  display: block;
+  display: inline-block;
   float: right;
   font-size: 10px;
   font-weight: 600;
   text-decoration: none;
   text-transform: uppercase;
+  /*margin-left: -1em;*/
 }
 
 textarea {
@@ -78,4 +88,5 @@ textarea {
   resize: none;
   width: 260px;
   height: 57em;
+  margin-top: 44px;
 }
