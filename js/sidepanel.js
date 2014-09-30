@@ -43,7 +43,7 @@ document.addEventListener( "DOMContentLoaded", function(){
     var noteBody = textarea.value;
     var chromeStorage = {};
     if (noteBody){
-      chromeStorage['iframeNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) };
+      chromeStorage['sidepanelNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) };
 
       chrome.storage.local.set(chromeStorage, function() {});
     }
