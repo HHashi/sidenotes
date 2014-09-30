@@ -62,8 +62,11 @@ document.addEventListener( "DOMContentLoaded", function(){
   function setIframeData() {
     var noteBody = textarea.value;
     var chromeStorage = {};
-    chromeStorage['iframeNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) };
-    chrome.storage.local.set(chromeStorage, function() {});
+    if (noteBody){
+      chromeStorage['iframeNote'] = { 'url': currentLocation, 'body': noteBody, 'date': JSON.stringify(new Date()) };
+
+      chrome.storage.local.set(chromeStorage, function() {});
+    }
   };
 
 
