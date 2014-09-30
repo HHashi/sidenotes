@@ -21,26 +21,6 @@ document.addEventListener( "DOMContentLoaded", function(){
       set : function(input, pos) {
           this.setSelectionRange(input, pos, pos);
       },
-      get : function(el) {
-          if (el.selectionStart) {
-              return el.selectionStart;
-          } else if (document.selection) {
-              el.focus();
-
-              var r = document.selection.createRange();
-              if (r == null) {
-                  return 0;
-              }
-
-              var re = el.createTextRange(),
-              rc = re.duplicate();
-              re.moveToBookmark(r.getBookmark());
-              rc.setEndPoint('EndToStart', re);
-
-              return rc.text.length;
-          }
-          return 0;
-      },
       setSelectionRange : function(input, selectionStart, selectionEnd) {
           if (input.setSelectionRange) {
               input.focus();
@@ -57,6 +37,15 @@ document.addEventListener( "DOMContentLoaded", function(){
   };
 
   textarea.focus();
+
+  // Textarea Auto-resize Logic
+
+  var heightLimit = 800;
+  textarea.oninput = function() {
+    textarea.style.height = "";
+    textarea.style.height = Math.min(textarea.scrollHeight, heightLimit) + "px";
+  };
+
 
   // Create note from textarea content
 
