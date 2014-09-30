@@ -113,15 +113,18 @@ function initDatastore(){
       }
     };
 
-    // Add event listener for changed records (local and remote)
+    function setBackgroundNoteToChromeStorage(record) {
+      var chromeStorage = {};
+
+      chromeStorage['backgroundNote'] = { 'url': record.get('url'), 'body': record.get('body'), 'date': record.get('date') }
+      chrome.storage.local.set(chromeStorage, function() {});
+    };
+
+    // Add listener for changed records on datastore
     datastore.recordsChanged.addListener(function(event) {
       var changedRecords = event.affectedRecordsForTable(currentTable._tid);
       var dbRecord = changedRecords[0];
-      var chromeStorage = {};
-
-      chromeStorage['backgroundNote'] = { 'url': dbRecord.get('url'), 'body': dbRecord.get('body'), 'date': dbRecord.get('date') }
-      chrome.storage.local.set(chromeStorage, function() {});
+      setBackgroundNoteToChromeStorage(dbRecord);
     });
   });
 };
-
