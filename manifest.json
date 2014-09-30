@@ -32,8 +32,7 @@
     "tabs",
     "activeTab",
     "storage",
-    "<all_urls>",
-    "chrome-extension://afbonmgmjbiofanjpldocnjbdkpeodbj/html/options.html"
+    "<all_urls>"
   ],
   "options_page": "html/options.html"
 }
