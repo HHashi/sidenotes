@@ -69,7 +69,6 @@ appController = {
 
 function initDatastore(){
   client.getDatastoreManager().openDefaultDatastore(function (error, datastore) {
-
     if (error) {
       console.log('Error opening default datastore: ' + error);
     }
@@ -79,14 +78,25 @@ function initDatastore(){
 
     // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
-      if(changes['iframeNote']) {
-        currentTable.insert({
-          url: changes['iframeNote']['newValue']['url'],
-          body: changes['iframeNote']['newValue']['body'],
-          date: new Date(JSON.parse(changes['iframeNote']['newValue']['date']))
-        });
-      };
+      if(changes['iframeNote']){
+        var existingRecord = currentTable.query({url: changes['iframeNote']['newValue']['url']});
+        updateOrAddRecord(changes['iframeNote'], existingRecord[0]);
+      }
     });
+
+    function updateOrAddRecord(newNote, pastNote){
+      var existingRecord = currentTable.query({url: newNote['newValue']['url']});
+      var newNoteData = {
+          url: newNote['newValue']['url'],
+          body: newNote['newValue']['body'],
+          date: new Date(JSON.parse(newNote['newValue']['date']))
+      };
+      if(pastNote) {
+        pastNote.update(newNoteData);
+      } else {
+        currentTable.insert(newNoteData);
+      }
+    };
 
     // Add event listener for changed records (local and remote)
     datastore.recordsChanged.addListener(function(event) {
