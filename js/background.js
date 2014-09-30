@@ -80,11 +80,10 @@ function initDatastore(){
     // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
       if(changes['iframeNote']) {
-        chrome.storage.local.get(null, function(result){ })
         currentTable.insert({
           url: changes['iframeNote']['newValue']['url'],
           body: changes['iframeNote']['newValue']['body'],
-          date: changes['iframeNote']['newValue']['date']
+          date: new Date(JSON.parse(changes['iframeNote']['newValue']['date']))
         });
       };
     });
