@@ -20,7 +20,7 @@ h1 {
   color: #ddd;
   font-family: 'Source Code Pro', monospace, sans-serif;
   font-size: 20px;
-  position: absolute;
+  position: fixed;
   text-align: center;
   width: 260px;
 }
@@ -82,6 +82,7 @@ button:hover {
   cursor: pointer;
 }
 textarea{
+  display: absolute;
   border: 0;
   box-shadow: 0;
   outline: none;
