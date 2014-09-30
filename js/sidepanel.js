@@ -4,20 +4,11 @@ var currentLocation = window.location.hash.slice(1).split('#')[0];
 
 document.addEventListener( "DOMContentLoaded", function(){
   var textarea = document.querySelector('#textarea');
-  var sync-indicator = document.querySelector('#sync-indicator');
+  var indicator = document.querySelector('#sync-indicator');
 
-  chrome.storage.onChanged.addListener(function(changes, namespace) {
-    if(changes['backgroundNote']) {
-      chrome.storage.local.get(null, function(result){
-        // textarea.value = result['backgroundNote']['body'];
-
-      });
-      Caret.set(textarea, cursorPosition);
-    }
-  });
+  textarea.focus();
 
   // Functions for setting the caret/cursor position
-
   Caret = {
       set : function(input, pos) {
           this.setSelectionRange(input, pos, pos);
@@ -37,10 +28,23 @@ document.addEventListener( "DOMContentLoaded", function(){
       }
   };
 
-  textarea.focus();
+  chrome.storage.onChanged.addListener(function(changes, namespace) {
+    var spbody, bgbody;
+
+    chrome.storage.local.get(null, function(result){
+      spbody = result.sidepanelNote.body;
+      bgbody = result.backgroundNote.body;
+    });
+
+    if (spbody === bgbody) {
+      indicator.style.background='#2ECC71'
+    };
+
+    Caret.set(textarea, cursorPosition);
+
+  });
 
   // Create note from textarea content
-
   function setIframeData() {
     var noteBody = textarea.value;
     var chromeStorage = {};
@@ -56,6 +60,11 @@ document.addEventListener( "DOMContentLoaded", function(){
 
   textarea.addEventListener('keyup', function(){
     clearTimeout(timeoutId);
+
+    if(textarea.value) {
+      indicator.style.background='#f5d44f'
+    };
+
     timeoutId = setTimeout(function() {
       setIframeData();
     }, 2000);
