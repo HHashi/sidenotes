@@ -64,6 +64,21 @@ appController = {
   },
   toggleSidePanel: function() {
     chrome.tabs.executeScript({code: this.formatScript(this.toggleSidePanelScript, "\n")});
+  },
+  updateOrAddRecord: function(newNote, pastNote){
+    var newNoteData = this.makeRecord(newNote['newValue']);
+    if(pastNote) {
+      pastNote.update(newNoteData);
+    } else {
+      currentTable.insert(newNoteData);
+    }
+  },
+  makeRecord: function (noteData){
+    return {
+        url: noteData['url'],
+        body: noteData['body'],
+        date: new Date(JSON.parse(noteData['date']))
+    };
   }
 };
 
@@ -80,22 +95,9 @@ function initDatastore(){
     chrome.storage.onChanged.addListener(function(changes, namespace) {
       if(changes['iframeNote']){
         var existingRecord = currentTable.query({url: changes['iframeNote']['newValue']['url']});
-        updateOrAddRecord(changes['iframeNote'], existingRecord[0] );
+        appController.updateOrAddRecord(changes['iframeNote'], existingRecord[0] );
       }
     });
-
-    function updateOrAddRecord(newNote, pastNote){
-      var newNoteData = {
-          url: newNote['newValue']['url'],
-          body: newNote['newValue']['body'],
-          date: new Date(JSON.parse(newNote['newValue']['date']))
-      };
-      if(pastNote) {
-        pastNote.update(newNoteData);
-      } else {
-        currentTable.insert(newNoteData);
-      }
-    };
 
     // Add event listener for changed records (local and remote)
     datastore.recordsChanged.addListener(function(event) {
