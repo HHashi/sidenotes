@@ -21,7 +21,7 @@ body {
 
 h1 {
   bottom: 0;
-  color: #ccc;
+  color: #000;
   font-family: 'Source Code Pro', monospace, sans-serif;
   font-size: 20px;
   position: fixed;
@@ -30,6 +30,7 @@ h1 {
   padding: .25em .2em;
   margin-bottom: .7em;
   background-color: #F8F8F8;
+  opacity: 0.2;
 }
 
 .icon-svg {
