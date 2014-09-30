@@ -63,8 +63,10 @@ appController = {
   },
   toggleSidePanel: function() {
     chrome.tabs.executeScript({code: this.formatScript(this.toggleSidePanelScript, "\n")});
-  },
-  updateOrAddRecord: function(newNote, pastNote){
+  }
+};
+dataStoreController = {
+  updateOrAddRecord: function(currentTable, newNote, pastNote){
     var newNoteData = this.makeRecord(newNote['newValue']);
     if(pastNote) {
       pastNote.update(newNoteData);
@@ -72,14 +74,19 @@ appController = {
       currentTable.insert(newNoteData);
     }
   },
-  makeRecord: function (noteData){
+  makeRecord: function(noteData){
     return {
         url: noteData['url'],
         body: noteData['body'],
         date: new Date(JSON.parse(noteData['date']))
     };
+  },
+  setBackgroundNoteToChromeStorage: function(record) {
+    var chromeStorage = {};
+    chromeStorage['backgroundNote'] = { 'url': record.get('url'), 'body': record.get('body'), 'date': record.get('date') };
+    chrome.storage.local.set(chromeStorage, function() {});
   }
-};
+}
 
 function initDatastore(){
   client.getDatastoreManager().openDefaultDatastore(function (error, datastore) {
@@ -94,30 +101,9 @@ function initDatastore(){
     chrome.storage.onChanged.addListener(function(changes, namespace) {
       if(changes['sidepanelNote']){
         var existingRecord = currentTable.query({url: changes['sidepanelNote']['newValue']['url']});
-        updateOrAddRecord(changes['sidepanelNote'], existingRecord[0]);
+        datastoreController.updateOrAddRecord(currentTable, changes['sidepanelNote'], existingRecord[0]);
       }
     });
-
-    function updateOrAddRecord(newNote, pastNote){
-      var existingRecord = currentTable.query({url: newNote['newValue']['url']});
-      var newNoteData = {
-          url: newNote['newValue']['url'],
-          body: newNote['newValue']['body'],
-          date: new Date(JSON.parse(newNote['newValue']['date']))
-      };
-      if(pastNote) {
-        pastNote.update(newNoteData);
-      } else {
-        currentTable.insert(newNoteData);
-      }
-    };
-
-    function setBackgroundNoteToChromeStorage(record) {
-      var chromeStorage = {};
-
-      chromeStorage['backgroundNote'] = { 'url': record.get('url'), 'body': record.get('body'), 'date': record.get('date') }
-      chrome.storage.local.set(chromeStorage, function() {});
-    };
 
     // Add listener for changed records on datastore
     datastore.recordsChanged.addListener(function(event) {
