@@ -13,13 +13,18 @@
 </head>
 <body>
 
+  <h1><img class="icon-svg" src="/icons/icon.svg"> sidenotes</h1>
+
   <nav>
-    <div>
+    <div id="search-container">
       <input type='search' id="note-search" placeholder="Search your notes" autofocus></input>
+    </div>
+    <div id="settings-container">
+      <a class="dropbox-signout" href="#">Sign out</a>
     </div>
   </nav>
 
-  <div id="container">
+  <div id="results-container">
     <ul id="search-results"></ul>
   </div>
 
