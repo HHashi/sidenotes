@@ -1,0 +1,38 @@
+body {
+  height: 175px;
+  width: 175px;
+}
+
+#dropbox-signin {
+  text-align: center;
+}
+
+h1 {
+  bottom: 0;
+  color: #ddd;
+  font-family: 'Source Code Pro', monospace, sans-serif;
+  font-size: 20px;
+  text-align: center;
+  /*position: fixed;*/
+  /*width: 260px;*/
+}
+
+p {
+  font-family: 'Source Code Pro', monospace, sans-serif;
+  text-align: center;
+}
+
+.icon-svg {
+  width: 16px;
+  display: inline;
+  padding-right: .45em;
+}
+
+.dropbox-signin {
+  display: inline;
+  text-align: center;
+}
+
+.dropbox-logo {
+  width: 64px;
+}
