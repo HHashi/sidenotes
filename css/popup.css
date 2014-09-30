@@ -1,38 +1,53 @@
+@import url("fontello.css");
+
 body {
-  height: 175px;
-  width: 175px;
-}
-
-#dropbox-signin {
+  width: 200px;
   text-align: center;
-}
-
-h1 {
-  bottom: 0;
-  color: #ddd;
   font-family: 'Source Code Pro', monospace, sans-serif;
-  font-size: 20px;
-  text-align: center;
-  /*position: fixed;*/
-  /*width: 260px;*/
-}
-
-p {
-  font-family: 'Source Code Pro', monospace, sans-serif;
-  text-align: center;
+  padding: 10px 20px;
+  background: #f8f8f8;
 }
 
 .icon-svg {
-  width: 16px;
-  display: inline;
-  padding-right: .45em;
+  width: 40px;
+  display: inline-block;
+  margin-bottom: 10px;
+  margin-top: 30px;
 }
 
-.dropbox-signin {
-  display: inline;
+h1 {
+  color: #000;
+  font-size: 24px;
   text-align: center;
+  margin-bottom: 40px;
+  margin-top: 0px;
 }
 
-.dropbox-logo {
-  width: 64px;
+p {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #333;
+  margin-bottom: 40px;
+}
+
+#dropbox-signin {
+  padding: 10px 15px;
+  border: 0;
+  outline: 0;
+  background: #007EE5;
+  color: #fff;
+  font-size: 12px;
+  font-family: 'Open Sans', sans-serif;
+  border-radius: 3px;
+  margin-bottom: 30px;
+  vertical-align: middle;
+  line-height: 16px;
+}
+
+#dropbox-signin i {
+  font-size: 16px;
+}
+
+#dropbox-signin:hover {
+  cursor: pointer;
 }
