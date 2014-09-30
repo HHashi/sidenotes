@@ -85,7 +85,6 @@ function initDatastore(){
     });
 
     function updateOrAddRecord(newNote, pastNote){
-      var existingRecord = currentTable.query({url: newNote['newValue']['url']});
       var newNoteData = {
           url: newNote['newValue']['url'],
           body: newNote['newValue']['body'],
