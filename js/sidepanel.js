@@ -5,14 +5,11 @@ var currentLocation = window.location.hash.slice(1).split('#')[0];
 document.addEventListener( "DOMContentLoaded", function(){
   var textarea = document.querySelector('#textarea');
   var indicator = document.querySelector('#sync-indicator');
-
+  displayStoredData();
   textarea.focus();
 
   // Functions for setting the caret/cursor position
   Caret = {
-      set : function(input, pos) {
-          this.setSelectionRange(input, pos, pos);
-      },
       setSelectionRange : function(input, selectionStart, selectionEnd) {
           if (input.setSelectionRange) {
               input.focus();
@@ -66,8 +63,8 @@ document.addEventListener( "DOMContentLoaded", function(){
     };
 
     timeoutId = setTimeout(function() {
-      setIframeData();
-    }, 2000);
-    cursorPosition = textarea.value.length;
+      getNewIframeData();
+    }, 200);
   });
+
 });
