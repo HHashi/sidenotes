@@ -14,7 +14,6 @@ document.addEventListener( "DOMContentLoaded", function(){
     }
   });
 
-
   // Functions for setting the caret/cursor position
 
   Caret = {
@@ -38,15 +37,6 @@ document.addEventListener( "DOMContentLoaded", function(){
 
   textarea.focus();
 
-  // Textarea Auto-resize Logic
-
-  var heightLimit = 800;
-  textarea.oninput = function() {
-    textarea.style.height = "";
-    textarea.style.height = Math.min(textarea.scrollHeight, heightLimit) + "px";
-  };
-
-
   // Create note from textarea content
 
   function setIframeData() {
@@ -58,7 +48,6 @@ document.addEventListener( "DOMContentLoaded", function(){
       chrome.storage.local.set(chromeStorage, function() {});
     }
   };
-
 
   // Autosave
   var timeoutId;
