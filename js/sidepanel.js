@@ -1,5 +1,5 @@
 var currentLocation = window.location.hash.slice(1).split('#')[0];
-var backgroundNote, cursorPosition;
+var backgroundNote,cursorPosition;
 
 document.addEventListener( "DOMContentLoaded", function(){
   var textarea = document.querySelector('#textarea');
@@ -76,8 +76,5 @@ document.addEventListener( "DOMContentLoaded", function(){
       setIframeData();
     }, 2000);
     cursorPosition = textarea.value.length;
-  });
-  document.querySelector('#options-link').addEventListener('click', function(){
-
   });
 });
