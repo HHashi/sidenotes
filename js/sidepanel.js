@@ -1,6 +1,5 @@
 var currentLocation = window.location.hash.slice(1).split('#')[0];
-var backgroundNote;
-var cursorPosition;
+var backgroundNote, cursorPosition;
 
 document.addEventListener( "DOMContentLoaded", function(){
   var textarea = document.querySelector('#textarea');
@@ -54,7 +53,7 @@ document.addEventListener( "DOMContentLoaded", function(){
               range.select();
           }
       }
-  }
+  };
 
   textarea.focus();
 
