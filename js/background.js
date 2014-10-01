@@ -1,3 +1,12 @@
+function trace(name, val){
+  var args = (val === undefined) ? [name] : [name, val]
+  console.log.apply(console, args)
+}
+
+// ---
+
+trace('event:start')
+
 var DROPBOX_APP_KEY = 'e4fbthwtr2v9ksp';
 
 var currentTable;
@@ -5,17 +14,25 @@ var currentTable;
 var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
 
 client.onAuthStepChange.addListener(function(event) {
+  trace('event:auth/step-change')
   if (client.isAuthenticated()) {
+    trace('event:auth/authenticated')
     initDatastore(datastoreController.syncRemoteStorage);
   }
 });
 
+trace('event:auth/start')
 client.authenticate({interactive:false}, function (error) {
+  trace('event:auth/response')
   if (error) {
+    trace('event:auth/response/error')
+    alert('Authentication error: ' + error);
     client.reset();
   }
+  trace('event:auth/end')
 });
 
+// needs to be global?
 appController = {
   isAuthenticated: function(){
     return client.isAuthenticated();
@@ -183,30 +200,45 @@ datastoreController = {
   }
 };
 
-
 function initDatastore(callback){
+  trace('event:remote-store/connecting')
   client.getDatastoreManager().openDefaultDatastore(function (error, datastore) {
+    trace('event:remote-store/connected')
     if (error) {
+      trace('event:remote-store/connect/error')
       console.log('Error opening default datastore: ' + error);
     }
     // Open table in datastore
+    // needs to be global?
     currentTable = datastore.getTable('Sidenotes');
 
     // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
       if(changes['sidenotes']){
+        trace('event:note/updated-from-iframe', changes['sidenotes'])
         var newNote = datastoreController.getChangedValue(changes['sidenotes']['newValue'], changes['sidenotes']['oldValue']);
         if(typeof(newNote) === 'object'){
           var existingRecord = currentTable.query({url: Object.keys(newNote)[0] });
+          trace('state:note/exists-in-remote-store', [url, !!existingRecord])
           datastoreController.updateOrAddRecord(newNote, existingRecord[0]);
         }
       }
     });
+
+    function setBackgroundNoteToChromeStorage(record) {
+      var chromeStorage = {};
+
+      chromeStorage['backgroundNote'] = { 'url': record.get('url'), 'body': record.get('body'), 'date': record.get('date') }
+      chrome.storage.local.set(chromeStorage, function() {});
+    };
+
     // Add listener for changed records on datastore
+    // todo: move up above fn declarations
     datastore.recordsChanged.addListener(function(event) {
+      trace('event:remote-store/changed')
       var changedRecords = event.affectedRecordsForTable(currentTable._tid);
-      datastoreController.setRemoteNoteToLocalStorage(changedRecords[0]);
+      trace('invariant:remote-store/changed/record', changedRecords[0])
+      setBackgroundNoteToChromeStorage(changedRecords[0]);
     });
-    callback(currentTable);
   });
 };
