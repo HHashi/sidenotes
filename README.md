@@ -5,7 +5,7 @@ Annotate the web.
 
 ## Writing notes on the web is clunky and frustrating.
 
-The current process is all too familar. While reading articles or watching videos online, we come across useful information that we would like to jot down to store our thoughts. 
+The current process is all too familar. While reading articles or watching videos online, you come across useful information that you would like to jot down to store your thoughts. 
 
 Pause a video, leave an article, switch tabs, then jot down useful pieces of information. Then go back to the video or article, and find where you left off. This wastes minutes of time _everyday_.
 
