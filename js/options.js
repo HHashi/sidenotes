@@ -4,11 +4,11 @@ document.addEventListener( "DOMContentLoaded", function(){
 
   document.querySelector("#note-search").addEventListener('keyup', function(){
     var searchParams = document.querySelector("#note-search").value;
-    var results = fuse.search(searchParams);
     if (searchParams === ""){
-      displayResults(formattedRecords);
+      displayResults(formattedRecords, addActionToNoteLink);
     } else {
-      displayResults(results);
+      var results = fuse.search(searchParams);
+      displayResults(results, addActionToNoteLink);
     }
   });
 
@@ -19,32 +19,30 @@ document.addEventListener( "DOMContentLoaded", function(){
   });
 
   document.querySelector('#note-search').addEventListener('search', function(){
-    if (document.querySelector("#note-search").value === ""){ displayResults(formattedRecords); }
+    if (document.querySelector("#note-search").value === ""){ displayResults(formattedRecords, addActionToNoteLink); }
   });
 
-  var backgroundPage = chrome.extension.getBackgroundPage();
-  var allRecords = backgroundPage.currentTable.query();
+  var allRecords = chrome.extension.getBackgroundPage().currentTable.query();
   var formattedRecords = formatNotes(allRecords, 'date', 'url', 'body');
 
   var fuse = new Fuse(formattedRecords, { keys: ["url", "body"] });
-  displayResults(formattedRecords);
+  displayResults(formattedRecords, addActionToNoteLink);
 
-  var noteLinks = document.querySelectorAll(".note-url");
-  addActionToNoteLink(noteLinks);
-
-  function addActionToNoteLink(noteLinks){
+  function addActionToNoteLink(){
+    var noteLinks = document.querySelectorAll(".note-url");
     for(var i=0;i<noteLinks.length;i++){
       noteLinks[i].addEventListener('click', function(e) {
         e.preventDefault();
         chrome.tabs.create({url: this.getAttribute('href')}, function(tab){
-          backgroundPage.appController.toggleSidePanel();
+          appController.toggleSidePanel();
         });
       });
     }
   }
+
 });
 
-function displayResults(list){
+function displayResults(list, callback){
   var notes = "";
   var noteSearchList = document.querySelector('#search-results');
   noteSearchList.innerHTML = "";
@@ -53,6 +51,7 @@ function displayResults(list){
     notes += renderNote(list[i]);
   }
   noteSearchList.innerHTML = notes;
+  callback();
 }
 
 function renderNote(note){

@@ -6,16 +6,12 @@ var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
 
 client.onAuthStepChange.addListener(function(event) {
   if (client.isAuthenticated()) {
-    chrome.commands.onCommand.addListener(function(command) {
-      appController.toggleSidePanel();
-    });
-    initDatastore();
+    initDatastore(datastoreController.syncRemoteStorage);
   }
 });
 
 client.authenticate({interactive:false}, function (error) {
   if (error) {
-    alert('Authentication error: ' + error);
     client.reset();
   }
 });
@@ -25,11 +21,24 @@ appController = {
     return client.isAuthenticated();
   },
   authenticate: function(){
-    client.authenticate();
+    client.authenticate(function(error){
+      if(error){
+        client.reset();
+      } else {
+        chrome.tabs.create({url: "http://sidenotes.co/tutorial.html"}, function(tab){
+          appController.toggleSidePanel();});
+      };
+    });
   },
   signOut: function(){
     client.signOut(null, function(){
       client.reset();
+      chrome.tabs.query( {} ,function (tabs) { // The Query {} was missing here
+        for (var i = 0; i < tabs.length; i++) {
+          chrome.tabs.executeScript(tabs[i].id, {code: 'var sidebar = document.querySelector("#sidenotes_sidebar");document.body.removeChild(sidebar);'});
+        }
+      });
+
     });
   },
   toggleSidePanelScript: function(){
@@ -63,66 +72,142 @@ appController = {
   },
   toggleSidePanel: function() {
     chrome.tabs.executeScript({code: this.formatScript(this.toggleSidePanelScript, "\n")});
-  },
+  }
+};
+
+datastoreController = {
   updateOrAddRecord: function(newNote, pastNote){
-    var newNoteData = this.makeRecord(newNote['newValue']);
+    var newNoteData = this.makeRecord(newNote);
     if(pastNote) {
       pastNote.update(newNoteData);
     } else {
       currentTable.insert(newNoteData);
     }
   },
-  makeRecord: function (noteData){
+  makeRecord: function(noteData){
+    var noteUrl = Object.keys(noteData)[0];
+    console.log("noteData", noteData[noteUrl]['date'])
     return {
-        url: noteData['url'],
-        body: noteData['body'],
-        date: new Date(JSON.parse(noteData['date']))
+        url: noteUrl,
+        body: noteData[noteUrl]['body'],
+        date: new Date(JSON.parse(noteData[noteUrl]['date']))
     };
+  },
+  setRemoteNoteToLocalStorage: function(newRemoteNote) {
+    chrome.storage.local.get(null, function(result){
+      var newLocalNotes = datastoreController.addNoteToLocal(newRemoteNote, result['sidenotes']);
+      chrome.storage.local.set({'sidenotes': result['sidenotes'].concat(newLocalNotes) }, function() {});
+    });
+
+  },
+  addNoteToLocal: function(newNote, allLocalNotes){
+    var newLocalStorage = [];
+    for(var i=0;i<allLocalNotes.length;i++){
+      if(newNote.get('url') == Object.keys(allLocalNotes[i])[0]){
+        var note = {};
+        note[newNote.get('url')] = {'date': JSON.stringify(newNote.get('date')), 'body':newNote.get('body')};
+        allLocalNotes[i] = note;
+        break;
+      } else if (i === allLocalNotes.length-1){
+        var note = {};
+        note[newNote.get('url')] = {'date': JSON.stringify(newNote.get('date')), 'body':newNote.get('body')};
+        allLocalNotes.push(note);
+      }
+    }
+
+    return newLocalStorage;
+  },
+  syncRemoteStorage: function(currentTable){
+    var datastoreRecords = currentTable.query();
+    chrome.storage.local.get(null, function(result){
+      if(typeof(result['sidenotes']) === 'object'){
+
+        var mergedNotes = datastoreController.getConcurrentNotes(datastoreRecords, result['sidenotes']);
+        chrome.storage.local.set({'sidenotes': mergedNotes }, function(){});
+      } else {
+        chrome.storage.local.set({'sidenotes': []}, function(){});
+        datastoreController.syncRemoteStorage(currentTable);
+      }
+    });
+  },
+  getConcurrentNotes: function(datastoreRecords, chromeLocalRecords){
+    var newNoteList = [];
+    for (var i=0;i<datastoreRecords.length;i++) {
+      var noteUrl = datastoreRecords[i].get('url');
+      if(chromeLocalRecords.length>0){
+        for(var j=0;j<chromeLocalRecords.length;j++){
+          if(noteUrl == Object.keys(chromeLocalRecords[j])[0]){
+             console.log(datastoreRecords[i].get('date'));
+            newNoteList = this.mergeNotes(datastoreRecords[i], chromeLocalRecords[j], newNoteList);
+            break;
+          } else if (j === chromeLocalRecords.length-1){
+            var note = {};
+            console.log('Datastore date', datastoreRecords[i].get('date'))
+            note[noteUrl] = {'date': JSON.stringify(datastoreRecords[i].get('date')), 'body':datastoreRecords[i].get('body')};
+            newNoteList.push(note);
+          }
+        }
+      } else {
+        var note = {};
+        note[noteUrl] = {'date': JSON.stringify(datastoreRecords[i].get('date')), 'body':datastoreRecords[i].get('body')};
+        newNoteList.push(note);
+      }
+    }
+    return newNoteList;
+  },
+  mergeNotes: function(remoteRecord, localRecord, newNoteList){
+    var remoteDate = remoteRecord.get('date');
+    var noteUrl = remoteRecord.get('url');
+    var localDate = new Date(JSON.parse(localRecord[noteUrl]['date']));
+    if(remoteDate.getTime() > localDate.getTime()){
+      var note = {};
+      note[noteUrl] = {'date': JSON.stringify(remoteDate), 'body': remoteRecord.get('body')};
+      newNoteList.push(note);
+      return newNoteList;
+    } else {
+      var note = {};
+      note[noteUrl] = {'date': JSON.stringify(localDate), 'body': localRecord[noteUrl]['body']};
+      newNoteList.push(note);
+      return newNoteList;
+    }
+  },
+  getChangedValue: function(newNoteList, oldNoteList){
+    if(!oldNoteList){
+      return
+    }
+    for(var i=0;i<oldNoteList.length;i++){
+      var noteKey = Object.keys(oldNoteList[i])[0];
+      if(newNoteList[i][noteKey]['body'] !== oldNoteList[i][noteKey]['body'] ){
+        return newNoteList[i];
+      }
+    }
   }
 };
 
-function initDatastore(){
+
+function initDatastore(callback){
   client.getDatastoreManager().openDefaultDatastore(function (error, datastore) {
     if (error) {
       console.log('Error opening default datastore: ' + error);
     }
-
     // Open table in datastore
     currentTable = datastore.getTable('Sidenotes');
 
     // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
-      if(changes['sidepanelNote']){
-        var existingRecord = currentTable.query({url: changes['sidepanelNote']['newValue']['url']});
-        updateOrAddRecord(changes['sidepanelNote'], existingRecord[0]);
+      if(changes['sidenotes']){
+        var newNote = datastoreController.getChangedValue(changes['sidenotes']['newValue'], changes['sidenotes']['oldValue']);
+        if(typeof(newNote) === 'object'){
+          var existingRecord = currentTable.query({url: Object.keys(newNote)[0] });
+          datastoreController.updateOrAddRecord(newNote, existingRecord[0]);
+        }
       }
     });
-
-    function updateOrAddRecord(newNote, pastNote){
-      var existingRecord = currentTable.query({url: newNote['newValue']['url']});
-      var newNoteData = {
-          url: newNote['newValue']['url'],
-          body: newNote['newValue']['body'],
-          date: new Date(JSON.parse(newNote['newValue']['date']))
-      };
-      if(pastNote) {
-        pastNote.update(newNoteData);
-      } else {
-        currentTable.insert(newNoteData);
-      }
-    };
-
-    function setBackgroundNoteToChromeStorage(record) {
-      var chromeStorage = {};
-
-      chromeStorage['backgroundNote'] = { 'url': record.get('url'), 'body': record.get('body'), 'date': record.get('date') }
-      chrome.storage.local.set(chromeStorage, function() {});
-    };
-
     // Add listener for changed records on datastore
     datastore.recordsChanged.addListener(function(event) {
       var changedRecords = event.affectedRecordsForTable(currentTable._tid);
-      setBackgroundNoteToChromeStorage(changedRecords[0]);
+      datastoreController.setRemoteNoteToLocalStorage(changedRecords[0]);
     });
+    callback(currentTable);
   });
 };
