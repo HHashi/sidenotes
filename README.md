@@ -25,7 +25,7 @@ We eliminate any unnecessary steps, leaving you with the simplest process for ta
 
 Sidenotes is packaged into a simple Chrome Extension, meaning your notes are never far away. 
 
-We leverage the power of the Dropbox Datastore API and Google Chrome Local Storage to sync your notes immediately, both _online_ and _offline_.
+We leverage the power of the Dropbox Datastore API and Google Chrome Local Storage to sync your notes immediately, both **_online_** and **_offline_**.
 
 A simple keystroke slides in the extension's note pad from the right side of your screen. 
 
