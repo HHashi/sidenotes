@@ -25,8 +25,9 @@ appController = {
       if(error){
         client.reset();
       } else {
-        window.open('http://sidenotes.co/tutorial.html'); // Opens Tutorial Page
-      }
+        chrome.tabs.create({url: "http://sidenotes.co/tutorial.html"}, function(tab){
+          appController.toggleSidePanel();});
+      };
     });
   },
   signOut: function(){
