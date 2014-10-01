@@ -13,7 +13,7 @@ We found ourselves accessing the same sites time and time again looking for a si
 
 We were frustrated with the disconnect between traditional note-taking, and the fluid nature of the web, so we came up with the [solution](sidenotes.co).
 
-# Write notes quickly without distraction
+## Write notes quickly without distraction
 
 [Sidenotes](sidenotes.co) is the fastest way to write notes in your browser. No more switching tabs, pausing videos, or running multiple apps to jot down your thoughts.
 
