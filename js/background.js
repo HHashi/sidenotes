@@ -106,7 +106,6 @@ datastoreController = {
       }
     }
 
-    console.log('This is newLocalStorage:', newLocalStorage)
     return newLocalStorage;
   },
   syncRemoteStorage: function(){
@@ -140,7 +139,7 @@ datastoreController = {
         note[noteUrl] = {'date': datastoreRecords[i].get('date'), 'body':datastoreRecords[i].get('body')};
         newNoteList.push(note);
       }
-    };
+    }
     return newNoteList;
   },
   mergeNotes: function(remoteRecord, localRecord, newNoteList){
@@ -174,12 +173,11 @@ function initDatastore(){
     // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
       if(changes['sidepanelNote']){
+        console.log(changes);
         var existingRecord = currentTable.query({url: changes['sidepanelNote']['newValue']['url']});
         datastoreController.updateOrAddRecord(changes['sidepanelNote'], existingRecord[0]);
       }
     });
-
-
 
     // Add listener for changed records on datastore
     datastore.recordsChanged.addListener(function(event) {

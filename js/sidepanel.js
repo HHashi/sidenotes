@@ -8,23 +8,7 @@ document.addEventListener( "DOMContentLoaded", function(){
   displayStoredData();
   textarea.focus();
 
-  // Functions for setting the caret/cursor position
-  Caret = {
-      setSelectionRange : function(input, selectionStart, selectionEnd) {
-          if (input.setSelectionRange) {
-              input.focus();
-              input.setSelectionRange(selectionStart, selectionEnd);
-          }
-          else if (input.createTextRange) {
-              var range = input.createTextRange();
-              range.collapse(true);
-              range.moveEnd('character', selectionEnd);
-              range.moveStart('character', selectionStart);
-              range.select();
-          }
-      }
-  };
-
+  //Query Local Storage Using URL and compare body
   chrome.storage.onChanged.addListener(function(changes, namespace) {
     var sidepanelBody, backgroundBody;
 
