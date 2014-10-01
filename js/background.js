@@ -87,21 +87,25 @@ datastoreController = {
   setRemoteNoteToLocalStorage: function(newRemoteNote) {
     chrome.storage.local.get(null, function(result){
       var newLocalNotes = datastoreController.addNoteToLocal(newRemoteNote, result['sidenotes']);
-      console.log(result['sidenotes'])
       chrome.storage.local.set({'sidenotes': result['sidenotes'].concat(newLocalNotes) }, function() {});
     });
 
   },
   addNoteToLocal: function(newNote, allLocalNotes){
     var newLocalStorage = [];
-    console.log(newNote.get('url'));
     for(var i=0;i<allLocalNotes.length;i++){
       if(newNote.get('url') == Object.keys(allLocalNotes[i])[0]){
         var note = {};
         note[newNote.get('url')] = {'date': newNote.get('date'), 'body':newNote.get('body')};
         allLocalNotes[i] = note;
+        break;
+      } else if (i === allLocalNotes.length-1){
+        var note = {};
+        note[newNote.get('url')] = {'date': newNote.get('date'), 'body':newNote.get('body')};
+        allLocalNotes.push(note);
       }
     }
+
     console.log('This is newLocalStorage:', newLocalStorage)
     return newLocalStorage;
   },
