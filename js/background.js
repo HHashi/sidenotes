@@ -10,7 +10,8 @@ client.onAuthStepChange.addListener(function(event) {
       appController.toggleSidePanel();
     });
     initDatastore();
-    datastoreController.syncRemoteStorage();
+    //TODO FIX Below
+    setTimeout(function(){datastoreController.syncRemoteStorage()}, 1000);
   }
 });
 
