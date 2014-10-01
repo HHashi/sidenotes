@@ -1,7 +1,5 @@
 var DROPBOX_APP_KEY = 'e4fbthwtr2v9ksp';
 
-var currentTable;
-
 var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
 
 client.onAuthStepChange.addListener(function(event) {
@@ -9,9 +7,7 @@ client.onAuthStepChange.addListener(function(event) {
     chrome.commands.onCommand.addListener(function(command) {
       appController.toggleSidePanel();
     });
-    initDatastore();
-    //TODO FIX Below
-    setTimeout(function(){datastoreController.syncRemoteStorage()}, 1000);
+    initDatastore(datastoreController.syncRemoteStorage);
   }
 });
 
@@ -110,14 +106,16 @@ datastoreController = {
 
     return newLocalStorage;
   },
-  syncRemoteStorage: function(){
+  syncRemoteStorage: function(currentTable){
     var datastoreRecords = currentTable.query();
     chrome.storage.local.get(null, function(result){
       if(typeof(result['sidenotes']) === 'object'){
+
         var mergedNotes = datastoreController.getConcurrentNotes(datastoreRecords, result['sidenotes']);
         chrome.storage.local.set({'sidenotes': mergedNotes }, function(){});
       } else {
         chrome.storage.local.set({'sidenotes': []}, function(){});
+        datastoreController.syncRemoteStorage(currentTable);
       }
     });
   },
@@ -163,6 +161,9 @@ datastoreController = {
     }
   },
   getChangedValue: function(newNoteList, oldNoteList){
+    if(!oldNoteList){
+      return
+    }
     for(var i=0;i<oldNoteList.length;i++){
       var noteKey = Object.keys(oldNoteList[i])[0];
       if(newNoteList[i][noteKey]['body'] !== oldNoteList[i][noteKey]['body'] ){
@@ -173,13 +174,13 @@ datastoreController = {
 };
 
 
-function initDatastore(){
+function initDatastore(callback){
   client.getDatastoreManager().openDefaultDatastore(function (error, datastore) {
     if (error) {
       console.log('Error opening default datastore: ' + error);
     }
     // Open table in datastore
-    currentTable = datastore.getTable('Sidenotes');
+    var currentTable = datastore.getTable('Sidenotes');
 
     // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
@@ -196,5 +197,6 @@ function initDatastore(){
       var changedRecords = event.affectedRecordsForTable(currentTable._tid);
       datastoreController.setRemoteNoteToLocalStorage(changedRecords[0]);
     });
+    callback(currentTable);
   });
 };
