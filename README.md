@@ -3,7 +3,7 @@ Sidenotes
 
 Annotate the web.
 
-![Sidenotes in the Browser](/images/Sidenotes-Screenshot.png)
+![Sidenotes in the Browser](/images/Sidenotes-Screenflow.gif)
 
 ## Writing notes on the web is clunky and frustrating.
 
