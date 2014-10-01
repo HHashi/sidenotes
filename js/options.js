@@ -25,7 +25,18 @@ document.addEventListener( "DOMContentLoaded", function(){
   var allRecords = chrome.extension.getBackgroundPage().currentTable.query();
   var formattedRecords = formatNotes(allRecords, 'date', 'url', 'body');
 
-  var fuse = new Fuse(formattedRecords, { keys: ["url", "body"] });
+  var options = {
+    caseSensitive: false,
+    includeScore: true,
+    shouldSort: true,
+    threshold: 0.6,
+    location: 0,
+    distance: 100,
+    maxPatternLength: 32,
+    keys: ["url", "body"]
+  };
+  var fuse = new Fuse(formattedRecords, options);
+  console.log(fuse);
   displayResults(formattedRecords, addActionToNoteLink);
 
   function addActionToNoteLink(){
@@ -58,6 +69,8 @@ function renderNote(note){
   return '<li>'
     + '<span class="note-date">' + note.date.toLocaleString()
     + '</span>'
+    // + '<span class="note-date">' + note.score
+    // + '</span>'
     + '<a class="note-url" href=' + note.url
     + ' target="_blank" title="' + note.url + '">'
     + '<i class="icon-link-ext"></i>'
