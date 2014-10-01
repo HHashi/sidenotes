@@ -2,4 +2,5 @@
 //https://www.dropbox.com/developers/datastore/docs/js#Dropbox.AuthDriver.ChromeExtension
 
 Dropbox.AuthDriver.ChromeExtension.oauthReceiver();
-window.open('http://sidenotes.co');
+window.open('http://sidenotes.co/tutorial.html'); // Opens Tutorial Page
+

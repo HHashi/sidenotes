@@ -1,0 +1,111 @@
+{
+	"notes":[
+	{
+		"url":"http://javascriptissexy.com/understand-javascripts-this-with-clarity-and-master-it/", 
+		"body":"Javascript’s ‘this’ Keyword\n ‘this’ is like a pronoun.\nFollows the antecedent. \nWhen a function is executed, it gets the this property. A variable with the value of the object that invokes the function where this is used.\nthis always refers to an object.\nUsually used inside of a function or a method.\n**When strict mode is being used, this holds the value undefined in both global functions and in anonymous functions that are not bound to any objects.**",
+		"time":"Tue Sep 30 2014 15:57:41 GMT-0400 (EDT)"
+	 }, 
+	{
+		"url":"https://teamtreehouse.com/forum/regex-practicetutorial",
+		"body":"Treehouse Forum Regex\nuser$ - matches usernames which end with user\n^user - matches usernames which begin with user\n(user|name) - ‘or’ in Regex is a single |.\n/^gr(a|e)y$/ - will accept either grey or gray.\nvar expression = new Regexp /^gr(a|e)y$/\nOR\nvar expression = /^gr(a|e)y$/i;\nModifiers\n\t* Make it possible to modify the RegEx*\n\t* i - Makes it case insensitive\n\t* + - Allows you to add symbols.\n\t* g - global\n\t[a-z]{6,8} - Makes it so that the password can be any letter between 6-8 characters in length.",
+		"date":"Thurs Jul 30 2014 15:57:41 GMT-0400 (EDT)"
+	}, 
+	{
+		"url":"http://teamtreehouse.com/library/sass-basics", 
+		"body":"All Sass files end in scss\nYou run Sass from the command line.\nsass - watch - will automatically compile sass as you work. It creates a css file and then compiles directly into that css file as soon as you save the sass file.\nLibsass is a variant of Sass that can be ported into other programming languages.\nWhenever you see an &, it is basically doing something extra in the tag it is nested within.",
+		"date":"Tue Feb 20 2014 15:57:41 GMT-0400 (EDT)"
+	},
+	{
+	"url":"http://www.w3schools.com/sql/", 
+	"body":"W3 Schools SQL\nSyntax\n\t* SQL is NOT case-sensitive.\n\t* In some SQL langs, you need a semicolon at the end.",
+	"date":"Tue Mar 05 2014 15:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"http://techcrunch.com/video/shipstr-makes-shipping-brokers-obsolete/518410655/", 
+	"body":"Maybe I should get a new shipping broker.\n Wow this kid looks a lot like Newman from Sienfield.\n I wonder if this guy is legit",
+	"date":"Tue Sept 05 2014 15:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"http://tylergaw.com/articles/building-osx-apps-with-js", 
+	"body":"Woah! You can make Mac Apps with Javascript??\nI think I am going to try to starting making a Mac app after I get done DBC.\n Maybe I will get started on making a sidenotes Mac app....watch out Evernote!",
+	"date":"Tue Oct 01 2014 15:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"http://www.cambridgeentrepreneuracademy.com/chinese-billionaire-says-if-youre-poor-at-35-you-deserve-it/", 
+	"body":"Jack Ma is a beast.\nYou're success at 35 will be directly related to how ambitious you are. Interesting concept. Alibaba is a pretty cool name.",
+	"date":"Tue Jun 21 2014 15:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"http://n12v.com/2-way-data-binding/", 
+	"body":"Two way data binding in a lot of different frameworks. Tow way data binding seems pretty slick. Maybe I need to learn angular too! Meteor? Angular? Backbone? Oh my!",
+	"date":"Tue Sept 29 2014 15:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"http://dev.ghost.org/prevent-master-push/", 
+	"body":"Sweet Hack to stop pushing to Master by accident!\nMaybe DBC should install this on all the Phase 1 computers.",
+	"date":"Thurs Sept 15 2014 12:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"http://gitimmersion.com/", 
+	"body":"Learn Git well. git commit -p seems to be really helpful. Maybe I will start using that one day. Too legit to Git!",
+	"date":"Tue Oct 02 2014 15:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"http://wps.aw.com/wps/media/objects/2234/2287950/javascript_refererence.pdf", 
+	"body":"Javascript Cheat-Sheet. This is such a helpful reference. Start using the console.log(); statement some more for debugging.",
+	"date":"Tue Jun 05 2014 15:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"http://mentoring.devbootcamp.com/availabilities", 
+	"body":"Mentoring availabilities. Some of the best tutors so far - Sonny, Phil, Brendan.",
+	"date":"Tue Sept 11 2014 15:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"http://robots.thoughtbot.com/sandi-metz-rules-for-developers", 
+	"body":"5 lines per method! Woah! Excluding the def & the end! That is crazy! -- UPDATE: Psshhhh, I can write all my methods in 3 lines.",
+	"date":"Wed Sept 14 2014 15:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"http://blog.teamtreehouse.com/getting-started-with-handlebars-js", 
+	"body":"Handlebars.js Templating. This will be really useful when I get started building my Meteor app next week. Also, I think I will be able to use this in a lot of Javascript stuff. Seems a lot like ERB.",
+	"date":"Mon Sept 18 2014 15:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"http://www.mailbait.info/index.html", 
+	"body":"Fill your inbox with some a whole lot of junk mail....or prank some of your friends. ",
+	"date":"Tue Oct 15 2014 15:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"http://www.fullstackpython.com/", 
+	"body":"Learn Full-Stack Python. Seems a lot like Ruby. I can probabably pick it up in a few weeks. Maybe I'll start looking into that soon. Hmmmm. Python or Javascript???",
+	"date":"Tue Mar 05 2014 15:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"http://bjorn.tipling.com/all-this", 
+	"body":"Some more explanation on JavaScript's 'this' keyword. Eh, Nathan explains it better!",
+	"date":"Tue Oct 01 2014 15:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"http://www.sitepoint.com/rubyists-time-pry-irb/", 
+	"body":"Why PRY is 100x's better than IRB. There are so many cool things that PRY is able to do. Maybe I should just submit a pull request to the Rails project to make this the default in Rails.",
+	"date":"Tue Mar 05 2014 15:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"https://github.com/bbatsov/ruby-style-guide",
+	"body":"Ruby style guide. I am not sure if my ruby code looks as nice as this ruby code, but this is definitely a good reference. Maybe I should read this through before presentations. Oh wait, our whole project is in JavaScript!",
+	"date":"Tue Apr 20 2014 15:57:41 GMT-0400 (EDT)"
+	},
+		{
+	"url":"https://gist.github.com/nickgio/bb2f00259f7b9b44ac10", 
+	"body":"I thought I knew how to create a seed file. But it turns out I was wrong. Myles provides a good outline for doing that here.",
+	"date":"Tue Sept 10 2014 15:57:41 GMT-0400 (EDT)"
+	}
+	]
+}
+
+
+
+
+
+
+
