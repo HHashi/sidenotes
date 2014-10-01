@@ -24,7 +24,7 @@ Sidenotes is always there when you need it. With the single click of a button, o
 
 We eliminate any unnecessary steps, leaving you with the simplest process for taking notes & *annotating the web*.
 
-# Sidenotes, the App
+## Sidenotes, the App
 
 Sidenotes is packaged into a simple Chrome Extension, meaning your notes are never far away. 
 
@@ -36,14 +36,14 @@ Your notes are linked with the URL where you took the note and will appear upon 
 
 If you need to pull up a past note or url you may visit our search page, which will allow you to redirect back to the URL and have your note ready to edit.
 
-# Installation
+## Installation
 
 Sidenotes is built entirely in HTML, CSS & JavaScript. You can download it...
 
 * From the [Chrome Web Store](https://chrome.google.com/webstore/detail/#/#)
 * Download it directly [here](#)
 
-# The Team
+## The Team
 * [Jeremy Salazar](https://github.com/jcsalaza)
 * [Nathan Zeplowitz](https://github.com/n-zeplo)
 * [Nick Giovacchini](https://github.com/nickgio)
