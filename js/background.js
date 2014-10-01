@@ -161,14 +161,14 @@ function initDatastore(){
     chrome.storage.onChanged.addListener(function(changes, namespace) {
       if(changes['sidepanelNote']){
         var existingRecord = currentTable.query({url: changes['sidepanelNote']['newValue']['url']});
-        datastoreController.updateOrAddRecord(currentTable, changes['sidepanelNote'], existingRecord[0]);
+        datastoreController.updateOrAddRecord(changes['sidepanelNote'], existingRecord[0]);
       }
     });
 
     // Add listener for changed records on datastore
     datastore.recordsChanged.addListener(function(event) {
       var changedRecords = event.affectedRecordsForTable(currentTable._tid);
-      setBackgroundNoteToChromeStorage(changedRecords[0]);
+      datastoreController.setRemoteNoteToLocalStorage(changedRecords[0]);
     });
   });
 };
