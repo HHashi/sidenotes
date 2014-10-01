@@ -148,8 +148,8 @@ datastoreController = {
   },
   mergeNotes: function(remoteRecord, localRecord, newNoteList){
     var remoteDate = remoteRecord.get('date');
-    var localDate = new Date(JSON.parse(localRecord['date']));
     var noteUrl = remoteRecord.get('url');
+    var localDate = new Date(JSON.parse(localRecord[noteUrl]['date']));
     if(remoteDate.getTime() > localDate.getTime()){
       var note = {};
       note[noteUrl] = {'date': JSON.stringify(remoteDate), 'body': remoteRecord.get('body')};
