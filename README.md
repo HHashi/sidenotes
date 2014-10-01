@@ -1,7 +1,7 @@
 Sidenotes
 ==========
 
-[Annotate the web](sidenotes.co).
+[Annotate the web](http://sidenotes.co).
 
 ## Writing notes on the web is clunky and frustrating.
 
