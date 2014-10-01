@@ -35,9 +35,9 @@ If you need to pull up a past note or url you may visit our search page, which w
 
 Sidenotes is built entirely in HTML5, CSS3 & JavaScript. You can download it...
 
-* From the [Chrome Web Store](https://chrome.google.com/webstore/detail/#/#)
-* Download it directly [here](#)
-* Check us out [on the web](http://sidenotes.co)
+* From the [Chrome Web Store](https://chrome.google.com/webstore/detail/#/#).
+* Download it directly [here](#).
+* Check us out [on the web](http://sidenotes.co).
 
 ## The Team
 * [Jeremy Salazar](https://github.com/jcsalaza)
