@@ -70,7 +70,7 @@ appController = {
 
 datastoreController = {
   updateOrAddRecord: function(newNote, pastNote){
-    var newNoteData = this.makeRecord(newNote['newValue']);
+    var newNoteData = this.makeRecord(newNote);
     if(pastNote) {
       pastNote.update(newNoteData);
     } else {
@@ -78,10 +78,11 @@ datastoreController = {
     }
   },
   makeRecord: function(noteData){
+    var noteUrl = Object.keys(noteData)[0];
     return {
-        url: noteData['url'],
-        body: noteData['body'],
-        date: new Date(JSON.parse(noteData['date']))
+        url: noteUrl,
+        body: noteData[noteUrl]['body'],
+        date: new Date(JSON.parse(noteData[noteUrl]['date']))
     };
   },
   setRemoteNoteToLocalStorage: function(newRemoteNote) {
@@ -157,6 +158,14 @@ datastoreController = {
       newNoteList.push(note);
       return newNoteList;
     }
+  },
+  getChangedValue: function(newNoteList, oldNoteList){
+    for(var i=0;i<newNoteList.length;i++){
+      var noteKey = Object.keys(newNoteList[i])[0];
+      if(newNoteList[i][noteKey]['body'] !== oldNoteList[i][noteKey]['body'] ){
+        return newNoteList[i];
+      }
+    }
   }
 };
 
@@ -172,10 +181,13 @@ function initDatastore(){
 
     // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
-      if(changes['sidepanelNote']){
-        console.log(changes);
-        var existingRecord = currentTable.query({url: changes['sidepanelNote']['newValue']['url']});
-        datastoreController.updateOrAddRecord(changes['sidepanelNote'], existingRecord[0]);
+      console.log(changes);
+      if(changes['sidenotes']){
+        var newNote = datastoreController.getChangedValue(changes['sidenotes']['newValue'], changes['sidenotes']['oldValue']);
+        if(typeof(newNote) === 'object'){
+          var existingRecord = currentTable.query({url: Object.keys(newNote)[0] });
+          datastoreController.updateOrAddRecord(newNote, existingRecord[0]);
+        }
       }
     });
 
