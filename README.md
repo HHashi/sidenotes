@@ -1,7 +1,7 @@
 Sidenotes
 ==========
 
-[Annotate the web](http://sidenotes.co).
+Annotate the web.
 
 ![Sidenotes in the Browser](/images/Sidenotes-Screenshot.png)
 
