@@ -79,11 +79,6 @@ datastoreController = {
   },
   makeRecord: function(noteData){
     var noteUrl = Object.keys(noteData)[0];
-    if(typeof(noteData[noteUrl]['date']) !== "object"){
-      var currentDate = (new Date(JSON.parse(noteData[noteUrl]['date'])));
-    } else {
-      var currentDate = noteData[noteUrl]['date']
-    }
     return {
         url: noteUrl,
         body: noteData[noteUrl]['body'],
@@ -132,10 +127,12 @@ datastoreController = {
       if(chromeLocalRecords.length>0){
         for(var j=0;j<chromeLocalRecords.length;j++){
           if(noteUrl == Object.keys(chromeLocalRecords[j])[0]){
+             console.log(datastoreRecords[i].get('date'));
             newNoteList = this.mergeNotes(datastoreRecords[i], chromeLocalRecords[j], newNoteList);
             break;
           } else if (j === chromeLocalRecords.length-1){
             var note = {};
+            console.log('Datastore date', datastoreRecords[i].get('date'))
             note[noteUrl] = {'date': datastoreRecords[i].get('date'), 'body':datastoreRecords[i].get('body')};
             newNoteList.push(note);
           }
@@ -151,15 +148,17 @@ datastoreController = {
   mergeNotes: function(remoteRecord, localRecord, newNoteList){
     var remoteDate = remoteRecord.get('date');
     var localDate = new Date(localRecord['date']);
+    console.log(remoteDate);
+    console.log(localDate);
     var noteUrl = remoteRecord.get('url');
     if(remoteDate.getTime() > localDate.getTime()){
       var note = {};
-      note[noteUrl] = {'date': remoteRecord.get('date'), 'body': remoteRecord.get('body')};
+      note[noteUrl] = {'date': JSON.stringify(remoteDate), 'body': remoteRecord.get('body')};
       newNoteList.push(note);
       return newNoteList;
     } else {
       var note = {};
-      note[noteUrl] = {'date': localRecord[noteUrl]['date'], 'body': localRecord[noteUrl]['body']};
+      note[noteUrl] = {'date': JSON.stringify(localDate), 'body': localRecord[noteUrl]['body']};
       newNoteList.push(note);
       return newNoteList;
     }
@@ -180,7 +179,6 @@ function initDatastore(){
     if (error) {
       console.log('Error opening default datastore: ' + error);
     }
-
     // Open table in datastore
     currentTable = datastore.getTable('Sidenotes');
 
@@ -194,7 +192,6 @@ function initDatastore(){
         }
       }
     });
-
     // Add listener for changed records on datastore
     datastore.recordsChanged.addListener(function(event) {
       var changedRecords = event.affectedRecordsForTable(currentTable._tid);

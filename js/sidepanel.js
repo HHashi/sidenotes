@@ -34,6 +34,10 @@ document.addEventListener( "DOMContentLoaded", function(){
     var newNote = {};
     chrome.storage.local.get(null, function(results){
       var localNotes = results['sidenotes'];
+      if(localNotes.length === 0){
+          newNote[currentLocation] = {'body': JSON.stringify(textarea.value), 'date': JSON.stringify(new Date()) };
+          localNotes.push(newNote);
+      }
       for(var i=0;i<localNotes.length;i++){
         if(currentLocation == Object.keys(localNotes[i])[0]){
           localNotes[i][currentLocation] =  {'body': JSON.stringify(textarea.value), 'date': JSON.stringify(new Date()) };
