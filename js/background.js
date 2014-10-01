@@ -124,11 +124,12 @@ datastoreController = {
     var newNoteList = [];
     for (var i=0;i<datastoreRecords.length;i++) {
       var noteUrl = datastoreRecords[i].get('url');
-      if(chromeLocalRecords[0]){
-        for(var i=0;i<chromeLocalRecords.length;i++){
-          if(noteUrl === toString(Object.keys(chromeLocalRecords[i])[0])){
-            this.mergeNotes(datastoreRecords[i], chromeLocalRecords[i], chromeLocalRecords);
-          } else {
+      if(chromeLocalRecords.length>0){
+        for(var j=0;j<chromeLocalRecords.length;j++){
+          if(noteUrl == Object.keys(chromeLocalRecords[j])[0]){
+            newNoteList = this.mergeNotes(datastoreRecords[i], chromeLocalRecords[j], newNoteList);
+            break;
+          } else if (j === chromeLocalRecords.length-1){
             var note = {};
             note[noteUrl] = {'date': datastoreRecords[i].get('date'), 'body':datastoreRecords[i].get('body')};
             newNoteList.push(note);
@@ -142,12 +143,20 @@ datastoreController = {
     };
     return newNoteList;
   },
-  mergeNotes: function(remoteRecord, localRecord, allLocalRecords){
+  mergeNotes: function(remoteRecord, localRecord, newNoteList){
     var remoteDate = remoteRecord.get('date');
-    var localDate = new Date(JSON.parse(localRecords['date']));
-    var noteURL = remoteRecord.get('url');
+    var localDate = new Date(localRecord['date']);
+    var noteUrl = remoteRecord.get('url');
     if(remoteDate.getTime() > localDate.getTime()){
-      chromeLocalRecords = {noteUrl: {'date': remoteRecord.get('date'), 'body':remoteRecord.get('body')}};
+      var note = {};
+      note[noteUrl] = {'date': remoteRecord.get('date'), 'body': remoteRecord.get('body')};
+      newNoteList.push(note);
+      return newNoteList;
+    } else {
+      var note = {};
+      note[noteUrl] = {'date': localRecord[noteUrl]['date'], 'body': localRecord[noteUrl]['body']};
+      newNoteList.push(note);
+      return newNoteList;
     }
   }
 };
@@ -169,6 +178,8 @@ function initDatastore(){
         datastoreController.updateOrAddRecord(changes['sidepanelNote'], existingRecord[0]);
       }
     });
+
+
 
     // Add listener for changed records on datastore
     datastore.recordsChanged.addListener(function(event) {
