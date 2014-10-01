@@ -79,10 +79,15 @@ datastoreController = {
   },
   makeRecord: function(noteData){
     var noteUrl = Object.keys(noteData)[0];
+    if(typeof(noteData[noteUrl]['date']) !== "object"){
+      var currentDate = (new Date(JSON.parse(noteData[noteUrl]['date'])));
+    } else {
+      var currentDate = noteData[noteUrl]['date']
+    }
     return {
         url: noteUrl,
         body: noteData[noteUrl]['body'],
-        date: new Date(JSON.parse(noteData[noteUrl]['date']))
+        date: currentDate
     };
   },
   setRemoteNoteToLocalStorage: function(newRemoteNote) {
@@ -160,8 +165,8 @@ datastoreController = {
     }
   },
   getChangedValue: function(newNoteList, oldNoteList){
-    for(var i=0;i<newNoteList.length;i++){
-      var noteKey = Object.keys(newNoteList[i])[0];
+    for(var i=0;i<oldNoteList.length;i++){
+      var noteKey = Object.keys(oldNoteList[i])[0];
       if(newNoteList[i][noteKey]['body'] !== oldNoteList[i][noteKey]['body'] ){
         return newNoteList[i];
       }
@@ -181,7 +186,6 @@ function initDatastore(){
 
     // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
-      console.log(changes);
       if(changes['sidenotes']){
         var newNote = datastoreController.getChangedValue(changes['sidenotes']['newValue'], changes['sidenotes']['oldValue']);
         if(typeof(newNote) === 'object'){
