@@ -52,7 +52,7 @@ document.addEventListener( "DOMContentLoaded", function(){
       for(var i=0;i<localNotes.length;i++){
         var urlKey = Object.keys(localNotes[i])[0];
         if(currentLocation == urlKey){
-          textarea.value = localNotes[i][urlKey]['body'];
+          textarea.value = JSON.parse(localNotes[i][urlKey]['body']);
         }
       }
     });
