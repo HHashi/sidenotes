@@ -9,8 +9,6 @@ The current process is all too familar. While reading articles or watching video
 
 Pause a video, leave an article, switch tabs, then jot down useful pieces of information. Then go back to the video or article, and find where you left off. This wastes minutes of time _everyday_.
 
-We found ourselves accessing the same sites time and time again looking for a single piece of information we found useful last time we accessed the site. 
-
 We were frustrated with the disconnect between traditional note-taking, and the fluid nature of the web, so we came up with the [solution](sidenotes.co).
 
 ## Write notes quickly without distraction
