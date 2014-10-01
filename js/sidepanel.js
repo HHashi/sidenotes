@@ -18,26 +18,37 @@ document.addEventListener( "DOMContentLoaded", function(){
     });
 
     if (sidepanelBody === backgroundBody) {
-      indicator.style.background='#2ECC71'
-    };
+      indicator.style.background='#2ECC71';
+    }
 
   });
 
   // Create note from textarea content
   function getNewIframeData() {
     if (textarea.value){
-      storeIframeData()
+      storeIframeData();
     }
-  };
+  }
 
   function storeIframeData(){
-    var chromeStorage = {};
-    chromeStorage['sidepanelNote'] = { 'url': currentLocation, 'body': JSON.stringify(textarea.value), 'date': JSON.stringify(new Date()) };
-      chrome.storage.local.set(chromeStorage, function() {});
+    var newNote = {};
+    chrome.storage.local.get(null, function(results){
+      var localNotes = results['sidenotes'];
+      for(var i=0;i<localNotes.length;i++){
+        if(currentLocation == Object.keys(localNotes[i])[0]){
+          localNotes[i][currentLocation] =  {'body': JSON.stringify(textarea.value), 'date': JSON.stringify(new Date()) };
+        } else if (i === localNotes.length-1){
+          newNote[currentLocation] = {'body': JSON.stringify(textarea.value), 'date': JSON.stringify(new Date()) };
+          localNotes.push(newNote);
+        }
+      }
+      chrome.storage.local.set({'sidenotes': localNotes}, function() {});
+    });
   }
 
   function displayStoredData(){
     chrome.storage.local.get(null, function(result){
+
       if(result['backgroundNote']['url'] === currentLocation){
         textarea.value = JSON.parse(result['backgroundNote']['body']);
       }
@@ -52,7 +63,7 @@ document.addEventListener( "DOMContentLoaded", function(){
     clearTimeout(timeoutId);
 
     if(textarea.value) {
-      indicator.style.background='#f5d44f'
+      indicator.style.background='#f5d44f';
     };
 
     timeoutId = setTimeout(function() {
