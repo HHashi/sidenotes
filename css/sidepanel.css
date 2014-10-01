@@ -1,6 +1,5 @@
 @import url("fontello.css");
 
-@media screen (min-width: 661px; )
 
 @font-face {
   font-family: 'Open Sans';
@@ -96,4 +95,22 @@ textarea {
   height: 85vh;
   border: 1px solid black;
   margin-top: 44px;
+}
+
+@media only screen and (max-height:655px) {
+  textarea {
+    height: 80vh;
+  }
+}
+
+@media only screen and (max-height:555px) {
+  textarea {
+    height: 75vh;
+  }
+}
+
+@media only screen and (max-height:440px) {
+  textarea {
+    height: 58vh;
+  }
 }
