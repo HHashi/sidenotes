@@ -4,10 +4,10 @@ document.addEventListener( "DOMContentLoaded", function(){
 
   document.querySelector("#note-search").addEventListener('keyup', function(){
     var searchParams = document.querySelector("#note-search").value;
-    var results = fuse.search(searchParams);
     if (searchParams === ""){
       displayResults(formattedRecords);
     } else {
+      var results = fuse.search(searchParams);
       displayResults(results);
     }
   });

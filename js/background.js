@@ -1,5 +1,7 @@
 var DROPBOX_APP_KEY = 'e4fbthwtr2v9ksp';
 
+var currentTable;
+
 var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
 
 client.onAuthStepChange.addListener(function(event) {
@@ -180,7 +182,7 @@ function initDatastore(callback){
       console.log('Error opening default datastore: ' + error);
     }
     // Open table in datastore
-    var currentTable = datastore.getTable('Sidenotes');
+    currentTable = datastore.getTable('Sidenotes');
 
     // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
