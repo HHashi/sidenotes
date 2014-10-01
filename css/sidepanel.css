@@ -1,5 +1,7 @@
 @import url("fontello.css");
 
+@media screen (min-width: 661px; )
+
 @font-face {
   font-family: 'Open Sans';
   src: url(fonts/OpenSans-Regular.ttf);
@@ -23,6 +25,7 @@ body {
 }
 
 h1 {
+  height: 3vh;
   bottom: 0;
   color: #000;
   font-family: 'Source Code Pro', monospace, sans-serif;
@@ -47,7 +50,7 @@ h1 {
 }
 
 nav {
-  height: 20px;
+  /*height: 3vh;*/
   margin-bottom: 24px;
   width: 87%;
   position: fixed;
@@ -90,6 +93,7 @@ textarea {
   outline: 0;
   resize: none;
   width: 260px;
-  height: 57em;
+  height: 85vh;
+  border: 1px solid black;
   margin-top: 44px;
 }
