@@ -10,6 +10,7 @@ client.onAuthStepChange.addListener(function(event) {
       appController.toggleSidePanel();
     });
     initDatastore();
+    datastoreController.syncRemoteStorage();
   }
 });
 
