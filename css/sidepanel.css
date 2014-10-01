@@ -52,18 +52,19 @@ nav {
   width: 87%;
   position: fixed;
   background-color: #F8F8F8;
-  padding: .5em .1em;
-  padding-top: 1em;
+  /*padding: .5em .1em;*/
+  padding-top: 15px;
   top: 0;
 }
 
 #sync-indicator {
   background: #2ECC71;
   border-radius: 5px;
-  display: block;
+  display: inline-block;
   float: left;
   height: 8px;
   width: 8px;
+  margin-top: 5px;
 }
 
 nav a {
