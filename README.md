@@ -3,6 +3,8 @@ Sidenotes
 
 [Annotate the web](http://sidenotes.co).
 
+![Sidenotes in the Browser](/images/Sidenotes-Screenshot.png)
+
 ## Writing notes on the web is clunky and frustrating.
 
 The current process is all too familar. While reading articles or watching videos online, you come across useful information that you would like to jot down to store your thoughts. 
