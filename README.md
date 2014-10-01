@@ -6,7 +6,7 @@ OR
 
 Annotate the web.
 
-# Writing notes on the web is clunky and frustrating.
+## Writing notes on the web is clunky and frustrating.
 
 The current process is all too familar. While reading articles or watching videos online, we come across useful information that we would like to jot down to store our thoughts. 
 
