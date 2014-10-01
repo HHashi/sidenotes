@@ -25,8 +25,6 @@ Sidenotes is packaged into a simple Chrome Extension, meaning your notes are nev
 
 We leverage the power of the [Dropbox Datastore API](https://www.dropbox.com/developers/datastore) and [Google Chrome Local Storage](https://developer.chrome.com/extensions/storage) to sync your notes immediately, both **_online_** and **_offline_**.
 
-A simple keystroke slides in the extension's note pad from the right side of your screen. 
-
 Your notes are linked with the URL where you took the note and will appear upon your next visit. 
 
 If you need to pull up a past note or url you may visit our search page, which will allow you to redirect back to the URL and have your note ready to edit.
