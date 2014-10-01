@@ -1,8 +1,5 @@
 Sidenotes
 ==========
-Quickly write notes in the sidebar of your browser *without distraction*.
-
-OR
 
 Annotate the web.
 
