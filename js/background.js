@@ -79,10 +79,11 @@ datastoreController = {
   },
   makeRecord: function(noteData){
     var noteUrl = Object.keys(noteData)[0];
+    console.log("noteData", noteData[noteUrl]['date'])
     return {
         url: noteUrl,
         body: noteData[noteUrl]['body'],
-        date: currentDate
+        date: new Date(JSON.parse(noteData[noteUrl]['date']))
     };
   },
   setRemoteNoteToLocalStorage: function(newRemoteNote) {
@@ -97,12 +98,12 @@ datastoreController = {
     for(var i=0;i<allLocalNotes.length;i++){
       if(newNote.get('url') == Object.keys(allLocalNotes[i])[0]){
         var note = {};
-        note[newNote.get('url')] = {'date': newNote.get('date'), 'body':newNote.get('body')};
+        note[newNote.get('url')] = {'date': JSON.stringify(newNote.get('date')), 'body':newNote.get('body')};
         allLocalNotes[i] = note;
         break;
       } else if (i === allLocalNotes.length-1){
         var note = {};
-        note[newNote.get('url')] = {'date': newNote.get('date'), 'body':newNote.get('body')};
+        note[newNote.get('url')] = {'date': JSON.stringify(newNote.get('date')), 'body':newNote.get('body')};
         allLocalNotes.push(note);
       }
     }
@@ -133,13 +134,13 @@ datastoreController = {
           } else if (j === chromeLocalRecords.length-1){
             var note = {};
             console.log('Datastore date', datastoreRecords[i].get('date'))
-            note[noteUrl] = {'date': datastoreRecords[i].get('date'), 'body':datastoreRecords[i].get('body')};
+            note[noteUrl] = {'date': JSON.stringify(datastoreRecords[i].get('date')), 'body':datastoreRecords[i].get('body')};
             newNoteList.push(note);
           }
         }
       } else {
         var note = {};
-        note[noteUrl] = {'date': datastoreRecords[i].get('date'), 'body':datastoreRecords[i].get('body')};
+        note[noteUrl] = {'date': JSON.stringify(datastoreRecords[i].get('date')), 'body':datastoreRecords[i].get('body')};
         newNoteList.push(note);
       }
     }
@@ -147,9 +148,7 @@ datastoreController = {
   },
   mergeNotes: function(remoteRecord, localRecord, newNoteList){
     var remoteDate = remoteRecord.get('date');
-    var localDate = new Date(localRecord['date']);
-    console.log(remoteDate);
-    console.log(localDate);
+    var localDate = new Date(JSON.parse(localRecord['date']));
     var noteUrl = remoteRecord.get('url');
     if(remoteDate.getTime() > localDate.getTime()){
       var note = {};
