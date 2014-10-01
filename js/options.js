@@ -1,5 +1,7 @@
 document.addEventListener( "DOMContentLoaded", function(){
 
+  var appController = chrome.extension.getBackgroundPage().appController;
+
   document.querySelector("#note-search").addEventListener('keyup', function(){
     var searchParams = document.querySelector("#note-search").value;
     var results = fuse.search(searchParams);
@@ -8,6 +10,12 @@ document.addEventListener( "DOMContentLoaded", function(){
     } else {
       displayResults(results);
     }
+  });
+
+  document.querySelector('.dropbox-signout').addEventListener('click', function(e){
+    e.preventDefault();
+    appController.signOut();
+    window.close();
   });
 
   document.querySelector('#note-search').addEventListener('search', function(){
