@@ -24,6 +24,8 @@ appController = {
     client.authenticate(function(error){
       if(error){
         client.reset();
+      } else {
+        window.open('http://sidenotes.co/tutorial.html'); // Opens Tutorial Page
       }
     });
   },
