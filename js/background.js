@@ -7,7 +7,9 @@ var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
 client.onAuthStepChange.addListener(function(event) {
   if (client.isAuthenticated()) {
     chrome.commands.onCommand.addListener(function(command) {
-      appController.toggleSidePanel();
+      if(appController.isAuthenticated){
+        appController.toggleSidePanel();
+      }
     });
     initDatastore(datastoreController.syncRemoteStorage);
   }
@@ -15,7 +17,6 @@ client.onAuthStepChange.addListener(function(event) {
 
 client.authenticate({interactive:false}, function (error) {
   if (error) {
-    alert('Authentication error: ' + error);
     client.reset();
   }
 });
@@ -25,7 +26,11 @@ appController = {
     return client.isAuthenticated();
   },
   authenticate: function(){
-    client.authenticate();
+    client.authenticate(function(error){
+      if(error){
+        client.reset();
+      }
+    });
   },
   signOut: function(){
     client.signOut(null, function(){
