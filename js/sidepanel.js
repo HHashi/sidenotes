@@ -48,9 +48,12 @@ document.addEventListener( "DOMContentLoaded", function(){
 
   function displayStoredData(){
     chrome.storage.local.get(null, function(result){
-
-      if(result['backgroundNote']['url'] === currentLocation){
-        textarea.value = JSON.parse(result['backgroundNote']['body']);
+      var localNotes = result['sidenotes'];
+      for(var i=0;i<localNotes.length;i++){
+        var urlKey = Object.keys(localNotes[i])[0];
+        if(currentLocation == urlKey){
+          textarea.value = localNotes[i][urlKey]['body'];
+        }
       }
     });
   }
