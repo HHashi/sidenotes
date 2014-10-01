@@ -37,7 +37,7 @@ document.addEventListener( "DOMContentLoaded", function(){
       noteLinks[i].addEventListener('click', function(e) {
         e.preventDefault();
         chrome.tabs.create({url: this.getAttribute('href')}, function(tab){
-          backgroundPage.appController.toggleSidePanel();
+          appController.toggleSidePanel();
         });
       });
     }
