@@ -1,10 +1,4 @@
-{ "key":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgy7Xe+BFgIUXk9AWEx6d
-  /FprOwp1+WykAw4kATauk83unOdikTARftvrLNP7fXx6l6KraVp7ftA6ln2+/S9a
-  giL3gd2cGdNl+GQ1qMH4KJFIRA4fuMYCPUQD0TsSt8WBS2tc/kfU1X43HqVg382H
-  YLArDagT6YYrjhPvifTZ3wc0fDmrPpJ/BNWg6iTJmpf1lWubKGdiaTaBmZHJ99CH
-  wOdbEeUyRZIYblwSSJSb5pip0br7NBqPzCegPM639OwwUrN/iaAkndxxGXfR9B0g
-  Z1TcZ+Sy9g4/okrDP0WojXCtGcZy+Ory1RQ7nbvkBTqNc7O63JTu4yCL0x7TncnG
-  lQIDAQAB",
+{ 
   "name": "Sidenotes",
   "description": "Annotate the web.",
   "short_name": "Annotate the web",
