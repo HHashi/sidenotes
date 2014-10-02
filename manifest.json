@@ -1,15 +1,15 @@
 {
-  "key": "neeknnnjmpbdicafijkbnlmmlllfkhfh",
   "name": "Sidenotes",
   "description": "Annotate the web.",
+  "short_name": "Annotate the web",
   "version": "0.8",
   "manifest_version": 2,
   "icons": {
-    "16":"icon16.png",
-    "32":"icon32.png",
-    "48":"icon48.png",
-    "64":"icon64.png",
-    "128": "icon128.png"},
+    "16":"icon_16.png",
+    "32":"icon_32.png",
+    "48":"icon_48.png",
+    "64":"icon_64.png",
+    "128": "icon_128.png"},
   "browser_action": {
     "default_icon": "icon.png",
     "default_title": "Sidenotes",
