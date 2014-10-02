@@ -3,7 +3,8 @@
 1. [ ] Check the sign-in workflow. 
     -    [ ] Once in the Chrome store:
         -    [ ] Make sure the extensions installs correctly
-        -    [ ] It should then redirect to the tutorial/landing page
+        -    [X] It should then redirect to the tutorial/landing page
+          - (BUG: signing in and out multiple times causes problems with the sign in button in the popup and the toggle close of the sidepanel)
 
 2. [ ] Hotkey and button toggle sidebar
     - [ ] You shouldn't be able to toggle unless you're logged in.
