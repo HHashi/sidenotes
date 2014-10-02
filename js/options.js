@@ -1,6 +1,6 @@
 document.addEventListener( "DOMContentLoaded", function(){
-
-  var appController = chrome.extension.getBackgroundPage().appController;
+  var backgroundPage = chrome.extension.getBackgroundPage();
+  var appController = backgroundPage.appController;
 
   document.querySelector("#note-search").addEventListener('keyup', function(){
     var searchParams = document.querySelector("#note-search").value;
@@ -37,7 +37,7 @@ document.addEventListener( "DOMContentLoaded", function(){
   };
 
   var fuse = new Fuse(formattedRecords, options);
-  displayResults(formattedRecords, addActionToNoteLink);
+  setAllNotes();
 
   function addActionToNoteLink(){
     var noteLinks = document.querySelectorAll(".note-url");
@@ -51,6 +51,15 @@ document.addEventListener( "DOMContentLoaded", function(){
     }
   }
 
+  function setAllNotes(){
+    allRecords = chrome.extension.getBackgroundPage().currentTable.query();
+    formattedRecords = formatNotes(allRecords, 'date', 'url', 'body');
+    displayResults(formattedRecords, addActionToNoteLink);
+  }
+
+  backgroundPage.openDatastore.recordsChanged.addListener(function(event) {
+    setAllNotes();
+  });
 });
 
 function displayResults(list, callback){

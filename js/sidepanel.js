@@ -10,7 +10,6 @@ document.addEventListener( "DOMContentLoaded", function(){
   displayStoredData();
   textarea.focus();
 
-  //Query Local Storage Using URL and compare body
   chrome.storage.onChanged.addListener(function(changes, namespace) {
     chrome.storage.local.get(null, function(result){
       if(result['saving']==='true'){
@@ -20,10 +19,8 @@ document.addEventListener( "DOMContentLoaded", function(){
         indicator.style.background='#f5d44f';
       }
     });
-
   });
 
-  // Create note from textarea content
   function getNewIframeData() {
     if (textarea.value){
       storeIframeData();
@@ -34,10 +31,8 @@ document.addEventListener( "DOMContentLoaded", function(){
     var note = {};
     chrome.storage.local.get(null, function(results){
         if(results[noteKey]){
-          console.log(noteKey)
           note[noteKey] = {'url': currentUrl,'body': JSON.stringify(textarea.value), 'createdAt': results[noteKey].createdAt, 'updatedAt': JSON.stringify(new Date()) };
         } else {
-          console.log(noteKey)
           note[noteKey] = {'url': currentUrl,'body': JSON.stringify(textarea.value), 'createdAt': JSON.stringify(new Date()), 'updatedAt': '' };
         }
       chrome.storage.local.set(note, function() {});
@@ -53,7 +48,7 @@ document.addEventListener( "DOMContentLoaded", function(){
     });
   }
 
-  // Autosave
+
   var timeoutId;
 
   textarea.addEventListener('keyup', function(){
