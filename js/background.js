@@ -82,9 +82,7 @@ appController = {
 datastoreController = {
   updateOrAddRecord: function(newNote, pastNote, hashKey){
     var newNoteData = this.makeRecord(newNote[hashKey]);
-    if(pastNote.get('body') === newNote[hashKey]['newValue']['body']) {
-      return
-    } else if (pastNote){
+    if(pastNote && pastNote.get('body') !== newNote[hashKey]['newValue']['body']) {
       pastNote.update(newNoteData);
     } else {
       currentTable.insert(newNoteData);
