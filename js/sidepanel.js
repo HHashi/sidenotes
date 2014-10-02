@@ -60,7 +60,7 @@ document.addEventListener( "DOMContentLoaded", function(){
 
     timeoutId = setTimeout(function() {
       getNewIframeData();
-    }, 200);
+    }, 500);
   });
 
 });
