@@ -40,9 +40,6 @@ document.addEventListener( "DOMContentLoaded", function(){
 
   function displayStoredData(){
     chrome.storage.local.get(null, function(result){
-      console.log(result)
-      console.log(noteKey)
-      console.log(result[noteKey]);
       if(result[noteKey]){
         textarea.value = JSON.parse(result[noteKey]['body']);
       }

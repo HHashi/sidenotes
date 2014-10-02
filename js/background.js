@@ -81,8 +81,6 @@ appController = {
 
 datastoreController = {
   updateOrAddRecord: function(newNote, pastNote, hashKey){
-    console.log('newNote', newNote)
-    console.log('pastNote', pastNote.get('body'))
     var newNoteData = this.makeRecord(newNote[hashKey]);
     if(pastNote.get('body') === newNote[hashKey]['newValue']['body']) {
       return
@@ -101,7 +99,6 @@ datastoreController = {
     };
   },
   setRemoteNoteToLocalStorage: function(newRemoteNote) {
-    console.log(newRemoteNote)
     chrome.storage.local.get(null, function(result){
         var newLocalNotes = datastoreController.mergeNotes([newRemoteNote], result);
     });
@@ -116,11 +113,9 @@ datastoreController = {
     }
   },
   mergeNotes: function(datastoreRecords, chromeLocalRecords){
-    console.log(chromeLocalRecords)
     if(chromeLocalRecords){
       for (var i=0;i<datastoreRecords.length;i++) {
         var noteKey = hashConverter.hex(datastoreRecords[i].get('url'));
-        console.log(chromeLocalRecords);
         var localMatchNote = chromeLocalRecords[noteKey];
         var newNote = {};
         if(localMatchNote){
