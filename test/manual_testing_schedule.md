@@ -14,7 +14,7 @@
 4. [X] Dropbox datastore record should be updated instantly with the most recent edit of the note for a certain url
 5. [X] Datastore should return most recent note to chrome storage based on url
 6. [X] Textarea should be populated with most recent note upon toggle open
-7. [ ] Check that the textarea populates correctly between tabs (and computers)
-    - BUG: Between computers signed in on the same account, it doesn't currently update in real-time w/o refreshing.
+7. [X] Check that the textarea populates correctly between tabs (and computers)
+    - **EDIT: BUG FIXED** BUG: Between computers signed in on the same account, it doesn't currently update in real-time w/o refreshing.
 8. [X] Search page should return correct results based on input
 9. [X] Menu buttons on sidebar are functional
