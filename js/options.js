@@ -23,7 +23,7 @@ document.addEventListener( "DOMContentLoaded", function(){
   });
 
   var allRecords = chrome.extension.getBackgroundPage().currentTable.query();
-  var formattedRecords = formatNotes(allRecords, 'date', 'url', 'body');
+  var formattedRecords = formatNotes(allRecords, 'date', 'url', 'body', 'score');
 
   var options = {
     caseSensitive: false,
@@ -36,7 +36,6 @@ document.addEventListener( "DOMContentLoaded", function(){
     keys: ["url", "body"]
   };
   var fuse = new Fuse(formattedRecords, options);
-  console.log(fuse);
   displayResults(formattedRecords, addActionToNoteLink);
 
   function addActionToNoteLink(){
@@ -69,8 +68,11 @@ function renderNote(note){
   return '<li>'
     + '<span class="note-date">' + note.date.toLocaleString()
     + '</span>'
-    // + '<span class="note-date">' + note.score
-    // + '</span>'
+    // if () {
+    //   + '<span class="note-date">' + note.score
+    //   + '</span>'
+    //   // + searching() +
+    // }
     + '<a class="note-url" href=' + note.url
     + ' target="_blank" title="' + note.url + '">'
     + '<i class="icon-link-ext"></i>'
@@ -79,13 +81,14 @@ function renderNote(note){
     + '</li>';
 }
 
-function formatNotes(records, date, attr1, attr2 ){
+function formatNotes(records, date, url, body, score ){
   var notes = [];
   for(var i=0;i<records.length;i++){
     var eachNote = {};
     eachNote[date] = new Date(records[i].get(date));
-    eachNote[attr1] = records[i].get(attr1);
-    eachNote[attr2] = records[i].get(attr2);
+    eachNote[url] = records[i].get(url);
+    eachNote[body] = records[i].get(body);
+    eachNote[score] = records[i][score];
     notes[i] = eachNote;
   }
   return  notes.reverse();
