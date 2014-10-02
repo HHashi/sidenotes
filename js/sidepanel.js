@@ -1,8 +1,6 @@
-var backgroundNote, cursorPosition;
-
 var currentUrl = window.location.hash.slice(1).split('#')[0];
 var hashConverter = new Hashes.SHA1;
-var noteKey = hashConverter.b64(currentUrl);
+var noteKey = hashConverter.hex(currentUrl);
 
 document.addEventListener( "DOMContentLoaded", function(){
   var textarea = document.querySelector('#textarea');
@@ -42,6 +40,9 @@ document.addEventListener( "DOMContentLoaded", function(){
 
   function displayStoredData(){
     chrome.storage.local.get(null, function(result){
+      console.log(result)
+      console.log(noteKey)
+      console.log(result[noteKey]);
       if(result[noteKey]){
         textarea.value = JSON.parse(result[noteKey]['body']);
       }
