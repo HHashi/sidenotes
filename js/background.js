@@ -26,7 +26,7 @@ appController = {
       if(error){
         client.reset();
       } else {
-        chrome.tabs.create({url: "http://sidenotes.co/tutorial.html"}, function(tab){
+        chrome.tabs.create({url: "http://sidenotes.co/tutorial"}, function(tab){
           appController.toggleSidePanel();});
       };
     });
@@ -35,6 +35,7 @@ appController = {
     client.signOut(null, function(){
       client.reset();
       appController.closeAllSidePanels();
+      chrome.storage.local.clear();
     });
   },
   closeAllSidePanels: function(){
@@ -146,7 +147,7 @@ function initDatastore(callback){
 
     chrome.storage.onChanged.addListener(function(changes, namespace) {
       var hashKey = Object.keys(changes)[0];
-      if(changes[hashKey]['newValue']['url'] && changes[hashKey]['newValue']['body']){
+      if(changes[hashKey]['newValue'] && changes[hashKey]['newValue']['url'] && changes[hashKey]['newValue']['body']){
         var existingRecord = currentTable.query({url: changes[hashKey]['newValue']['url'] });
         datastoreController.updateOrAddRecord(changes, existingRecord[0], hashKey);
       }
