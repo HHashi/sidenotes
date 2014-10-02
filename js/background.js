@@ -38,7 +38,7 @@ appController = {
     });
   },
   closeAllSidePanels: function(){
-    chrome.tabs.query( {} ,function (tabs) { // The Query {} was missing here
+    chrome.tabs.query( {} ,function (tabs) {
       for (var i = 0; i < tabs.length; i++) {
         chrome.tabs.executeScript(tabs[i].id, {code: 'var sidebar = document.querySelector("#sidenotes_sidebar");document.body.removeChild(sidebar);'});
       }
@@ -140,11 +140,10 @@ function initDatastore(callback){
     if (error) {
       console.log('Error opening default datastore: ' + error);
     }
-    // Open table in datastore
+
     openDatastore = datastore;
     currentTable = datastore.getTable('Sidenotes');
 
-    // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
       if(!changes['saving']){
         var hashKey = Object.keys(changes)[0];
@@ -154,7 +153,6 @@ function initDatastore(callback){
       }
     });
 
-    // Add listener for changed records on datastore
     datastore.recordsChanged.addListener(function(event) {
       chrome.storage.local.set({saving: 'false'}, function(){});
       var changedRecords = event.affectedRecordsForTable(currentTable._tid);

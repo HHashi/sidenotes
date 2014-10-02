@@ -46,10 +46,8 @@ document.addEventListener( "DOMContentLoaded", function(){
   }
 
   backgroundPage.openDatastore.recordsChanged.addListener(function(event) {
-    console.log('hello')
     setAllNotes();
   });
-
 });
 
 function displayResults(list, callback){
