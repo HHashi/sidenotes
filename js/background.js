@@ -26,7 +26,7 @@ appController = {
       if(error){
         client.reset();
       } else {
-        chrome.tabs.create({url: "http://sidenotes.co/tutorial.html"}, function(tab){
+        chrome.tabs.create({url: "http://sidenotes.co/tutorial"}, function(tab){
           appController.toggleSidePanel();});
       };
     });
