@@ -8,7 +8,7 @@ document.addEventListener( "DOMContentLoaded", function(){
       displayResults(formattedRecords, addActionToNoteLink);
     } else {
       var results = fuse.search(searchParams);
-      displayResults(results, addActionToNoteLink);
+      displaySearchResults(results, addActionToNoteLink);
     }
   });
 
@@ -23,18 +23,19 @@ document.addEventListener( "DOMContentLoaded", function(){
   });
 
   var allRecords = chrome.extension.getBackgroundPage().currentTable.query();
-  var formattedRecords = formatNotes(allRecords, 'date', 'url', 'body', 'score');
+  var formattedRecords = formatNotes(allRecords);
 
   var options = {
     caseSensitive: false,
     includeScore: true,
     shouldSort: true,
-    threshold: 0.6,
-    location: 0,
-    distance: 100,
-    maxPatternLength: 32,
+    // threshold: 0.6,
+    // location: 0,
+    // distance: 100,
+    // maxPatternLength: 32,
     keys: ["url", "body"]
   };
+
   var fuse = new Fuse(formattedRecords, options);
   displayResults(formattedRecords, addActionToNoteLink);
 
@@ -64,15 +65,22 @@ function displayResults(list, callback){
   callback();
 }
 
+function displaySearchResults(list, callback){
+  var notes = "";
+  var noteSearchList = document.querySelector('#search-results');
+  noteSearchList.innerHTML = "";
+
+  for(var i=0;i<list.length;i++){
+    notes += renderSearchNotes(list[i]);
+  }
+  noteSearchList.innerHTML = notes;
+  callback();
+}
+
 function renderNote(note){
   return '<li>'
     + '<span class="note-date">' + note.date.toLocaleString()
     + '</span>'
-    // if () {
-    //   + '<span class="note-date">' + note.score
-    //   + '</span>'
-    //   // + searching() +
-    // }
     + '<a class="note-url" href=' + note.url
     + ' target="_blank" title="' + note.url + '">'
     + '<i class="icon-link-ext"></i>'
@@ -81,14 +89,28 @@ function renderNote(note){
     + '</li>';
 }
 
-function formatNotes(records, date, url, body, score ){
+function renderSearchNotes(note) {
+  return '<li>'
+    + '<span class="note-date">' + note['item']['date'].toLocaleString()
+    + '</span>'
+    + '<a class="note-url" href=' + note['item']['url']
+    + ' target="_blank" title="' + note['item']['url'] + '">'
+    + '<i class="icon-link-ext"></i>'
+    + '</a>'
+  + '<span class="note-score">' + (100 - note['score'] * 100).toString()+'% match'
+  + '</span>'
+    + '<p class="note-body">' + JSON.parse(note['item']['body']) + '</p>'
+    + '</li>';
+}
+
+function formatNotes(records){
   var notes = [];
   for(var i=0;i<records.length;i++){
     var eachNote = {};
-    eachNote[date] = new Date(records[i].get(date));
-    eachNote[url] = records[i].get(url);
-    eachNote[body] = records[i].get(body);
-    eachNote[score] = records[i][score];
+    eachNote['date'] = new Date(records[i].get('date'));
+    eachNote['url'] = records[i].get('url');
+    eachNote['body'] = records[i].get('body');
+    // eachNote['score'] = records[i]['score'];
     notes[i] = eachNote;
   }
   return  notes.reverse();
