@@ -1,7 +1,7 @@
 # Manual Tests For Sidenotes Workflow
 
+      - FINAL   [ ] Make sure the extensions installs correctly from the Chrome store
 1. [ ] Check the sign-in workflow.
-      -    [ ] Make sure the extensions installs correctly from the Chrome store
       -    [X] It should then redirect to the tutorial/landing page
           - **EDIT: BUG FIXED** BUG: signing in and out multiple times causes problems with the sign in button in the popup and the toggle close of the sidepanel)
 
