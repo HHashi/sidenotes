@@ -1,6 +1,8 @@
 var backgroundNote, cursorPosition;
 
-var currentLocation = window.location.hash.slice(1).split('#')[0];
+var currentUrl = window.location.hash.slice(1).split('#')[0];
+var hashConverter = new Hashes.SHA1;
+var noteKey = hashConverter.b64(currentUrl);
 
 document.addEventListener( "DOMContentLoaded", function(){
   var textarea = document.querySelector('#textarea');
