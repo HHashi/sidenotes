@@ -1,4 +1,4 @@
-var DROPBOX_APP_KEY = 'e4fbthwtr2v9ksp';
+var DROPBOX_APP_KEY = 'mpbhh63q8ya3ctd';
 
 var currentTable, openDatastore;
 
