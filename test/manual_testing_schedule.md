@@ -15,5 +15,5 @@
 5. [ ] Datatstore should return most recent note to chrome storage based on url
 6. [ ] Textarea should be populated with most recent note upon toggle open
 7. [ ] Check that the textarea populates correctly between tabs/computers
-8. [ ] Search page should return correct results based on input 
+8. [X] Search page should return correct results based on input 
 9. [ ] Menu buttons on sidebar are functional
