@@ -87,8 +87,9 @@ function displaySearchResults(list, callback){
 }
 
 function renderNote(note){
+  console.log(note)
   return '<li>'
-    + '<span class="note-date">' + note.date.toLocaleString()
+    + '<span class="note-date">' + note.updatedAt.toLocaleString()
     + '</span>'
     + '<a class="note-url" href=' + note.url
     + ' target="_blank" title="' + note.url + '">'
@@ -99,8 +100,9 @@ function renderNote(note){
 }
 
 function renderSearchNotes(note) {
+  console.log(note)
   return '<li>'
-    + '<span class="note-date">' + note['item']['date'].toLocaleString()
+    + '<span class="note-date">' + note['item']['updatedAt'].toLocaleString()
     + '</span>'
     + '<a class="note-url" href=' + note['item']['url']
     + ' target="_blank" title="' + note['item']['url'] + '">'
@@ -116,10 +118,10 @@ function formatNotes(records){
   var notes = [];
   for(var i=0;i<records.length;i++){
     var eachNote = {};
-    eachNote['date'] = new Date(records[i].get('date'));
+    eachNote['createdAt'] = new Date(records[i].get('createdAt'));
+    eachNote['updatedAt'] = new Date(records[i].get('updatedAt'));
     eachNote['url'] = records[i].get('url');
     eachNote['body'] = records[i].get('body');
-    // eachNote['score'] = records[i]['score'];
     notes[i] = eachNote;
   }
   return  notes.reverse();
