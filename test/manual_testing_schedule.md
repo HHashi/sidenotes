@@ -11,9 +11,9 @@
 
 3. [X] Textarea changes should autosave to local storage.
     - [X] Indicator light is yellow when saving and green when saved.
-4. [ ] Dropbox datastore record should be updated instantly with the most recent edit of the note for a certain url
-5. [ ] Datatstore should return most recent note to chrome storage based on url
-6. [ ] Textarea should be populated with most recent note upon toggle open
+4. [X] Dropbox datastore record should be updated instantly with the most recent edit of the note for a certain url
+5. [X] Datastore should return most recent note to chrome storage based on url
+6. [X] Textarea should be populated with most recent note upon toggle open
 7. [ ] Check that the textarea populates correctly between tabs/computers
 8. [X] Search page should return correct results based on input
 9. [X] Menu buttons on sidebar are functional
