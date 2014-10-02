@@ -35,6 +35,7 @@ appController = {
     client.signOut(null, function(){
       client.reset();
       appController.closeAllSidePanels();
+      chrome.storage.local.clear();
     });
   },
   closeAllSidePanels: function(){
