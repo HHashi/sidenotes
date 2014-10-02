@@ -81,8 +81,12 @@ appController = {
 
 datastoreController = {
   updateOrAddRecord: function(newNote, pastNote, hashKey){
+    console.log('newNote', newNote)
+    console.log('pastNote', pastNote.get('body'))
     var newNoteData = this.makeRecord(newNote[hashKey]);
-    if(pastNote) {
+    if(pastNote.get('body') === newNote[hashKey]['newValue']['body']) {
+      return
+    } else if (pastNote){
       pastNote.update(newNoteData);
     } else {
       currentTable.insert(newNoteData);
@@ -97,8 +101,9 @@ datastoreController = {
     };
   },
   setRemoteNoteToLocalStorage: function(newRemoteNote) {
+    console.log(newRemoteNote)
     chrome.storage.local.get(null, function(result){
-        var newLocalNotes = datastoreController.mergeNotes([newRemoteNote]);
+        var newLocalNotes = datastoreController.mergeNotes([newRemoteNote], result);
     });
   },
   syncRemoteStorage: function(currentTable){
@@ -106,11 +111,12 @@ datastoreController = {
     var datastoreRecords = currentTable.query();
     if(datastoreRecords){
       chrome.storage.local.get(null, function(result){
-          datastoreController.mergeNotes(datastoreRecords, result);
+        datastoreController.mergeNotes(datastoreRecords, result);
       });
     }
   },
   mergeNotes: function(datastoreRecords, chromeLocalRecords){
+    console.log(chromeLocalRecords)
     if(chromeLocalRecords){
       for (var i=0;i<datastoreRecords.length;i++) {
         var noteKey = hashConverter.hex(datastoreRecords[i].get('url'));
