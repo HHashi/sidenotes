@@ -1,7 +1,7 @@
 # Manual Tests For Sidenotes Workflow
 
       - FINAL   [ ] Make sure the extensions installs correctly from the Chrome store
-1. [ ] Check the sign-in workflow.
+1. [X] Check the sign-in workflow.
       -    [X] It should then redirect to the tutorial/landing page
           - **EDIT: BUG FIXED** BUG: signing in and out multiple times causes problems with the sign in button in the popup and the toggle close of the sidepanel)
 
@@ -15,6 +15,6 @@
 5. [X] Datastore should return most recent note to chrome storage based on url
 6. [X] Textarea should be populated with most recent note upon toggle open
 7. [ ] Check that the textarea populates correctly between tabs (and computers)
-    - BUG: Between computers signed in on the same account, it doesn't currently update in real-time w/o refreshing. 
+    - BUG: Between computers signed in on the same account, it doesn't currently update in real-time w/o refreshing.
 8. [X] Search page should return correct results based on input
 9. [X] Menu buttons on sidebar are functional
