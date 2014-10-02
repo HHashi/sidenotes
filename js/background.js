@@ -147,7 +147,7 @@ function initDatastore(callback){
 
     chrome.storage.onChanged.addListener(function(changes, namespace) {
       var hashKey = Object.keys(changes)[0];
-      if(changes[hashKey]['newValue']['url'] && changes[hashKey]['newValue']['body']){
+      if(typeof(changes[hashKey]['newValue']['url']) !== 'undefined' && typeof(changes[hashKey]['newValue']['body']) !== 'undefined'){
         var existingRecord = currentTable.query({url: changes[hashKey]['newValue']['url'] });
         datastoreController.updateOrAddRecord(changes, existingRecord[0], hashKey);
       }
