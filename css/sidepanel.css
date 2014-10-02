@@ -1,6 +1,5 @@
 @import url("fontello.css");
 
-
 @font-face {
   font-family: 'Open Sans';
   src: url(fonts/OpenSans-Regular.ttf);
@@ -16,6 +15,7 @@ html {
   padding: 0;
   min-height: 100%;
 }
+
 body {
   background: #F8F8F8;
   font-family: 'Open Sans', sans-serif;
@@ -49,12 +49,10 @@ h1 {
 }
 
 nav {
-  /*height: 3vh;*/
   margin-bottom: 24px;
   width: 87%;
   position: fixed;
   background-color: #F8F8F8;
-  /*padding: .5em .1em;*/
   padding-top: 15px;
   top: 0;
 }

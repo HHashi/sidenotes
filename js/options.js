@@ -55,15 +55,17 @@ function displayResults(list, callback){
 }
 
 function renderNote(note){
+
+  var domain = note.url.match(/(?:https?:\/\/)?(?:www\.)?(.*?)\//);
+  var truncated_domain = domain[domain.length-1].substring(0,30);
+
   return '<li>'
-    + '<span class="note-date">' + note.date.toLocaleString()
-    + '</span>'
-    + '<a class="note-url" href=' + note.url
-    + ' target="_blank" title="' + note.url + '">'
-    + '<i class="icon-link-ext"></i>'
-    + '</a>'
-    + '<p class="note-body">' + JSON.parse(note.body) + '</p>'
-    + '</li>';
+  + '<span class="note-date">' + note.date.toLocaleDateString() + '</span>'
+  + '<a class="note-url" href=' + note.url
+  + ' target="_blank" title="' + note.url + '">'
+  + '<i class="icon-link-ext"></i> ' + truncated_domain + '</a>'
+  + '<p class="note-body">' + JSON.parse(note.body) + '</p>'
+  + '</li>';
 }
 
 function formatNotes(records, date, attr1, attr2 ){
