@@ -135,6 +135,12 @@ nav {
  color: #333;
 }
 
+.note-score {
+  display: block;
+  text-align: center;
+  font-size: 10px; 
+}
+
 .note-body {
   clear: both;
   font-family: 'Source Code Pro', monospace, sans-serif;

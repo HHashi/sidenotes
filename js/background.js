@@ -1,8 +1,9 @@
 var DROPBOX_APP_KEY = 'e4fbthwtr2v9ksp';
 
-var currentTable;
+var currentTable, openDatastore;
 
 var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
+var hashConverter = new Hashes.SHA1;;
 
 client.onAuthStepChange.addListener(function(event) {
   if (client.isAuthenticated()) {
@@ -33,12 +34,14 @@ appController = {
   signOut: function(){
     client.signOut(null, function(){
       client.reset();
-      chrome.tabs.query( {} ,function (tabs) { // The Query {} was missing here
-        for (var i = 0; i < tabs.length; i++) {
-          chrome.tabs.executeScript(tabs[i].id, {code: 'var sidebar = document.querySelector("#sidenotes_sidebar");document.body.removeChild(sidebar);'});
-        }
-      });
-
+      appController.closeAllSidePanels();
+    });
+  },
+  closeAllSidePanels: function(){
+    chrome.tabs.query( {} ,function (tabs) {
+      for (var i = 0; i < tabs.length; i++) {
+        chrome.tabs.executeScript(tabs[i].id, {code: 'var sidebar = document.querySelector("#sidenotes_sidebar");document.body.removeChild(sidebar);'});
+      }
     });
   },
   toggleSidePanelScript: function(){
@@ -76,8 +79,8 @@ appController = {
 };
 
 datastoreController = {
-  updateOrAddRecord: function(newNote, pastNote){
-    var newNoteData = this.makeRecord(newNote);
+  updateOrAddRecord: function(newNote, pastNote, hashKey){
+    var newNoteData = this.makeRecord(newNote[hashKey]);
     if(pastNote) {
       pastNote.update(newNoteData);
     } else {
@@ -85,102 +88,49 @@ datastoreController = {
     }
   },
   makeRecord: function(noteData){
-    var noteUrl = Object.keys(noteData)[0];
-    console.log("noteData", noteData[noteUrl]['date'])
     return {
-        url: noteUrl,
-        body: noteData[noteUrl]['body'],
-        date: new Date(JSON.parse(noteData[noteUrl]['date']))
+        url: noteData['newValue']['url'],
+        body: noteData['newValue']['body'],
+        createdAt: new Date(JSON.parse(noteData['newValue']['createdAt'])),
+        updatedAt: new Date()
     };
   },
   setRemoteNoteToLocalStorage: function(newRemoteNote) {
     chrome.storage.local.get(null, function(result){
-      var newLocalNotes = datastoreController.addNoteToLocal(newRemoteNote, result['sidenotes']);
-      chrome.storage.local.set({'sidenotes': result['sidenotes'].concat(newLocalNotes) }, function() {});
+        var newLocalNotes = datastoreController.mergeNotes([newRemoteNote]);
     });
-
-  },
-  addNoteToLocal: function(newNote, allLocalNotes){
-    var newLocalStorage = [];
-    for(var i=0;i<allLocalNotes.length;i++){
-      if(newNote.get('url') == Object.keys(allLocalNotes[i])[0]){
-        var note = {};
-        note[newNote.get('url')] = {'date': JSON.stringify(newNote.get('date')), 'body':newNote.get('body')};
-        allLocalNotes[i] = note;
-        break;
-      } else if (i === allLocalNotes.length-1){
-        var note = {};
-        note[newNote.get('url')] = {'date': JSON.stringify(newNote.get('date')), 'body':newNote.get('body')};
-        allLocalNotes.push(note);
-      }
-    }
-
-    return newLocalStorage;
   },
   syncRemoteStorage: function(currentTable){
+    chrome.storage.local.set({saving: 'false'}, function(){});
     var datastoreRecords = currentTable.query();
-    chrome.storage.local.get(null, function(result){
-      if(typeof(result['sidenotes']) === 'object'){
-
-        var mergedNotes = datastoreController.getConcurrentNotes(datastoreRecords, result['sidenotes']);
-        chrome.storage.local.set({'sidenotes': mergedNotes }, function(){});
-      } else {
-        chrome.storage.local.set({'sidenotes': []}, function(){});
-        datastoreController.syncRemoteStorage(currentTable);
-      }
-    });
+    if(datastoreRecords){
+      chrome.storage.local.get(null, function(result){
+          datastoreController.mergeNotes(datastoreRecords, result);
+      });
+    }
   },
-  getConcurrentNotes: function(datastoreRecords, chromeLocalRecords){
-    var newNoteList = [];
-    for (var i=0;i<datastoreRecords.length;i++) {
-      var noteUrl = datastoreRecords[i].get('url');
-      if(chromeLocalRecords.length>0){
-        for(var j=0;j<chromeLocalRecords.length;j++){
-          if(noteUrl == Object.keys(chromeLocalRecords[j])[0]){
-             console.log(datastoreRecords[i].get('date'));
-            newNoteList = this.mergeNotes(datastoreRecords[i], chromeLocalRecords[j], newNoteList);
-            break;
-          } else if (j === chromeLocalRecords.length-1){
-            var note = {};
-            console.log('Datastore date', datastoreRecords[i].get('date'))
-            note[noteUrl] = {'date': JSON.stringify(datastoreRecords[i].get('date')), 'body':datastoreRecords[i].get('body')};
-            newNoteList.push(note);
+  mergeNotes: function(datastoreRecords, chromeLocalRecords){
+    if(chromeLocalRecords){
+      for (var i=0;i<datastoreRecords.length;i++) {
+        var noteKey = hashConverter.hex(datastoreRecords[i].get('url'));
+        console.log(chromeLocalRecords);
+        var localMatchNote = chromeLocalRecords[noteKey];
+        var newNote = {};
+        if(localMatchNote){
+          if(localMatchNote['body'] !== datastoreRecords[i].get('body')){
+            newNote[noteKey] = datastoreController.formatForLocalStorage(datastoreRecords[i]);
+            chrome.storage.local.set(newNote, function(){});
           }
+        } else {
+          newNote[noteKey] = datastoreController.formatForLocalStorage(datastoreRecords[i]);
+          chrome.storage.local.set(newNote, function(){});
         }
-      } else {
-        var note = {};
-        note[noteUrl] = {'date': JSON.stringify(datastoreRecords[i].get('date')), 'body':datastoreRecords[i].get('body')};
-        newNoteList.push(note);
       }
     }
-    return newNoteList;
+    chrome.storage.local.set({saving: 'true'}, function(){});
   },
-  mergeNotes: function(remoteRecord, localRecord, newNoteList){
-    var remoteDate = remoteRecord.get('date');
-    var noteUrl = remoteRecord.get('url');
-    var localDate = new Date(JSON.parse(localRecord[noteUrl]['date']));
-    if(remoteDate.getTime() > localDate.getTime()){
-      var note = {};
-      note[noteUrl] = {'date': JSON.stringify(remoteDate), 'body': remoteRecord.get('body')};
-      newNoteList.push(note);
-      return newNoteList;
-    } else {
-      var note = {};
-      note[noteUrl] = {'date': JSON.stringify(localDate), 'body': localRecord[noteUrl]['body']};
-      newNoteList.push(note);
-      return newNoteList;
-    }
-  },
-  getChangedValue: function(newNoteList, oldNoteList){
-    if(!oldNoteList){
-      return
-    }
-    for(var i=0;i<oldNoteList.length;i++){
-      var noteKey = Object.keys(oldNoteList[i])[0];
-      if(newNoteList[i][noteKey]['body'] !== oldNoteList[i][noteKey]['body'] ){
-        return newNoteList[i];
-      }
-    }
+  formatForLocalStorage: function(noteData){
+    return {'url': noteData.get('url'), 'body': noteData.get('body'), 'createdAt': JSON.stringify(noteData.get('createdAt')), 'updatedAt': JSON.stringify(new Date())};
   }
 };
 
@@ -190,21 +140,21 @@ function initDatastore(callback){
     if (error) {
       console.log('Error opening default datastore: ' + error);
     }
-    // Open table in datastore
+
+    openDatastore = datastore;
     currentTable = datastore.getTable('Sidenotes');
 
-    // Listen for changes from iframe and push to datastore
     chrome.storage.onChanged.addListener(function(changes, namespace) {
-      if(changes['sidenotes']){
-        var newNote = datastoreController.getChangedValue(changes['sidenotes']['newValue'], changes['sidenotes']['oldValue']);
-        if(typeof(newNote) === 'object'){
-          var existingRecord = currentTable.query({url: Object.keys(newNote)[0] });
-          datastoreController.updateOrAddRecord(newNote, existingRecord[0]);
-        }
+      if(!changes['saving']){
+        var hashKey = Object.keys(changes)[0];
+        console.log(changes)
+        var existingRecord = currentTable.query({url: changes[hashKey]['newValue']['url'] });
+        datastoreController.updateOrAddRecord(changes, existingRecord[0], hashKey);
       }
     });
-    // Add listener for changed records on datastore
+
     datastore.recordsChanged.addListener(function(event) {
+      chrome.storage.local.set({saving: 'false'}, function(){});
       var changedRecords = event.affectedRecordsForTable(currentTable._tid);
       datastoreController.setRemoteNoteToLocalStorage(changedRecords[0]);
     });
