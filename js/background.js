@@ -1,6 +1,6 @@
 var DROPBOX_APP_KEY = 'e4fbthwtr2v9ksp';
 
-var currentTable;
+var currentTable, openDatastore;
 
 var client = new Dropbox.Client({key: DROPBOX_APP_KEY});
 
@@ -38,7 +38,6 @@ appController = {
           chrome.tabs.executeScript(tabs[i].id, {code: 'var sidebar = document.querySelector("#sidenotes_sidebar");document.body.removeChild(sidebar);'});
         }
       });
-
     });
   },
   toggleSidePanelScript: function(){
@@ -191,6 +190,7 @@ function initDatastore(callback){
       console.log('Error opening default datastore: ' + error);
     }
     // Open table in datastore
+    openDatastore = datastore;
     currentTable = datastore.getTable('Sidenotes');
 
     // Listen for changes from iframe and push to datastore
