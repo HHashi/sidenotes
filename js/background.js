@@ -112,7 +112,7 @@ datastoreController = {
   mergeNotes: function(datastoreRecords, chromeLocalRecords){
     if(chromeLocalRecords){
       for (var i=0;i<datastoreRecords.length;i++) {
-        var noteKey = hashConverter.b64(datastoreRecords[i].get('url'));
+        var noteKey = hashConverter.hex(datastoreRecords[i].get('url'));
         console.log(chromeLocalRecords);
         var localMatchNote = chromeLocalRecords[noteKey];
         var newNote = {};
