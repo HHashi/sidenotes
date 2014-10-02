@@ -6,8 +6,9 @@
         -    [X] It should then redirect to the tutorial/landing page
           - **EDIT: BUG FIXED** BUG: signing in and out multiple times causes problems with the sign in button in the popup and the toggle close of the sidepanel)
 
-2. [ ] Hotkey and button toggle sidebar
-    - [ ] You shouldn't be able to toggle unless you're logged in.
+2. [X] Hotkey and button toggle sidebar
+    - [X] You shouldn't be able to toggle unless you're logged in.
+      - Note: related issues to the aforementioned bug, but it's working if you don't sign in and out multiple times
 
 3. [X] Textarea changes should autosave to local storage.
     - [X] Indicator light is yellow when saving and green when saved.
