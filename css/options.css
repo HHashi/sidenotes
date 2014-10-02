@@ -100,39 +100,42 @@ nav {
   width: 260px;
 }
 
+#search-results li a {
+  color: #333;
+  font-size: 10px;
+  text-decoration: none;
+}
+
 #search-results li p {
   white-space: pre-wrap;
 }
 
 #search-results li span {
   display: block;
+  font-size: 10px;
 }
 
 .note-date {
-  display: block;
   float: right;
-  font-size: 10px;
-  margin-bottom: 20px;
   text-align: right;
+}
+
+.note-score {
+  clear: both;
+  float: left;
 }
 
 .note-url {
   display: block;
   float: left;
-  font-size: 10px;
+  margin-bottom: 3px;
 }
 
 .note-url i {
- display: block;
- font-size: 14px;
- margin-top: -4px;
  color: #333;
-}
-
-.note-score {
-  display: block;
-  text-align: center;
-  font-size: 10px; 
+ display: inline-block;
+ font-size: 10px;
+ margin-top: -4px;
 }
 
 .note-body {
@@ -140,4 +143,5 @@ nav {
   font-family: 'Source Code Pro', monospace, sans-serif;
   font-size: 14px;
   line-height: 1.5;
+  margin-top: 50px;
 }

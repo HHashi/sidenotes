@@ -29,10 +29,6 @@ document.addEventListener( "DOMContentLoaded", function(){
     caseSensitive: false,
     includeScore: true,
     shouldSort: true,
-    // threshold: 0.6,
-    // location: 0,
-    // distance: 100,
-    // maxPatternLength: 32,
     keys: ["url", "body"]
   };
 
@@ -87,31 +83,30 @@ function displaySearchResults(list, callback){
 }
 
 function renderNote(note){
-  console.log(note)
+  var domain = note.url.match(/(?:https?:\/\/)?(?:www\.)?(.*?)\//);
+  var truncated_domain = domain[domain.length-1].substring(0,30);
+
   return '<li>'
-    + '<span class="note-date">' + note.updatedAt.toLocaleString()
-    + '</span>'
-    + '<a class="note-url" href=' + note.url
-    + ' target="_blank" title="' + note.url + '">'
-    + '<i class="icon-link-ext"></i>'
-    + '</a>'
-    + '<p class="note-body">' + JSON.parse(note.body) + '</p>'
-    + '</li>';
+  + '<span class="note-date">' + note.updatedAt.toLocaleDateString() + '</span>'
+  + '<a class="note-url" href=' + note.url
+  + ' target="_blank" title="' + note.url + '">'
+  + '<i class="icon-link-ext"></i> ' + truncated_domain + '</a>'
+  + '<p class="note-body">' + JSON.parse(note.body) + '</p>'
+  + '</li>';
 }
 
 function renderSearchNotes(note) {
-  console.log(note)
+  var domain = note['item']['url'].match(/(?:https?:\/\/)?(?:www\.)?(.*?)\//);
+  var truncated_domain = domain[domain.length-1].substring(0,30);
+
   return '<li>'
-    + '<span class="note-date">' + note['item']['updatedAt'].toLocaleString()
-    + '</span>'
-    + '<a class="note-url" href=' + note['item']['url']
-    + ' target="_blank" title="' + note['item']['url'] + '">'
-    + '<i class="icon-link-ext"></i>'
-    + '</a>'
-  + '<span class="note-score">' + (100 - note['score'] * 100).toString()+'% match'
-  + '</span>'
-    + '<p class="note-body">' + JSON.parse(note['item']['body']) + '</p>'
-    + '</li>';
+  + '<span class="note-date">' + note['item']['updatedAt'].toLocaleDateString() + '</span>'
+  + '<a class="note-url" href=' + note['item']['url']
+  + ' target="_blank" title="' + note['item']['url'] + '">'
+  + '<i class="icon-link-ext"></i> ' + truncated_domain + '</a>'
+  + '<span class="note-score">' + Math.floor((100 - note['score'] * 100)).toString() + '% match</span>'
+  + '<p class="note-body">' + JSON.parse(note['item']['body']) + '</p>'
+  + '</li>';
 }
 
 function formatNotes(records){
