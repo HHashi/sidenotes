@@ -54,6 +54,9 @@ document.addEventListener( "DOMContentLoaded", function(){
   }
 
   backgroundPage.openDatastore.recordsChanged.addListener(function(event) {
+    allRecords = chrome.extension.getBackgroundPage().currentTable.query();
+    formattedRecords = formatNotes(allRecords);
+    fuse = new Fuse(formattedRecords, options);
     setAllNotes();
   });
 });
