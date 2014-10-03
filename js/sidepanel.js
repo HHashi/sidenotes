@@ -1,8 +1,6 @@
-var backgroundNote, cursorPosition;
-
 var currentUrl = window.location.hash.slice(1).split('#')[0];
 var hashConverter = new Hashes.SHA1;
-var noteKey = hashConverter.b64(currentUrl);
+var noteKey = hashConverter.hex(currentUrl);
 
 document.addEventListener( "DOMContentLoaded", function(){
   var textarea = document.querySelector('#textarea');
@@ -60,7 +58,7 @@ document.addEventListener( "DOMContentLoaded", function(){
 
     timeoutId = setTimeout(function() {
       getNewIframeData();
-    }, 200);
+    }, 500);
   });
 
 });
