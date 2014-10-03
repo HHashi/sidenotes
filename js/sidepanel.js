@@ -60,5 +60,4 @@ document.addEventListener( "DOMContentLoaded", function(){
       getNewIframeData();
     }, 500);
   });
-
 });
