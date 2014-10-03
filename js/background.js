@@ -116,12 +116,14 @@ datastoreController = {
         var noteKey = hashConverter.hex(datastoreRecords[i].get('url'));
         var localMatchNote = chromeLocalRecords[noteKey];
         var newNote = {};
-        console.log(localMatchNote)
         if(localMatchNote){
           if(localMatchNote['body'].length < datastoreRecords[i].get('body').length){
             newNote[noteKey] = datastoreController.formatForLocalStorage(datastoreRecords[i]);
             chrome.storage.local.set(newNote, function(){});
           }
+        } else {
+          newNote[noteKey] = datastoreController.formatForLocalStorage(datastoreRecords[i]);
+          chrome.storage.local.set(newNote, function(){});
         }
       }
     }
