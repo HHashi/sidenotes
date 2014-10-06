@@ -16,7 +16,7 @@
 }
 
 body {
-  background: #ddd;
+  background: #f8f8f8;
   color: #333;
   font-family: 'Open Sans', sans-serif;
   font-size: 16px;
@@ -66,9 +66,9 @@ nav {
 }
 
 #note-search {
-  background: #ddd;
+  background: #f8f8f8;
   border: 0;
-  border-bottom: 1px solid #bbb;
+  border-bottom: 1px solid #ddd;
   border-radius: 0px;
   font-family: 'Source Code Pro', monospace, sans-serif;
   font-size: 20px;
