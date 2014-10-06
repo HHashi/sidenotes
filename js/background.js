@@ -90,11 +90,17 @@ datastoreController = {
     chrome.storage.local.set({saving: 'true'}, function(){});
   },
   makeRecord: function(noteData){
+    var creationDate;
+    if (noteData['newValue']['createdAt']){
+      creationDate = new Date(JSON.parse(noteData['newValue']['createdAt']));
+    } else {
+      creationDate = newDate();
+    }
     return {
-        url: noteData['newValue']['url'],
-        body: noteData['newValue']['body'],
-        createdAt: new Date(JSON.parse(noteData['newValue']['createdAt'])),
-        updatedAt: new Date()
+      url: noteData['newValue']['url'],
+      body: noteData['newValue']['body'],
+      createdAt: creationDate,
+      updatedAt: new Date()
     };
   },
   setRemoteNoteToLocalStorage: function(newRemoteNotes) {
