@@ -58,9 +58,9 @@ document.addEventListener( "DOMContentLoaded", function(){
     for(var i=0;i<deleteButtons.length;i++){
       deleteButtons[i].addEventListener('click', function(e) {
         e.preventDefault();
-        var localNoteToDelete = chrome.storage.local.remove(hashConverter.hex(this.getAttribute('href')), function(){})
         var noteToDelete = backgroundPage.currentTable.query({url: this.getAttribute('href')});
         deleteNote(noteToDelete);
+        var localNoteToDelete = chrome.storage.local.remove(hashConverter.hex(this.getAttribute('href')), function(){});
       });
     }
   }
