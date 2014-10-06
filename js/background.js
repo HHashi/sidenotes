@@ -87,6 +87,7 @@ datastoreController = {
     } else {
       currentTable.insert(newNoteData);
     }
+    chrome.storage.local.set({saving: 'true'}, function(){});
   },
   makeRecord: function(noteData){
     return {
@@ -96,9 +97,9 @@ datastoreController = {
         updatedAt: new Date()
     };
   },
-  setRemoteNoteToLocalStorage: function(newRemoteNote) {
+  setRemoteNoteToLocalStorage: function(newRemoteNotes) {
     chrome.storage.local.get(null, function(result){
-        var newLocalNotes = datastoreController.mergeNotes([newRemoteNote], result);
+        var newLocalNotes = datastoreController.mergeNotes(newRemoteNotes, result);
     });
   },
   syncRemoteStorage: function(currentTable){
@@ -127,7 +128,6 @@ datastoreController = {
         }
       }
     }
-    chrome.storage.local.set({saving: 'true'}, function(){});
   },
   formatForLocalStorage: function(noteData){
     return {'url': noteData.get('url'), 'body': noteData.get('body'), 'createdAt': JSON.stringify(noteData.get('createdAt')), 'updatedAt': JSON.stringify(new Date())};
@@ -152,11 +152,9 @@ function initDatastore(callback){
       }
     });
 
-    datastore.recordsChanged.addListener(function(event) {
-      chrome.storage.local.set({saving: 'false'}, function(){});
-      var changedRecords = event.affectedRecordsForTable(currentTable._tid);
-      datastoreController.setRemoteNoteToLocalStorage(changedRecords[0]);
-    });
+    chrome.storage.local.set({saving: 'false'}, function(){});
+    var datastoreRecords = currentTable.query();
+    datastoreController.setRemoteNoteToLocalStorage(datastoreRecords);
     callback(currentTable);
   });
 };

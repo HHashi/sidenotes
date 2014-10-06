@@ -1,6 +1,7 @@
 document.addEventListener( "DOMContentLoaded", function(){
   var backgroundPage = chrome.extension.getBackgroundPage();
   var appController = backgroundPage.appController;
+  var hashConverter = new Hashes.SHA1;;
 
   document.querySelector("#note-search").addEventListener('keyup', function(){
     var searchParams = document.querySelector("#note-search").value;
@@ -22,7 +23,7 @@ document.addEventListener( "DOMContentLoaded", function(){
     if (document.querySelector("#note-search").value === ""){ displayResults(formattedRecords, addActionToNoteLink); }
   });
 
-  var allRecords = chrome.extension.getBackgroundPage().currentTable.query();
+  var allRecords = backgroundPage.currentTable.query();
   var formattedRecords = formatNotes(allRecords);
 
   var options = {
@@ -36,6 +37,11 @@ document.addEventListener( "DOMContentLoaded", function(){
   setAllNotes();
 
   function addActionToNoteLink(){
+    linkToNoteUrl();
+    deleteNoteListener();
+  }
+
+  function linkToNoteUrl(){
     var noteLinks = document.querySelectorAll(".note-url");
     for(var i=0;i<noteLinks.length;i++){
       noteLinks[i].addEventListener('click', function(e) {
@@ -43,6 +49,18 @@ document.addEventListener( "DOMContentLoaded", function(){
         chrome.tabs.create({url: this.getAttribute('href')}, function(tab){
           appController.toggleSidePanel();
         });
+      });
+    }
+  }
+
+  function deleteNoteListener(){
+    var deleteButtons = document.querySelectorAll('.delete-note');
+    for(var i=0;i<deleteButtons.length;i++){
+      deleteButtons[i].addEventListener('click', function(e) {
+        e.preventDefault();
+        var localNoteToDelete = chrome.storage.local.remove(hashConverter.hex(this.getAttribute('href')), function(){})
+        var noteToDelete = backgroundPage.currentTable.query({url: this.getAttribute('href')});
+        deleteNote(noteToDelete);
       });
     }
   }
@@ -59,6 +77,13 @@ document.addEventListener( "DOMContentLoaded", function(){
     fuse = new Fuse(formattedRecords, options);
     setAllNotes();
   });
+
+  function deleteNote(note){
+    var result = confirm("Are you sure you want to delete this message?");
+    if (result === true && note[0]) {
+      note[0].deleteRecord();
+    }
+  }
 });
 
 function displayResults(list, callback){
@@ -94,6 +119,8 @@ function renderNote(note){
   + '<a class="note-url" href=' + note.url
   + ' target="_blank" title="' + note.url + '">'
   + '<i class="icon-link-ext"></i> ' + truncated_domain + '</a>'
+  + '<a href="' + note.url
+  + '" class="delete-note">delete</a>'
   + '<p class="note-body">' + JSON.parse(note.body) + '</p>'
   + '</li>';
 }
@@ -107,6 +134,8 @@ function renderSearchNotes(note) {
   + '<a class="note-url" href=' + note['item']['url']
   + ' target="_blank" title="' + note['item']['url'] + '">'
   + '<i class="icon-link-ext"></i> ' + truncated_domain + '</a>'
+  + '<a href="' + note.url
+  + '" class="delete-note">delete</a>'
   + '<span class="note-score">' + Math.floor((100 - note['score'] * 100)).toString() + '% match</span>'
   + '<p class="note-body">' + JSON.parse(note['item']['body']) + '</p>'
   + '</li>';
