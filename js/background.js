@@ -97,9 +97,9 @@ datastoreController = {
         updatedAt: new Date()
     };
   },
-  setRemoteNoteToLocalStorage: function(newRemoteNote) {
+  setRemoteNoteToLocalStorage: function(newRemoteNotes) {
     chrome.storage.local.get(null, function(result){
-        var newLocalNotes = datastoreController.mergeNotes([newRemoteNote], result);
+        var newLocalNotes = datastoreController.mergeNotes(newRemoteNotes, result);
     });
   },
   syncRemoteStorage: function(currentTable){
@@ -153,8 +153,8 @@ function initDatastore(callback){
     });
 
     chrome.storage.local.set({saving: 'false'}, function(){});
-    var changedRecords = event.affectedRecordsForTable(currentTable._tid);
-      datastoreController.setRemoteNoteToLocalStorage(changedRecords[0]);
+    var datastoreRecords = currentTable.query();
+    datastoreController.setRemoteNoteToLocalStorage(datastoreRecords);
     callback(currentTable);
   });
 };
