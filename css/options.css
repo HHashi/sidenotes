@@ -108,6 +108,7 @@ nav {
 
 #search-results li p {
   white-space: pre-wrap;
+  word-wrap: break-word;
 }
 
 #search-results li span {
