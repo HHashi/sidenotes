@@ -118,9 +118,9 @@ function renderNote(note){
   + '<span class="note-date">' + note.updatedAt.toLocaleDateString() + '</span>'
   + '<a class="note-url" href=' + note.url
   + ' target="_blank" title="' + note.url + '">'
-  + '<i class="icon-link-ext"></i> ' + truncated_domain + '</a>'
+  + '<i class="icon-external"></i> ' + truncated_domain + '</a>'
   + '<a href="' + note.url
-  + '" class="delete-note">delete</a>'
+  + '" class="delete-note"><i class="icon-cancel"></i>delete</a>'
   + '<p class="note-body">' + JSON.parse(note.body) + '</p>'
   + '</li>';
 }
@@ -133,9 +133,9 @@ function renderSearchNotes(note) {
   + '<span class="note-date">' + note['item']['updatedAt'].toLocaleDateString() + '</span>'
   + '<a class="note-url" href=' + note['item']['url']
   + ' target="_blank" title="' + note['item']['url'] + '">'
-  + '<i class="icon-link-ext"></i> ' + truncated_domain + '</a>'
+  + '<i class="icon-external"></i> ' + truncated_domain + '</a>'
   + '<a href="' + note.url
-  + '" class="delete-note">delete</a>'
+  + '" class="delete-note"><i class="icon-cancel"></i>delete</a>'
   + '<span class="note-score">' + Math.floor((100 - note['score'] * 100)).toString() + '% match</span>'
   + '<p class="note-body">' + JSON.parse(note['item']['body']) + '</p>'
   + '</li>';
