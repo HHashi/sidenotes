@@ -87,6 +87,7 @@ datastoreController = {
     } else {
       currentTable.insert(newNoteData);
     }
+    chrome.storage.local.set({saving: 'true'}, function(){});
   },
   makeRecord: function(noteData){
     return {
@@ -127,7 +128,6 @@ datastoreController = {
         }
       }
     }
-    chrome.storage.local.set({saving: 'true'}, function(){});
   },
   formatForLocalStorage: function(noteData){
     return {'url': noteData.get('url'), 'body': noteData.get('body'), 'createdAt': JSON.stringify(noteData.get('createdAt')), 'updatedAt': JSON.stringify(new Date())};
