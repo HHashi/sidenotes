@@ -152,11 +152,9 @@ function initDatastore(callback){
       }
     });
 
-    datastore.recordsChanged.addListener(function(event) {
-      chrome.storage.local.set({saving: 'false'}, function(){});
-      var changedRecords = event.affectedRecordsForTable(currentTable._tid);
+    chrome.storage.local.set({saving: 'false'}, function(){});
+    var changedRecords = event.affectedRecordsForTable(currentTable._tid);
       datastoreController.setRemoteNoteToLocalStorage(changedRecords[0]);
-    });
     callback(currentTable);
   });
 };

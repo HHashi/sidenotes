@@ -22,7 +22,7 @@ document.addEventListener( "DOMContentLoaded", function(){
     if (document.querySelector("#note-search").value === ""){ displayResults(formattedRecords, addActionToNoteLink); }
   });
 
-  var allRecords = chrome.extension.getBackgroundPage().currentTable.query();
+  var allRecords = backgroundPage.currentTable.query();
   var formattedRecords = formatNotes(allRecords);
 
   var options = {
