@@ -58,9 +58,15 @@ document.addEventListener( "DOMContentLoaded", function(){
     for(var i=0;i<deleteButtons.length;i++){
       deleteButtons[i].addEventListener('click', function(e) {
         e.preventDefault();
-        var localNoteToDelete = chrome.storage.local.remove(hashConverter.hex(this.getAttribute('href')), function(){})
-        var noteToDelete = backgroundPage.currentTable.query({url: this.getAttribute('href')});
-        deleteNote(noteToDelete);
+        var noteUrl = this.getAttribute('href')
+        chrome.tabs.query({url: noteUrl}, function(tabs){
+          for(var i=0;i<tabs.length;i++){
+            chrome.tabs.executeScript(tabs[i].id, {code: 'var sidebar = document.querySelector("#sidenotes_sidebar");document.body.removeChild(sidebar);'});
+          }
+        })
+        var localNoteToDelete = chrome.storage.local.remove(hashConverter.hex(noteUrl), function(){});
+        var noteToDelete = backgroundPage.currentTable.query({url: noteUrl});
+          deleteNote(noteToDelete);
       });
     }
   }
