@@ -82,25 +82,24 @@ appController = {
 datastoreController = {
   updateOrAddRecord: function(newNote, pastNote, hashKey){
     var newNoteData = this.makeRecord(newNote[hashKey]);
-    if(pastNote) {
-      pastNote.update(newNoteData);
-    } else {
-      currentTable.insert(newNoteData);
-    }
     chrome.storage.local.set({saving: 'true'}, function(){});
+    if(pastNote) {
+      console.log('before update')
+      pastNote.update(newNoteData);
+console.log('after update')
+    } else {
+      console.log('before insert')
+      currentTable.insert(newNoteData);
+      console.log('before insert')
+    }
+
   },
   makeRecord: function(noteData){
-    var creationDate;
-    if (noteData['newValue']['createdAt']){
-      creationDate = new Date(JSON.parse(noteData['newValue']['createdAt']));
-    } else {
-      creationDate = newDate();
-    }
     return {
-      url: noteData['newValue']['url'],
-      body: noteData['newValue']['body'],
-      createdAt: creationDate,
-      updatedAt: new Date()
+        url: noteData['newValue']['url'],
+        body: noteData['newValue']['body'],
+        createdAt: new Date(JSON.parse(noteData['newValue']['createdAt'])),
+        updatedAt: new Date()
     };
   },
   setRemoteNoteToLocalStorage: function(newRemoteNotes) {
@@ -151,11 +150,11 @@ function initDatastore(callback){
     currentTable = datastore.getTable('Sidenotes');
 
     chrome.storage.onChanged.addListener(function(changes, namespace) {
-      var hashKey = Object.keys(changes)[0];
-      if(changes[hashKey]['newValue'] && changes[hashKey]['newValue']['url'] && changes[hashKey]['newValue']['body']){
-        var existingRecord = currentTable.query({url: changes[hashKey]['newValue']['url'] });
-        datastoreController.updateOrAddRecord(changes, existingRecord[0], hashKey);
-      }
+        var hashKey = Object.keys(changes)[0];
+        if(changes[hashKey]['newValue'] && changes[hashKey]['newValue']['url'] && changes[hashKey]['newValue']['body']){
+          var existingRecord = currentTable.query({url: changes[hashKey]['newValue']['url'] });
+          datastoreController.updateOrAddRecord(changes, existingRecord[0], hashKey);
+        }
     });
 
     chrome.storage.local.set({saving: 'false'}, function(){});
