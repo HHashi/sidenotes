@@ -84,13 +84,9 @@ datastoreController = {
     var newNoteData = this.makeRecord(newNote[hashKey]);
     chrome.storage.local.set({saving: 'true'}, function(){});
     if(pastNote) {
-      console.log('before update')
       pastNote.update(newNoteData);
-console.log('after update')
     } else {
-      console.log('before insert')
       currentTable.insert(newNoteData);
-      console.log('before insert')
     }
 
   },
@@ -140,9 +136,9 @@ console.log('after update')
   deleteNote: function(noteUrl){
     var result = confirm("Are you sure you want to delete this message?");
     if (result === true) {
-      var noteToDelete = currentTable.query({url: noteUrl});
-      noteToDelete[0].deleteRecord();
       var localNoteToDelete = chrome.storage.local.remove(hashConverter.hex(noteUrl), function(){});
+      var noteToDelete = currentTable.get({url: noteUrl});
+        noteToDelete.deleteRecord();
     }
   }
 };

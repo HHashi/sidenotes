@@ -57,12 +57,13 @@ document.addEventListener( "DOMContentLoaded", function(){
     for(var i=0;i<deleteButtons.length;i++){
       deleteButtons[i].addEventListener('click', function(e) {
         e.preventDefault();
-        var noteUrl = this.getAttribute('href')
+        var noteUrl = this.getAttribute('href');
         chrome.tabs.query({url: noteUrl}, function(tabs){
           for(var i=0;i<tabs.length;i++){
             chrome.tabs.executeScript(tabs[i].id, {code: 'document.body.style.width = (document.body.clientWidth + 300) + "px"; var sidebar = document.querySelector("#sidenotes_sidebar");document.body.removeChild(sidebar);'});
           }
-        })
+        });
+
         backgroundPage.datastoreController.deleteNote(noteUrl);
       });
     }
