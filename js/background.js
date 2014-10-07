@@ -137,8 +137,8 @@ datastoreController = {
     var result = confirm("Are you sure you want to delete this message?");
     if (result === true) {
       var localNoteToDelete = chrome.storage.local.remove(hashConverter.hex(noteUrl), function(){});
-      var noteToDelete = currentTable.get({url: noteUrl});
-        noteToDelete.deleteRecord();
+      var noteToDelete = currentTable.query({url: noteUrl});
+      noteToDelete[0].deleteRecord();
     }
   }
 };

@@ -63,7 +63,6 @@ document.addEventListener( "DOMContentLoaded", function(){
             chrome.tabs.executeScript(tabs[i].id, {code: 'document.body.style.width = (document.body.clientWidth + 300) + "px"; var sidebar = document.querySelector("#sidenotes_sidebar");document.body.removeChild(sidebar);'});
           }
         });
-
         backgroundPage.datastoreController.deleteNote(noteUrl);
       });
     }
