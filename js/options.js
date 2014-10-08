@@ -32,7 +32,6 @@ document.addEventListener( "DOMContentLoaded", function(){
     keys: ["url", "body"]
   };
 
-  var fuse = new Fuse(formattedRecords, options);
   setAllNotes();
 
   function addActionToNoteLink(){
@@ -70,14 +69,12 @@ document.addEventListener( "DOMContentLoaded", function(){
 
   function setAllNotes(){
     allRecords = chrome.extension.getBackgroundPage().currentTable.query();
-    formattedRecords = formatNotes(allRecords, 'date', 'url', 'body');
+    formattedRecords = formatNotes(allRecords);
+    var fuse = new Fuse(formattedRecords, options);
     displayResults(formattedRecords, addActionToNoteLink);
   }
 
   backgroundPage.openDatastore.recordsChanged.addListener(function(event) {
-    allRecords = chrome.extension.getBackgroundPage().currentTable.query();
-    formattedRecords = formatNotes(allRecords);
-    fuse = new Fuse(formattedRecords, options);
     setAllNotes();
   });
 });
