@@ -1,4 +1,6 @@
 document.addEventListener( "DOMContentLoaded", function(){
+  var fuse;
+
   var backgroundPage = chrome.extension.getBackgroundPage();
   var appController = backgroundPage.appController;
 
@@ -70,7 +72,7 @@ document.addEventListener( "DOMContentLoaded", function(){
   function setAllNotes(){
     allRecords = chrome.extension.getBackgroundPage().currentTable.query();
     formattedRecords = formatNotes(allRecords);
-    var fuse = new Fuse(formattedRecords, options);
+    fuse = new Fuse(formattedRecords, options);
     displayResults(formattedRecords, addActionToNoteLink);
   }
 
