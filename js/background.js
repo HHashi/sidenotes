@@ -155,9 +155,7 @@ function initDatastore(callback){
     currentTable = datastore.getTable('Sidenotes');
 
     chrome.storage.onChanged.addListener(function(changes, namespace) {
-      console.log('look');
       var hashKey = Object.keys(changes)[0];
-      console.log('hmm')
       if(changes[hashKey]['newValue'] && changes[hashKey]['newValue']['url'] && changes[hashKey]['newValue']['body']){
         var existingRecord = currentTable.query({url: changes[hashKey]['newValue']['url'] });
         datastoreController.updateOrAddRecord(changes, existingRecord[0], hashKey);
