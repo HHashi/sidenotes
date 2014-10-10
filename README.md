@@ -33,10 +33,9 @@ If you need to pull up a past note or url you may visit our search page, which w
 
 ## Installation
 
-Sidenotes is built entirely in HTML5, CSS3 & JavaScript. You can download it...
+Sidenotes is built entirely in HTML5, CSS3 & JavaScript.
 
-* From the Chrome Web Store - [Sidenotes on Chrome Webstore](https://chrome.google.com/webstore/detail/sidenotes/cjldgloackleekdmeoefgkcmaknnbbpb)
-* Download it directly - [Sidenotes Extension](#)
+* Install from the Chrome Web Store - [Sidenotes on Chrome Webstore](https://chrome.google.com/webstore/detail/sidenotes/cjldgloackleekdmeoefgkcmaknnbbpb)
 * Check us out on the web - [Sidenotes.co](http://sidenotes.co)
 
 ## The Team
