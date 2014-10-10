@@ -1,7 +1,8 @@
 document.addEventListener( "DOMContentLoaded", function(){
+  var fuse;
+
   var backgroundPage = chrome.extension.getBackgroundPage();
   var appController = backgroundPage.appController;
-  var hashConverter = new Hashes.SHA1;;
 
   document.querySelector("#note-search").addEventListener('keyup', function(){
     var searchParams = document.querySelector("#note-search").value;
@@ -33,7 +34,6 @@ document.addEventListener( "DOMContentLoaded", function(){
     keys: ["url", "body"]
   };
 
-  var fuse = new Fuse(formattedRecords, options);
   setAllNotes();
 
   function addActionToNoteLink(){
@@ -58,38 +58,28 @@ document.addEventListener( "DOMContentLoaded", function(){
     for(var i=0;i<deleteButtons.length;i++){
       deleteButtons[i].addEventListener('click', function(e) {
         e.preventDefault();
-        var noteUrl = this.getAttribute('href')
+        var element = this.parentNode.parentNode.parentNode
+        var noteUrl = this.getAttribute('href');
         chrome.tabs.query({url: noteUrl}, function(tabs){
           for(var i=0;i<tabs.length;i++){
-            chrome.tabs.executeScript(tabs[i].id, {code: 'var sidebar = document.querySelector("#sidenotes_sidebar");document.body.removeChild(sidebar);'});
+            chrome.tabs.executeScript(tabs[i].id, {code: 'document.body.style.width = (document.body.clientWidth + 300) + "px"; var sidebar = document.querySelector("#sidenotes_sidebar");document.body.removeChild(sidebar);'});
           }
-        })
-        var localNoteToDelete = chrome.storage.local.remove(hashConverter.hex(noteUrl), function(){});
-        var noteToDelete = backgroundPage.currentTable.query({url: noteUrl});
-          deleteNote(noteToDelete);
+        });
+        backgroundPage.datastoreController.deleteNote(noteUrl, element);
       });
     }
   }
 
   function setAllNotes(){
     allRecords = chrome.extension.getBackgroundPage().currentTable.query();
-    formattedRecords = formatNotes(allRecords, 'date', 'url', 'body');
+    formattedRecords = formatNotes(allRecords);
+    fuse = new Fuse(formattedRecords, options);
     displayResults(formattedRecords, addActionToNoteLink);
   }
 
   backgroundPage.openDatastore.recordsChanged.addListener(function(event) {
-    allRecords = chrome.extension.getBackgroundPage().currentTable.query();
-    formattedRecords = formatNotes(allRecords);
-    fuse = new Fuse(formattedRecords, options);
     setAllNotes();
   });
-
-  function deleteNote(note){
-    var result = confirm("Are you sure you want to delete this message?");
-    if (result === true && note[0]) {
-      note[0].deleteRecord();
-    }
-  }
 });
 
 function displayResults(list, callback){
