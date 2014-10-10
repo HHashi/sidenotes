@@ -133,9 +133,10 @@ datastoreController = {
   formatForLocalStorage: function(noteData){
     return {'url': noteData.get('url'), 'body': noteData.get('body'), 'createdAt': JSON.stringify(noteData.get('createdAt')), 'updatedAt': JSON.stringify(new Date())};
   },
-  deleteNote: function(noteUrl){
+  deleteNote: function(noteUrl, element){
     var result = confirm("Are you sure you want to delete this message?");
     if (result === true) {
+      element.style.display = 'none'
       var localNoteToDelete = chrome.storage.local.remove(hashConverter.hex(noteUrl), function(){});
       var noteToDelete = currentTable.query({url: noteUrl});
       noteToDelete[0].deleteRecord();
@@ -154,7 +155,9 @@ function initDatastore(callback){
     currentTable = datastore.getTable('Sidenotes');
 
     chrome.storage.onChanged.addListener(function(changes, namespace) {
+      console.log('look');
       var hashKey = Object.keys(changes)[0];
+      console.log('hmm')
       if(changes[hashKey]['newValue'] && changes[hashKey]['newValue']['url'] && changes[hashKey]['newValue']['body']){
         var existingRecord = currentTable.query({url: changes[hashKey]['newValue']['url'] });
         datastoreController.updateOrAddRecord(changes, existingRecord[0], hashKey);
