@@ -84,13 +84,9 @@ datastoreController = {
     var newNoteData = this.makeRecord(newNote[hashKey]);
     chrome.storage.local.set({saving: 'true'}, function(){});
     if(pastNote) {
-      console.log('before update')
       pastNote.update(newNoteData);
-console.log('after update')
     } else {
-      console.log('before insert')
       currentTable.insert(newNoteData);
-      console.log('before insert')
     }
 
   },
@@ -136,6 +132,15 @@ console.log('after update')
   },
   formatForLocalStorage: function(noteData){
     return {'url': noteData.get('url'), 'body': noteData.get('body'), 'createdAt': JSON.stringify(noteData.get('createdAt')), 'updatedAt': JSON.stringify(new Date())};
+  },
+  deleteNote: function(noteUrl, element){
+    var result = confirm("Are you sure you want to delete this message?");
+    if (result === true) {
+      element.style.display = 'none'
+      var localNoteToDelete = chrome.storage.local.remove(hashConverter.hex(noteUrl), function(){});
+      var noteToDelete = currentTable.query({url: noteUrl});
+      noteToDelete[0].deleteRecord();
+    }
   }
 };
 
@@ -150,11 +155,13 @@ function initDatastore(callback){
     currentTable = datastore.getTable('Sidenotes');
 
     chrome.storage.onChanged.addListener(function(changes, namespace) {
-        var hashKey = Object.keys(changes)[0];
-        if(changes[hashKey]['newValue'] && changes[hashKey]['newValue']['url'] && changes[hashKey]['newValue']['body']){
-          var existingRecord = currentTable.query({url: changes[hashKey]['newValue']['url'] });
-          datastoreController.updateOrAddRecord(changes, existingRecord[0], hashKey);
-        }
+      console.log('look');
+      var hashKey = Object.keys(changes)[0];
+      console.log('hmm')
+      if(changes[hashKey]['newValue'] && changes[hashKey]['newValue']['url'] && changes[hashKey]['newValue']['body']){
+        var existingRecord = currentTable.query({url: changes[hashKey]['newValue']['url'] });
+        datastoreController.updateOrAddRecord(changes, existingRecord[0], hashKey);
+      }
     });
 
     chrome.storage.local.set({saving: 'false'}, function(){});
